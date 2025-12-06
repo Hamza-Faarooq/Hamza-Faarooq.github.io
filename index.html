@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Muhammad Hamza — ML Researcher</title>
+  <meta name="description" content="Muhammad Hamza — ML researcher & developer, IIT Kharagpur. Internships, projects, publications." />
+  <style>
+    @font-face{ font-family: CalistoLocal; src: local('Calisto MT'), local('CalistoMT'); }
+    :root{
+      --bg:#12121a;
+      --muted:#9fb0c3;
+      --accent:#2fb3ff;
+      --text:#e6eef6;
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:linear-gradient(180deg,#0f1116 0%,#0b0d12 100%);color:var(--text);
+      font-family: CalistoLocal, 'Book Antiqua', Georgia, serif;line-height:1.6;-webkit-font-smoothing:antialiased;
+    }
+
+    /* layout: two columns, aligned to top */
+    .wrap{
+      max-width:var(--maxw);margin:24px auto;padding:28px;display:grid;grid-template-columns:320px 1fr;gap:28px;
+      align-items:start; /* move everything to top */
+    }
+
+    /* LEFT column */
+    .left{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+    .avatar{width:210px;height:210px;border-radius:50%;overflow:hidden;border:6px solid rgba(47,179,255,0.12);box-shadow:0 18px 40px rgba(0,0,0,0.7);background:#0b0f14;display:flex;align-items:center;justify-content:center}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    h1.name{margin:0;font-size:26px;color:var(--accent)}
+    .title{margin:0;color:var(--muted);font-size:14px}
+    .inst{margin-top:6px;color:var(--muted);font-weight:600;font-size:13px}
+    .email-line{margin-top:8px;color:var(--muted);font-size:13px;word-break:break-all}
+
+    /* contact icons rows (3 then 2) */
+    .contact-wrap{width:100%;display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:6px}
+    .contact-row{display:flex;gap:12px;justify-content:center}
+    .contact-item{display:flex;flex-direction:column;align-items:center;font-size:13px;color:var(--muted)}
+    .icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.03)}
+    .icon svg{display:block}
+    .icon a{display:block}
+
+    /* RIGHT column (main) */
+    .main{padding-left:8px}
+    .single-nav{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+    .single-nav a{color:var(--muted);text-decoration:none;border:1px solid rgba(255,255,255,0.03);padding:9px 12px;border-radius:8px;font-weight:600}
+    .single-nav a:hover{color:var(--accent)}
+
+    .section{background:transparent;padding:18px;border-radius:10px;margin-bottom:18px}
+    h2.section-title{color:var(--text); margin:0 0 10px 0; font-size:22px}
+    .lead{color:var(--muted); margin-top:6px; font-size:15px; max-width:74ch}
+
+    /* Experience styling */
+    .exp-entry{padding:12px 0; border-bottom:1px dashed rgba(255,255,255,0.03)}
+    .exp-entry:last-child{border-bottom:0}
+    .exp-role{font-weight:700; color:var(--accent); margin:0}
+    .exp-org{font-style:italic; color:var(--muted); margin-top:4px}
+    .exp-bullets{margin-top:8px; color:#dfeefc; font-size:15px; padding-left:20px}
+    .exp-bullets li{margin-bottom:8px}
+
+    /* Projects */
+    .projects-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:8px}
+    .proj{background:rgba(255,255,255,0.01); padding:12px; border-radius:9px; border:1px solid rgba(255,255,255,0.03)}
+    .proj h3{margin:0 0 6px 0; font-size:16px; color:var(--accent)}
+    .proj .meta{color:var(--muted); font-size:14px; padding-left:6px}
+
+    /* skills */
+    .skills-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .skill{background:rgba(255,255,255,0.02);padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);color:var(--muted);font-size:13px}
+
+    /* publications */
+    .pub{padding:10px 0}
+    .tagA{color:#ffd166;font-weight:800;margin-right:6px}
+    .pub strong{color:var(--accent)}
+
+    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center; grid-column:1 / -1}
+
+    @media (max-width:980px){
+      .wrap{grid-template-columns:1fr;padding:18px}
+      .contact-row{justify-content:flex-start}
+      .projects-grid{grid-template-columns:1fr}
+      .avatar{width:170px;height:170px}
+      .single-nav{justify-content:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- LEFT column -->
+    <div class="left">
+      <div class="avatar" aria-hidden>
+        <img src="photo.jpg" alt="Muhammad Hamza photo" onerror="this.style.display='none'">
+      </div>
+
+      <h1 class="name">Muhammad Hamza</h1>
+      <div class="title">ML Researcher</div>
+      <div class="inst">Indian Institute of Technology, Kharagpur</div>
+
+      <div class="email-line">
+        <a href="mailto:muhammadhamza@kgpian.iitkgp.ac.in" style="color:var(--muted);text-decoration:none">muhammadhamza@kgpian.iitkgp.ac.in</a>
+      </div>
+
+      <!-- contact icons: 3 on first row, 2 on second row -->
+      <div class="contact-wrap" aria-hidden>
+        <div class="contact-row">
+          <!-- Personal -->
+          <div class="contact-item">
+            <div class="icon" style="background:linear-gradient(180deg, rgba(47,179,255,0.06), rgba(110,231,183,0.02))">
+              <a href="mailto:hamza.iitkgp@gmail.com" title="Personal email">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M3 7.5v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9" stroke="#2fb3ff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M22 6.5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v.5l10 6 10-6v-.5z" fill="#2fb3ff"/>
+                </svg>
+              </a>
+            </div>
+            <div style="margin-top:6px"><a href="mailto:hamza.iitkgp@gmail.com" style="color:var(--muted);text-decoration:none">Personal</a></div>
+          </div>
+
+          <!-- LinkedIn -->
+          <div class="contact-item">
+            <div class="icon" style="background:linear-gradient(180deg, rgba(10,102,194,0.06), rgba(10,102,194,0.02))">
+              <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" title="LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#0A66C2"/>
+                  <path d="M6.5 9.5v7" stroke="#ffffff" stroke-width="1.3" stroke-linecap="round"/>
+                  <path d="M6.5 7.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" stroke="#ffffff" stroke-width="1.3"/>
+                  <path d="M10.5 12.5v4" stroke="#ffffff" stroke-width="1.3"/>
+                  <path d="M10.5 9.5c0-1.5 1-2 2-2s2 .6 2 2v7" stroke="#ffffff" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+              </a>
+            </div>
+            <div style="margin-top:6px"><a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" style="color:var(--muted);text-decoration:none">LinkedIn</a></div>
+          </div>
+
+          <!-- GitHub -->
+          <div class="contact-item">
+            <div class="icon" style="background:linear-gradient(180deg, rgba(25,25,25,0.06), rgba(25,25,25,0.02))">
+              <a href="https://github.com/Hamza-Faarooq" target="_blank" title="GitHub">
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.69c-2.77.6-3.36-1.33-3.36-1.33-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.88 1.51 2.31 1.07 2.87.82.09-.64.35-1.07.63-1.32-2.21-.25-4.54-1.11-4.54-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.26.1-2.63 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.8c.85.004 1.71.115 2.51.337 1.9-1.29 2.74-1.02 2.74-1.02.55 1.37.2 2.38.1 2.63.64.7 1.03 1.6 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2z" fill="#181717"/>
+                </svg>
+              </a>
+            </div>
+            <div style="margin-top:6px"><a href="https://github.com/Hamza-Faarooq" target="_blank" style="color:var(--muted);text-decoration:none">GitHub</a></div>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <!-- Quora -->
+          <div class="contact-item">
+            <div class="icon" style="background:linear-gradient(180deg, rgba(185,43,39,0.06), rgba(185,43,39,0.02))">
+              <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" title="Quora">
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+                  <path d="M7 3a2 2 0 0 0-2 2v11a5 5 0 0 0 5 5h.5" stroke="#B92B27" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 7.5c0-1.2.7-3.5 3-3.5" stroke="#B92B27" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+            <div style="margin-top:6px"><a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" style="color:var(--muted);text-decoration:none">Quora</a></div>
+          </div>
+
+          <!-- Medium -->
+          <div class="contact-item">
+            <div class="icon" style="background:linear-gradient(180deg, rgba(0,171,108,0.06), rgba(0,171,108,0.02))">
+              <a href="https://medium.com/@_hamza" target="_blank" title="Medium">
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+                  <path d="M5 7c0-1 .6-2 1.5-2h11c.9 0 1.5 1 1.5 2v10c0 1-.6 2-1.5 2h-11C5.6 19 5 18 5 17V7z" fill="#00AB6C"/>
+                  <path d="M7.5 11.5l2.5 4L14.5 9" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </a>
+            </div>
+            <div style="margin-top:6px"><a href="https://medium.com/@_hamza" target="_blank" style="color:var(--muted);text-decoration:none">Medium</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT column -->
+    <div class="main">
+
+      <!-- single horizontal nav at very top of main -->
+      <nav class="single-nav" aria-label="main navigation">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#publications">Publications</a>
+        <a href="resume.pdf" target="_blank">Resume (PDF)</a>
+      </nav>
+
+      <!-- ABOUT -->
+      <section class="section card" id="about">
+        <h2 class="section-title">About Me</h2>
+        <p class="lead">
+          My name is <strong>Muhammad Hamza</strong>, a third year engineering undergraduate student, majoring in Chemical Engineering, with a specialisation in Artificial Intelligence and Applications, at Indian Institute of Technology, Kharagpur. I have vested my interests in Theoretical Machine Learning and Large Language Models, and aspire to be an ML Engineer. I am really interested in research on Machine Learning and always ready to collaborate on similar research interests and industrial applications in NLP, Language Models and Computer Vision.
+        </p>
+        <p class="lead" style="margin-top:10px">
+          Apart from spending my time curling my brain on ML, I write articles on Medium (primarily on Cricket and other Sports) and answers on Quora (where I currently have 850k+ views).
+        </p>
+
+        <div style="margin-top:12px">
+          <h3 style="margin:0 0 8px 0; color:var(--text)">Skills</h3>
+          <div class="skills-list">
+            <!-- copied directly from resume (Domains/Frameworks/Languages combined into tags) -->
+            <div class="skill">Machine Learning</div>
+            <div class="skill">Deep Learning</div>
+            <div class="skill">Large Language Models</div>
+            <div class="skill">NLP</div>
+            <div class="skill">Computer Vision</div>
+            <div class="skill">Hugging Face Transformers</div>
+            <div class="skill">Multimodal Learning</div>
+            <div class="skill">Reinforcement Learning</div>
+            <div class="skill">Data Science / Analytics</div>
+            <div class="skill">PyTorch</div>
+            <div class="skill">TensorFlow</div>
+            <div class="skill">Hugging Face</div>
+            <div class="skill">Scikit-learn</div>
+            <div class="skill">NLTK</div>
+            <div class="skill">OpenCV</div>
+            <div class="skill">NumPy</div>
+            <div class="skill">Pandas</div>
+            <div class="skill">Python</div>
+            <div class="skill">C++</div>
+            <div class="skill">SQL</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE: copied verbatim from your resume (see citation) -->
+      <section class="section card" id="experience">
+        <h2 class="section-title">Experience</h2>
+
+        <div class="exp-entry">
+          <p class="exp-role">University of Manchester | Research Intern | Prof. Anirbit Mukherjee (Oct ’25 - Present)</p>
+          <div class="exp-bullets">
+            <ul>
+              <li>Researching how Deep Operator Networks (DeepONet) can be used to learn solution operators for parametric PDEs on complex geometries, with current experiments and literature review targeting performance and expressivity on spheres and torus domains.</li>
+              <li>Studying & replicating advances in size-independent generalization bounds for DeepONet architectures, focusing on the theoretical frameworks & practical implementation to enable robust operator learning for diverse scientific modeling & simulation tasks.</li>
+            </ul>
+          </div>
+          <div class="exp-desc">Source: resume. :contentReference[oaicite:1]{index=1}</div>
+        </div>
+
+        <div class="exp-entry">
+          <p class="exp-role">University of Oulu | Undergraduate Researcher | Prof. Shuai Lee (Mar ’25 - Jun ’25)</p>
+          <div class="exp-bullets">
+            <ul>
+              <li>Formulated and solved constrained quadratic optimization (CQP) for pruning Spiking Neural Networks (SNNs), achieving 87.5% spatial sparsity while preserving 13.3% post-pruning accuracy, using CVXPY with the biologically inspired constraints.</li>
+              <li>Integrated criticality-based neuron selection into the pruning pipeline by calculating layer-wise neuron importance scores, retaining top 112 out of total 784 neurons, and visualizing accuracy versus criticality thresholds to guide structured pruning decisions.</li>
+              <li>Implemented KL-divergence-based temporal sparsity regularization, penalizing redundant spiking across timesteps; integrated it as a weighted constraint in the CVXPY optimizer to jointly reduce structured spatial and temporal redundancy.</li>
+              <li>Conducted experiments on MNIST and CIFAR-10 with rate encoding, benchmarking accuracy degradation under varying sparsity levels (e.g. 63.85% → 20.04% accuracy as sparsity increases), and comparing SNN pruning to ANN baselines.</li>
+            </ul>
+          </div>
+          <div class="exp-desc">Source: resume. :contentReference[oaicite:2]{index=2}</div>
+        </div>
+
+        <div class="exp-entry">
+          <p class="exp-role">Indian Institute of Management, Ranchi | Undergraduate Researcher | Prof. Sobhan Sarkar (May ’25 - Aug ’25)</p>
+          <div class="exp-bullets">
+            <ul>
+              <li>Engineered a scalable, modular multimodal pipeline processing 54,000+ IMDB movie reviews and 30,000+ movie frames from 10+ movies, achieving the best metrics of 0.875 accuracy, 0.871 F1, 0.884 AUC, 0.912 MAP, and 0.982 NDCG.</li>
+              <li>Integrated BERT text encoding, ViT visual features, and CLIP-based semantic alignment with three different fusion strategies, benchmarking all the three models on five industry-standard metrics for robust, scalable, and cross-modal comparison.</li>
+              <li>Pioneered the utilization of Dempster-Shafer evidential fusion in the movie review helpfulness prediction, explicitly modeling uncertainty and robustly outperforming attention and concatenation baselines in retrieval & uncertainty-aware reasoning.</li>
+              <li>Automated end-to-end workflow including data cleaning, feature extraction, semantic frame selection, model training, and ablation studies, setting new benchmarks in scalable, explainable and multimodal review analysis for the future publications.</li>
+            </ul>
+          </div>
+          <div class="exp-desc">Source: resume. :contentReference[oaicite:3]{index=3}</div>
+        </div>
+
+      </section>
+
+      <!-- PROJECTS: copied verbatim from resume -->
+      <section class="section card" id="projects">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid">
+          <div class="proj">
+            <h3>ML-Driven Volatility Surface Modeling for High-Frequency NIFTY50 Options (June ’25)</h3>
+            <div class="meta">
+              • Engineered a high-frequency options volatility forecasting pipeline on 578,000+ NIFTY50 index records, leveraging total 100+ engineered features to model the implied volatility surface across 50+ strikes & maturities using advanced ML algorithms.<br>
+              • Achieved an ultra-low MSE score (0.00009) in the Implied Volatility prediction values by integrating a sophisticated batch-wise ensemble model and strike-aware feature selection, outperforming the standard ML baselines by over 10x in the accuracy.
+            </div>
+          </div>
+
+          <div class="proj">
+            <h3>Handwritten Digit Recognition with Neural Networks from scratch (Feb ’25)</h3>
+            <div class="meta">
+              • Achieved a test accuracy of 91.8% and a minimum loss of 0.007 in handwritten digit classification using a fully custom-built, modular, extensible and scalable feedforward neural network architecture completely designed and implemented from the scratch.<br>
+              • Engineered and optimized the training pipeline, consistently reducing the validation loss and improving prediction accuracy.
+            </div>
+          </div>
+
+          <div class="proj">
+            <h3>Competitions & Hackathons</h3>
+            <div class="meta">
+              <strong>NK Securities Research Hackathon 2025</strong> — Top 200 (Global Rank: 198/6000+) by modeling per-second implied volatility for NIFTY50 options; public MSE 0.0000198; engineered pipeline on 178,000+ records with 90+ features.<br><br>
+              <strong>Convolve 3.0: Pan IIT AI/ML Hackathon</strong> — Top 50 among 4000+ teams; built explainable loan default prediction system using XGBoost and balanced sampling / advanced tuning.
+            </div>
+          </div>
+
+          <div class="proj">
+            <h3>Other Projects</h3>
+            <div class="meta">
+              • Movie Review Helpfulness Prediction — BERT + ViT + CLIP alignment + Dempster-Shafer evidential fusion; manuscript accepted to iSAI-NLP 2025.<br>
+              • Operator Learning (DeepONet) experiments (see Experience entry — University of Manchester).
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:10px;color:var(--muted)">Source: resume. :contentReference[oaicite:4]{index=4}</div>
+      </section>
+
+      <!-- PUBLICATIONS -->
+      <section class="section card" id="publications">
+        <h2 class="section-title">Publications</h2>
+
+        <div class="pub">
+          <span class="tagA">[A]</span>
+          <strong> Muhammad Hamza, et al. (2025).</strong>
+          <span style="color:#dfeefc"> Movie Review Helpfulness Prediction using Semantic Alignment and Evidential Fusion-based Multimodal Approach — Manuscript accepted for publication in International Joint Symposium on Artificial Intelligence and Natural Language Processing (iSAI-NLP) 2025.</span>
+        </div>
+        <div style="margin-top:8px;color:var(--muted)">Source: resume. :contentReference[oaicite:5]{index=5}</div>
+      </section>
+
+    </div>
+
+    <footer>
+      © <span id="year"></span> Muhammad Hamza · Hosted on GitHub Pages
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        var target=document.querySelector(a.getAttribute('href'));
+        if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+    });
+  </script>
+</body>
+</html>
