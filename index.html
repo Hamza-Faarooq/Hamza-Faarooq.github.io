@@ -3,11 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+
+
+
+
+
+  
   <title>Muhammad Hamza — ML Researcher</title>
  
   <link rel="icon" type="image/png" href="pfp.png">
 
   <meta name="description" content="Muhammad Hamza — ML researcher & developer, IIT Kharagpur. Internships, projects, publications." />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
     @font-face{ font-family: CalistoLocal; src: local('Calisto MT'), local('CalistoMT'); }
@@ -74,15 +83,30 @@
     .contact-wrap{width:100%;display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:6px}
     .contact-row{display:flex;gap:12px;justify-content:center}
     .contact-item{display:flex;flex-direction:column;align-items:center;font-size:13px;color:var(--muted)}
-    .icon{
-      width:48px;height:48px;border-radius:10px;
-      display:flex;align-items:center;justify-content:center;
-      border:1px solid rgba(255,255,255,0.03);
-      transition: transform 0.2s ease;
-    }
-    .icon:hover { transform: translateY(-3px); }
-    .icon svg{display:block}
-    .icon a{display:block}
+  .icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all 0.2s ease;
+  
+  /* --- NEW STYLES FOR FONTAWESOME --- */
+  font-size: 22px;      /* Sets the size of the icon */
+  color: var(--muted);  /* Sets the default gray color */
+  text-decoration: none;
+}
+
+.icon:hover {
+  transform: translateY(-3px);
+  color: var(--accent);       /* Turns blue on hover */
+  border-color: var(--accent); /* Optional: Border turns blue too */
+  background: rgba(47, 179, 255, 0.1); /* Optional: Slight blue background */
+}
+
+/* You can remove the '.icon svg' and '.icon a' lines as they are no longer needed */
 
     /* RIGHT column (main) */
     .main{
@@ -191,85 +215,42 @@
   <div class="wrap">
 
     <div class="left">
-      <div class="avatar" aria-hidden>
-        <img src="pfp.png" alt="Muhammad Hamza photo" onerror="this.style.display='none'">
+      <div class="avatar-container">
+        <div class="avatar" aria-hidden>
+           <img src="pfp.png" alt="Muhammad Hamza photo" onerror="this.style.display='none'">
+        </div>
       </div>
 
       <h1 class="name">Muhammad Hamza</h1>
-      <div class="title">ML Researcher</div>
-      <div class="inst">Indian Institute of Technology, Kharagpur</div>
+      <div class="role">ML Researcher</div> <div class="inst">Indian Institute of Technology, Kharagpur</div>
 
-      <div class="email-line">
-        <a href="mailto:muhammadhamza@kgpian.iitkgp.ac.in" style="color:var(--muted);text-decoration:none">muhammadhamza@kgpian.iitkgp.ac.in</a>
+      <div class="contact-icons">
+        
+        <a href="mailto:hamza.iitkgp@gmail.com" class="icon-btn" title="Email">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+
+        <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" class="icon-btn" title="LinkedIn">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+
+        <a href="https://github.com/Hamza-Faarooq" target="_blank" class="icon-btn" title="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+
+        <a href="https://medium.com/@_hamza" target="_blank" class="icon-btn" title="Medium">
+          <i class="fa-brands fa-medium"></i>
+        </a>
+
+        <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" class="icon-btn" title="Quora">
+          <i class="fa-brands fa-quora"></i>
+        </a>
+
+      </div>
+      <div style="font-size:12px; color:#64748b; margin-top:20px;">
+        <a href="resume.pdf" target="_blank" style="color:#38bdf8; text-decoration:none; border-bottom:1px dashed #38bdf8;">Download Resume</a>
       </div>
 
-      <div class="contact-wrap" aria-hidden>
-        <div class="contact-row">
-          <div class="contact-item">
-            <div class="icon" style="background:linear-gradient(180deg, rgba(47,179,255,0.06), rgba(110,231,183,0.02))">
-              <a href="mailto:hamza.iitkgp@gmail.com" title="Personal email">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M3 7.5v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9" stroke="#2fb3ff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M22 6.5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v.5l10 6 10-6v-.5z" fill="#2fb3ff"/>
-                </svg>
-              </a>
-            </div>
-            <div style="margin-top:6px"><a href="mailto:hamza.iitkgp@gmail.com" style="color:var(--muted);text-decoration:none">Personal</a></div>
-          </div>
-
-          <div class="contact-item">
-            <div class="icon" style="background:linear-gradient(180deg, rgba(10,102,194,0.06), rgba(10,102,194,0.02))">
-              <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" title="LinkedIn">
-                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#0A66C2"/>
-                  <path d="M6.5 9.5v7" stroke="#ffffff" stroke-width="1.3" stroke-linecap="round"/>
-                  <path d="M6.5 7.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" stroke="#ffffff" stroke-width="1.3"/>
-                  <path d="M10.5 12.5v4" stroke="#ffffff" stroke-width="1.3"/>
-                  <path d="M10.5 9.5c0-1.5 1-2 2-2s2 .6 2 2v7" stroke="#ffffff" stroke-width="1.3" stroke-linecap="round"/>
-                </svg>
-              </a>
-            </div>
-            <div style="margin-top:6px"><a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" style="color:var(--muted);text-decoration:none">LinkedIn</a></div>
-          </div>
-
-          <div class="contact-item">
-            <div class="icon" style="background:linear-gradient(180deg, rgba(25,25,25,0.06), rgba(25,25,25,0.02))">
-              <a href="https://github.com/Hamza-Faarooq" target="_blank" title="GitHub">
-                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.69c-2.77.6-3.36-1.33-3.36-1.33-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.88 1.51 2.31 1.07 2.87.82.09-.64.35-1.07.63-1.32-2.21-.25-4.54-1.11-4.54-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.26.1-2.63 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.8c.85.004 1.71.115 2.51.337 1.9-1.29 2.74-1.02 2.74-1.02.55 1.37.2 2.38.1 2.63.64.7 1.03 1.6 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2z" fill="#181717"/>
-                </svg>
-              </a>
-            </div>
-            <div style="margin-top:6px"><a href="https://github.com/Hamza-Faarooq" target="_blank" style="color:var(--muted);text-decoration:none">GitHub</a></div>
-          </div>
-        </div>
-
-        <div class="contact-row">
-          <div class="contact-item">
-            <div class="icon" style="background:linear-gradient(180deg, rgba(185,43,39,0.06), rgba(185,43,39,0.02))">
-              <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" title="Quora">
-                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-                  <path d="M7 3a2 2 0 0 0-2 2v11a5 5 0 0 0 5 5h.5" stroke="#B92B27" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M14 7.5c0-1.2.7-3.5 3-3.5" stroke="#B92B27" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            </div>
-            <div style="margin-top:6px"><a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" style="color:var(--muted);text-decoration:none">Quora</a></div>
-          </div>
-
-          <div class="contact-item">
-            <div class="icon" style="background:linear-gradient(180deg, rgba(0,171,108,0.06), rgba(0,171,108,0.02))">
-              <a href="https://medium.com/@_hamza" target="_blank" title="Medium">
-                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-                  <path d="M5 7c0-1 .6-2 1.5-2h11c.9 0 1.5 1 1.5 2v10c0 1-.6 2-1.5 2h-11C5.6 19 5 18 5 17V7z" fill="#00AB6C"/>
-                  <path d="M7.5 11.5l2.5 4L14.5 9" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-              </a>
-            </div>
-            <div style="margin-top:6px"><a href="https://medium.com/@_hamza" target="_blank" style="color:var(--muted);text-decoration:none">Medium</a></div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="main">
