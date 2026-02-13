@@ -244,8 +244,9 @@
           <p class="exp-role">University of Manchester | Research Intern | Prof. Anirbit Mukherjee (Oct ’25 - Present)</p>
           <div class="exp-bullets">
             <ul>
-              <li>Researching how Deep Operator Networks (DeepONet) can be used to learn solution operators for parametric PDEs on complex geometries, with current experiments and literature review targeting performance and expressivity on spheres and torus domains.</li>
-              <li>Studying & replicating advances in size-independent generalization bounds for DeepONet architectures, focusing on the theoretical frameworks & practical implementation to enable robust operator learning for diverse scientific modeling & simulation tasks.</li>
+              <li> Engineered Deep Operator Network with 4-dim branch (CNN+AdaptiveAvgPool2d 256→4) & 14-dim trunk, trained across 16/32/64 initial conditions, achieving minimum MSE loss of 0.0055 on 819,200-point (64×64×200) Burgers PDE.
+              <li>Developed a comprehensive 4×4 grid visualizations analyzing 4 test samples at 4 time snapshots (t = 0, 0.33, 0.66, 1.0), computing L2 errors, MAE metrics and loss convergence across trunk dimensions 214–219 using 2000×1600 pixels comparative heatmaps.
+              <li>Optimized trunk processing of 20K+ chunks (size: 2048) from an 819K-point spatiotemporal dataset, enabling scalable neural operator training with <0.1% validation MSE across multiple initial condition (IC) scales for PDE applications and robustness.
             </ul>
           </div>
           <div class="exp-desc">Source: resume. :contentReference[oaicite:1]{index=1}</div>
