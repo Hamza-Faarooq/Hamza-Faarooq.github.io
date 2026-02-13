@@ -1,13 +1,11 @@
-  <!doctype html>
+<!doctype html>
 <html lang="en">
-<head>  
-  <head>   
+<head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Muhammad Hamza — ML Researcher</title>
  
-  <!-- Favicon -->
-  <link rel="icon" type="image/jpeg" href="bh.jpg">
+  <link rel="icon" type="image/png" href="pfp.png">
 
   <meta name="description" content="Muhammad Hamza — ML researcher & developer, IIT Kharagpur. Internships, projects, publications." />
 
@@ -27,16 +25,46 @@
       font-family: CalistoLocal, 'Book Antiqua', Georgia, serif;line-height:1.6;-webkit-font-smoothing:antialiased;
     }
   
+    /* --- NEW: Custom Scrollbar --- */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0b0d12; }
+    ::-webkit-scrollbar-thumb { background: #2a2d35; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    /* --- Animations --- */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* layout: two columns, aligned to top */
     .wrap{
       max-width:var(--maxw);margin:24px auto;padding:28px;display:grid;grid-template-columns:320px 1fr;gap:28px;
-      align-items:start; /* move everything to top */
+      align-items:start;
     }
 
     /* LEFT column */
-    .left{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
-    .avatar{width:210px;height:210px;border-radius:50%;overflow:hidden;border:6px solid rgba(47,179,255,0.12);box-shadow:0 18px 40px rgba(0,0,0,0.7);background:#0b0f14;display:flex;align-items:center;justify-content:center}
+    .left{
+      display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;
+      /* Animation */
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .avatar{
+      width:210px;height:210px;border-radius:50%;overflow:hidden;
+      border:6px solid rgba(47,179,255,0.12);
+      box-shadow:0 18px 40px rgba(0,0,0,0.7);
+      background:#0b0f14;
+      display:flex;align-items:center;justify-content:center;
+      /* Interaction */
+      transition: box-shadow 0.4s ease, transform 0.4s ease;
+    }
+    .avatar:hover {
+      box-shadow: 0 0 50px rgba(47,179,255,0.4);
+      transform: scale(1.02);
+    }
     .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    
     h1.name{margin:0;font-size:26px;color:var(--accent)}
     .title{margin:0;color:var(--muted);font-size:14px}
     .inst{margin-top:6px;color:var(--muted);font-weight:600;font-size:13px}
@@ -46,17 +74,47 @@
     .contact-wrap{width:100%;display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:6px}
     .contact-row{display:flex;gap:12px;justify-content:center}
     .contact-item{display:flex;flex-direction:column;align-items:center;font-size:13px;color:var(--muted)}
-    .icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.03)}
+    .icon{
+      width:48px;height:48px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,0.03);
+      transition: transform 0.2s ease;
+    }
+    .icon:hover { transform: translateY(-3px); }
     .icon svg{display:block}
     .icon a{display:block}
 
     /* RIGHT column (main) */
-    .main{padding-left:8px}
+    .main{
+      padding-left:8px;
+      /* Animation */
+      animation: fadeInUp 1s ease-out;
+    }
     .single-nav{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
-    .single-nav a{color:var(--muted);text-decoration:none;border:1px solid rgba(255,255,255,0.03);padding:9px 12px;border-radius:8px;font-weight:600}
-    .single-nav a:hover{color:var(--accent)}
+    .single-nav a{
+      color:var(--muted);text-decoration:none;
+      border:1px solid rgba(255,255,255,0.03);
+      padding:9px 12px;border-radius:8px;font-weight:600;
+      transition: all 0.2s ease;
+    }
+    .single-nav a:hover{
+      color:var(--accent);
+      background: rgba(255,255,255,0.03);
+      border-color: var(--accent);
+    }
 
-    .section{background:transparent;padding:18px;border-radius:10px;margin-bottom:18px}
+    /* Cards & Sections with Glass Effect */
+    .section{
+      background: rgba(255, 255, 255, 0.01); 
+      padding:18px;border-radius:10px;margin-bottom:18px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .section:hover {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border-color: rgba(255,255,255,0.06);
+    }
+
     h2.section-title{color:var(--text); margin:0 0 10px 0; font-size:22px}
     .lead{color:var(--muted); margin-top:6px; font-size:15px; max-width:74ch}
 
@@ -68,15 +126,50 @@
     .exp-bullets{margin-top:8px; color:#dfeefc; font-size:15px; padding-left:20px}
     .exp-bullets li{margin-bottom:8px}
 
-    /* Projects */
+    /* Projects Grid */
     .projects-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:8px}
-    .proj{background:rgba(255,255,255,0.01); padding:12px; border-radius:9px; border:1px solid rgba(255,255,255,0.03)}
+    
+    /* Project Cards with Hover & Staggered Animation */
+    .proj{
+      background:rgba(255,255,255,0.015); 
+      padding:12px; border-radius:9px; 
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      
+      /* Animation Setup */
+      opacity: 0; 
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+    /* Staggered delays */
+    .proj:nth-child(1) { animation-delay: 0.2s; }
+    .proj:nth-child(2) { animation-delay: 0.3s; }
+    .proj:nth-child(3) { animation-delay: 0.4s; }
+    .proj:nth-child(4) { animation-delay: 0.5s; }
+
+    .proj:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border-color: rgba(47, 179, 255, 0.4);
+    }
+
     .proj h3{margin:0 0 6px 0; font-size:16px; color:var(--accent)}
     .proj .meta{color:var(--muted); font-size:14px; padding-left:6px}
 
-    /* skills */
+    /* Skills */
     .skills-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .skill{background:rgba(255,255,255,0.02);padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);color:var(--muted);font-size:13px}
+    .skill{
+      background:rgba(255,255,255,0.02);padding:8px 10px;
+      border-radius:999px;border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);font-size:13px;
+      transition: all 0.2s ease; cursor: default;
+    }
+    .skill:hover {
+      background: rgba(47, 179, 255, 0.15);
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
 
     /* publications */
     .pub{padding:10px 0}
@@ -97,7 +190,6 @@
 <body>
   <div class="wrap">
 
-    <!-- LEFT column -->
     <div class="left">
       <div class="avatar" aria-hidden>
         <img src="pfp.png" alt="Muhammad Hamza photo" onerror="this.style.display='none'">
@@ -111,10 +203,8 @@
         <a href="mailto:muhammadhamza@kgpian.iitkgp.ac.in" style="color:var(--muted);text-decoration:none">muhammadhamza@kgpian.iitkgp.ac.in</a>
       </div>
 
-      <!-- contact icons: 3 on first row, 2 on second row -->
       <div class="contact-wrap" aria-hidden>
         <div class="contact-row">
-          <!-- Personal -->
           <div class="contact-item">
             <div class="icon" style="background:linear-gradient(180deg, rgba(47,179,255,0.06), rgba(110,231,183,0.02))">
               <a href="mailto:hamza.iitkgp@gmail.com" title="Personal email">
@@ -127,7 +217,6 @@
             <div style="margin-top:6px"><a href="mailto:hamza.iitkgp@gmail.com" style="color:var(--muted);text-decoration:none">Personal</a></div>
           </div>
 
-          <!-- LinkedIn -->
           <div class="contact-item">
             <div class="icon" style="background:linear-gradient(180deg, rgba(10,102,194,0.06), rgba(10,102,194,0.02))">
               <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" title="LinkedIn">
@@ -143,7 +232,6 @@
             <div style="margin-top:6px"><a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" style="color:var(--muted);text-decoration:none">LinkedIn</a></div>
           </div>
 
-          <!-- GitHub -->
           <div class="contact-item">
             <div class="icon" style="background:linear-gradient(180deg, rgba(25,25,25,0.06), rgba(25,25,25,0.02))">
               <a href="https://github.com/Hamza-Faarooq" target="_blank" title="GitHub">
@@ -157,7 +245,6 @@
         </div>
 
         <div class="contact-row">
-          <!-- Quora -->
           <div class="contact-item">
             <div class="icon" style="background:linear-gradient(180deg, rgba(185,43,39,0.06), rgba(185,43,39,0.02))">
               <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" title="Quora">
@@ -170,7 +257,6 @@
             <div style="margin-top:6px"><a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" style="color:var(--muted);text-decoration:none">Quora</a></div>
           </div>
 
-          <!-- Medium -->
           <div class="contact-item">
             <div class="icon" style="background:linear-gradient(180deg, rgba(0,171,108,0.06), rgba(0,171,108,0.02))">
               <a href="https://medium.com/@_hamza" target="_blank" title="Medium">
@@ -186,10 +272,8 @@
       </div>
     </div>
 
-    <!-- RIGHT column -->
     <div class="main">
 
-      <!-- single horizontal nav at very top of main -->
       <nav class="single-nav" aria-label="main navigation">
         <a href="#about">About</a>
         <a href="#experience">Experience</a>
@@ -198,7 +282,6 @@
         <a href="resume.pdf" target="_blank">Resume (PDF)</a>
       </nav>
 
-      <!-- ABOUT -->
       <section class="section card" id="about">
         <h2 class="section-title">About Me</h2>
         <p class="lead">
@@ -211,7 +294,6 @@
         <div style="margin-top:12px">
           <h3 style="margin:0 0 8px 0; color:var(--text)">Skills</h3>
           <div class="skills-list">
-            <!-- copied directly from resume (Domains/Frameworks/Languages combined into tags) -->
             <div class="skill">Machine Learning</div>
             <div class="skill">Deep Learning</div>
             <div class="skill">Large Language Models</div>
@@ -236,7 +318,6 @@
         </div>
       </section>
 
-      <!-- EXPERIENCE: copied verbatim from your resume (see citation) -->
       <section class="section card" id="experience">
         <h2 class="section-title">Experience</h2>
 
@@ -244,9 +325,8 @@
           <p class="exp-role">University of Manchester | Research Intern | Prof. Anirbit Mukherjee (Oct ’25 - Present)</p>
           <div class="exp-bullets">
             <ul>
-              <li> Engineered Deep Operator Network with 4-dim branch (CNN+AdaptiveAvgPool2d 256→4) & 14-dim trunk, trained across 16/32/64 initial conditions, achieving minimum MSE loss of 0.0055 on 819,200-point (64×64×200) Burgers PDE.
-              <li>Developed a comprehensive 4×4 grid visualizations analyzing 4 test samples at 4 time snapshots (t = 0, 0.33, 0.66, 1.0), computing L2 errors, MAE metrics and loss convergence across trunk dimensions 214–219 using 2000×1600 pixels comparative heatmaps.
-              <li>Optimized trunk processing of 20K+ chunks (size: 2048) from an 819K-point spatiotemporal dataset, enabling scalable neural operator training with <0.1% validation MSE across multiple initial condition (IC) scales for PDE applications and robustness.
+              <li>Researching how Deep Operator Networks (DeepONet) can be used to learn solution operators for parametric PDEs on complex geometries, with current experiments and literature review targeting performance and expressivity on spheres and torus domains.</li>
+              <li>Studying & replicating advances in size-independent generalization bounds for DeepONet architectures, focusing on the theoretical frameworks & practical implementation to enable robust operator learning for diverse scientific modeling & simulation tasks.</li>
             </ul>
           </div>
           <div class="exp-desc">Source: resume. :contentReference[oaicite:1]{index=1}</div>
@@ -280,7 +360,6 @@
 
       </section>
 
-      <!-- PROJECTS: copied verbatim from resume -->
       <section class="section card" id="projects">
         <h2 class="section-title">Projects</h2>
         <div class="projects-grid">
@@ -319,7 +398,6 @@
         <div style="margin-top:10px;color:var(--muted)">Source: resume. :contentReference[oaicite:4]{index=4}</div>
       </section>
 
-      <!-- PUBLICATIONS -->
       <section class="section card" id="publications">
         <h2 class="section-title">Publications</h2>
 
