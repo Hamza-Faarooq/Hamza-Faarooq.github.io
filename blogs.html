@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+  <title>Blogs — Muhammad Hamza</title>
+  <link rel="icon" type="image/jpg" href="bh.jpg">
+  <meta name="description" content="Read blogs on Machine Learning, Coding, Internships, and more by Muhammad Hamza." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    @font-face{ font-family: CalistoLocal; src: local('Calisto MT'), local('CalistoMT'); }
+    :root{ 
+      --bg:#12121a; 
+      --muted:#9fb0c3;
+      --accent:#2fb3ff; 
+      --text:#e6eef6;
+      --maxw:1200px; 
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{ 
+      margin:0;background:linear-gradient(180deg,#0f1116 0%,#0b0d12 100%);color:var(--text);
+      font-family: CalistoLocal, 'Book Antiqua', Georgia, serif;line-height:1.6;-webkit-font-smoothing:antialiased;
+    }
+  
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0b0d12; }
+    ::-webkit-scrollbar-thumb { background: #2a2d35; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .wrap{
+      max-width:var(--maxw);margin:24px auto;padding:28px;display:grid;grid-template-columns:320px 1fr;gap:28px;
+      align-items:start;
+    }
+
+    /* LEFT column */
+    .left{
+      display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    .avatar{
+      width:210px;height:210px;border-radius:50%;overflow:hidden;
+      border:6px solid rgba(47,179,255,0.12);
+      box-shadow:0 18px 40px rgba(0,0,0,0.7);
+      background:#0b0f14;
+      display:flex;align-items:center;justify-content:center;
+      transition: box-shadow 0.4s ease, transform 0.4s ease;
+    }
+    .avatar:hover {
+      box-shadow: 0 0 50px rgba(47,179,255,0.4);
+      transform: scale(1.02);
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    h1.name{margin:0;font-size:26px;color:var(--accent)}
+    .inst{margin-top:6px;color:var(--muted);font-weight:600;font-size:13px}
+
+    .contact-icons {
+      display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; 
+    }
+    .icon-btn {
+      width: 45px; height: 45px; border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; color: #94a3b8; font-size: 20px; transition: all 0.2s ease;
+    }
+    .icon-btn:hover {
+      background: rgba(47, 179, 255, 0.15); color: #38bdf8;
+      transform: translateY(-3px); border-color: #38bdf8;
+    }
+
+    /* RIGHT column (main) */
+    .main{
+      padding-left:8px;
+      animation: fadeInUp 1s ease-out;
+    }
+    .single-nav{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+    .single-nav a{
+      color:var(--muted);text-decoration:none;
+      border:1px solid rgba(255,255,255,0.03);
+      padding:9px 12px;border-radius:8px;font-weight:600;
+      transition: all 0.2s ease;
+    }
+    .single-nav a:hover{
+      color:var(--accent); background: rgba(255,255,255,0.03); border-color: var(--accent);
+    }
+
+    .section{
+      background: rgba(255, 255, 255, 0.01); 
+      padding:18px;border-radius:10px;margin-bottom:18px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    h2.section-title{color:var(--text); margin:0 0 10px 0; font-size:22px}
+    .lead{color:var(--muted); margin-top:6px; font-size:15px; max-width:74ch}
+
+    /* Blogs Grid */
+    .projects-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:16px}
+    
+    .proj{
+      background:rgba(255,255,255,0.015); 
+      padding:20px 16px; border-radius:9px; 
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      opacity: 0; animation: fadeInUp 0.6s ease-out forwards;
+      text-decoration: none; display: block;
+    }
+    .proj:nth-child(1) { animation-delay: 0.1s; }
+    .proj:nth-child(2) { animation-delay: 0.2s; }
+    .proj:nth-child(3) { animation-delay: 0.3s; }
+    .proj:nth-child(4) { animation-delay: 0.4s; }
+    .proj:nth-child(5) { animation-delay: 0.5s; }
+
+    .proj:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border-color: rgba(47, 179, 255, 0.4);
+    }
+
+    .proj h3{margin:0 0 8px 0; font-size:18px; color:var(--accent); display:flex; align-items:center; gap:10px;}
+    .proj .meta{color:var(--muted); font-size:14px;}
+
+    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center; grid-column:1 / -1}
+
+    @media (max-width:980px){
+      .wrap{grid-template-columns:1fr;padding:18px}
+      .projects-grid{grid-template-columns:1fr}
+      .avatar{width:170px;height:170px}
+      .single-nav{justify-content:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="left">
+      <div class="avatar-container">
+        <div class="avatar" aria-hidden>
+           <img src="pfp.png" alt="Muhammad Hamza photo" onerror="this.style.display='none'">
+        </div>
+      </div>
+
+      <h1 class="name">Muhammad Hamza</h1>
+      <div class="role">ML Researcher</div> <div class="inst">Indian Institute of Technology, Kharagpur</div>
+
+      <div class="contact-icons">
+        <a href="mailto:hamza.iitkgp@gmail.com" class="icon-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" class="icon-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/Hamza-Faarooq" target="_blank" class="icon-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://medium.com/@_hamza" target="_blank" class="icon-btn" title="Medium"><i class="fa-brands fa-medium"></i></a>
+        <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" class="icon-btn" title="Quora"><i class="fa-brands fa-quora"></i></a>
+      </div>
+    </div>
+
+    <div class="main">
+
+      <nav class="single-nav" aria-label="main navigation">
+        <a href="index.html"><i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i> Back to Home</a>
+      </nav>
+
+      <section class="section card">
+        <h2 class="section-title">My Blogs</h2>
+        <p class="lead">
+          Welcome to my blog directory. Here I share my thoughts, research findings, tutorials, and personal experiences. Choose a category below to start reading!
+        </p>
+
+        <div class="projects-grid">
+          
+          <a href="#" class="proj"> <h3><i class="fa-solid fa-robot"></i> Machine Learning</h3>
+            <div class="meta">
+              Deep dives into Theoretical ML, LLMs, Computer Vision, and my research notes.
+            </div>
+          </a>
+
+          <a href="#" class="proj"> <h3><i class="fa-solid fa-code"></i> Coding</h3>
+            <div class="meta">
+              Tutorials, algorithmic problem solving, software engineering, and best practices.
+            </div>
+          </a>
+
+          <a href="#" class="proj"> <h3><i class="fa-solid fa-briefcase"></i> Internships</h3>
+            <div class="meta">
+              Experiences, application tips, and takeaways from my research internships.
+            </div>
+          </a>
+
+          <a href="#" class="proj"> <h3><i class="fa-solid fa-baseball-bat-ball"></i> Sports</h3>
+            <div class="meta">
+              Cricket analysis, match reviews, and my writings featured on Medium.
+            </div>
+          </a>
+
+          <a href="#" class="proj"> <h3><i class="fa-solid fa-pen-nib"></i> Personal</h3>
+            <div class="meta">
+              Life at IIT Kharagpur, general thoughts, and everything else in between.
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+    </div>
+
+    <footer>
+      © <span id="year"></span> Muhammad Hamza · Hosted on GitHub Pages
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
