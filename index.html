@@ -127,6 +127,103 @@
       border-color: var(--accent);
     }
 
+
+
+/* RIGHT column (main) */
+    .main{
+      padding-left:8px;
+      /* Animation */
+      animation: fadeInUp 1s ease-out;
+    }
+    .single-nav{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+    .single-nav a{
+      color:var(--muted);text-decoration:none;
+      border:1px solid rgba(255,255,255,0.03);
+      padding:9px 12px;border-radius:8px;font-weight:600;
+      transition: all 0.2s ease;
+    }
+    .single-nav a:hover{
+      color:var(--accent);
+      background: rgba(255,255,255,0.03);
+      border-color: var(--accent);
+    }
+
+    /* --- Dropdown Menu for Blogs --- */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.03);
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-family: inherit;
+      font-size: 16px; 
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Match your existing hover effect */
+    .dropdown:hover .dropbtn {
+      color: var(--accent);
+      background: rgba(255,255,255,0.03);
+      border-color: var(--accent);
+    }
+
+    /* The hidden dropdown box */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: #0b0d12; /* Matches your dark theme */
+      min-width: 180px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
+      z-index: 100;
+      top: 100%;
+      left: 0;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    /* The links inside the dropdown */
+    .dropdown-content a {
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 12px 16px !important;
+      display: block;
+      text-align: left;
+      font-size: 14px;
+      margin-bottom: 0 !important;
+    }
+
+    .dropdown-content a:hover {
+      background: rgba(47, 179, 255, 0.1) !important;
+      color: var(--accent) !important;
+    }
+
+    /* Show dropdown on hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+      animation: fadeInUp 0.3s ease-out; /* Reuses your existing animation! */
+    }
+
+
+
+
+
+
+    
+
+    
+
     /* Cards & Sections with Glass Effect */
     .section{
       background: rgba(255, 255, 255, 0.01); 
@@ -299,13 +396,48 @@
 
     <div class="main">
 
-      <nav class="single-nav" aria-label="main navigation">
+
+
+
+<nav class="single-nav" aria-label="main navigation">
         <a href="#about">About</a>
         <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
         <a href="#publications">Publications</a>
+        
+        <div class="dropdown">
+          <button class="dropbtn">
+            Blogs <i class="fa-solid fa-angle-down" style="font-size: 12px;"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="blogs-ml.html">Machine Learning</a>
+            <a href="blogs-coding.html">Coding</a>
+            <a href="blogs-internships.html">Internships</a>
+            <a href="blogs-sports.html">Sports</a>
+            <a href="blogs-personal.html">Personal</a>
+          </div>
+        </div>
+
         <a href="resume.pdf" target="_blank">Resume (PDF)</a>
       </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <section class="section card" id="about">
         <h2 class="section-title">About Me</h2>
