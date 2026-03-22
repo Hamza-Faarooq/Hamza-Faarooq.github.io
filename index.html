@@ -217,32 +217,47 @@
     /* ─── NAVIGATION ────────────────────────────────────────── */
     .main { padding-left: 4px; }
 
-    .single-nav {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-    }
-    .single-nav a {
-      color: var(--muted);
-      text-decoration: none;
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 12px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-family: 'DM Mono', monospace;
-      transition: all 0.2s ease;
-      background: rgba(255,255,255,0.01);
-    }
-    .single-nav a:hover {
-      color: var(--accent);
-      background: rgba(91, 170, 255, 0.07);
-      border-color: var(--border-hover);
-    }
+.single-nav {
+  display: flex;
+  justify-content: space-between; /* ADD THIS */
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
 
+/* 👇 ADD THIS RIGHT HERE */
+.nav-left {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Highlight resume */
+.resume-btn {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+/* Existing styles */
+.single-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'DM Mono', monospace;
+  transition: all 0.2s ease;
+  background: rgba(255,255,255,0.01);
+}
     /* ─── SECTION CARDS ─────────────────────────────────────── */
     .section {
       background: var(--surface);
