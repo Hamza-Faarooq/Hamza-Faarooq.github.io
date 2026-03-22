@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Muhammad Hamza — ML Researcher</title>
+  <link rel="icon" type="image/jpg" href="bh.jpg">
+  <meta name="description" content="Muhammad Hamza — ML researcher & developer, IIT Kharagpur. Internships, projects, publications." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #080a0f;
+      --surface: #0d1017;
+      --surface2: #111520;
+      --border: rgba(99, 179, 255, 0.08);
+      --border-hover: rgba(99, 179, 255, 0.28);
+      --accent: #5baaff;
+      --accent2: #a78bfa;
+      --accent3: #34d399;
+      --text: #e2eaf4;
+      --muted: #6b7f96;
+      --muted2: #8fa3bc;
+      --gold: #f0c060;
+      --maxw: 1160px;
+      --radius: 14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', 'Courier New', monospace;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ─── CANVAS BG ─────────────────────────────────────────── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.45;
+    }
+
+    /* ─── NOISE OVERLAY ─────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 180px;
+      opacity: 0.6;
+    }
+
+    /* ─── SCROLLBAR ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #1e2535; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    /* ─── WRAPPER ───────────────────────────────────────────── */
+    .wrap {
+      position: relative;
+      z-index: 2;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 40px 28px 60px;
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ─── LEFT SIDEBAR ──────────────────────────────────────── */
+    .left {
+      position: sticky;
+      top: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+    }
+
+    /* Avatar ring */
+    .avatar-wrap {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin-bottom: 20px;
+    }
+    .avatar-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--accent), var(--accent2), var(--accent3), var(--accent));
+      animation: spin-ring 6s linear infinite;
+      opacity: 0.7;
+    }
+    @keyframes spin-ring {
+      to { transform: rotate(360deg); }
+    }
+    .avatar-ring-mask {
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--bg);
+    }
+    .avatar {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Name & title */
+    .name-block { margin-bottom: 16px; }
+    h1.name {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 28px;
+      color: var(--text);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+    h1.name span { color: var(--accent); }
+    .role-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(91, 170, 255, 0.08);
+      border: 1px solid rgba(91, 170, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-family: 'DM Mono', monospace;
+    }
+    .inst-line {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* Divider */
+    .sidebar-divider {
+      width: 80%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border-hover), transparent);
+      margin: 18px 0;
+    }
+
+    /* Contact icons */
+    .contact-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .icon-btn {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      color: var(--muted2);
+      font-size: 16px;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .icon-btn:hover {
+      background: rgba(91, 170, 255, 0.12);
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-4px) scale(1.08);
+      box-shadow: 0 8px 24px rgba(91, 170, 255, 0.2);
+    }
+
+    /* Resume link */
+    .resume-link {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px dashed rgba(91, 170, 255, 0.25);
+      padding: 7px 18px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+    .resume-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(91, 170, 255, 0.07);
+    }
+
+    /* ─── NAVIGATION ────────────────────────────────────────── */
+    .main { padding-left: 4px; }
+
+    .single-nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .single-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'DM Mono', monospace;
+      transition: all 0.2s ease;
+      background: rgba(255,255,255,0.01);
+    }
+    .single-nav a:hover {
+      color: var(--accent);
+      background: rgba(91, 170, 255, 0.07);
+      border-color: var(--border-hover);
+    }
+
+    /* ─── SECTION CARDS ─────────────────────────────────────── */
+    .section {
+      background: var(--surface);
+      padding: 26px 28px;
+      border-radius: var(--radius);
+      margin-bottom: 22px;
+      border: 1px solid var(--border);
+      transition: border-color 0.35s ease, box-shadow 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--accent), var(--accent2), var(--accent3));
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .section:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(91,170,255,0.05);
+    }
+    .section:hover::before { opacity: 1; }
+
+    h2.section-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 24px;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    h2.section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--border-hover), transparent);
+    }
+
+    .lead {
+      color: var(--muted2);
+      font-size: 14px;
+      max-width: 72ch;
+      line-height: 1.8;
+    }
+    .lead strong { color: var(--accent); font-weight: 500; }
+
+    /* ─── UPDATES ───────────────────────────────────────────── */
+    #updates-list { list-style: none; }
+    #updates-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.035);
+      font-size: 13px;
+      color: var(--muted2);
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    #updates-list li:last-child { border-bottom: none; }
+    .update-tag {
+      flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      background: rgba(91, 170, 255, 0.08);
+      border: 1px solid rgba(91, 170, 255, 0.15);
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    #updates-list li strong { color: var(--text); font-weight: 500; }
+    #updates-list li.hidden { display: none; }
+
+    .updates-toggle {
+      margin-top: 14px;
+      background: transparent;
+      border: 1px solid var(--border-hover);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+    .updates-toggle:hover {
+      background: rgba(91, 170, 255, 0.1);
+    }
+
+    /* ─── RESEARCH ENTRIES ──────────────────────────────────── */
+    .research-entry {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .research-entry:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .research-thumb {
+      width: 140px;
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .research-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .research-entry:hover .research-thumb img { transform: scale(1.05); }
+
+    /* Placeholder gradient if image missing */
+    .research-thumb:has(img[style*="none"]),
+    .research-thumb:empty {
+      background: linear-gradient(135deg, #0d1a2a 0%, #0a1520 100%);
+    }
+
+    .research-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 16px;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .research-meta {
+      font-size: 12px;
+      color: var(--accent);
+      font-family: 'DM Mono', monospace;
+      margin-bottom: 3px;
+    }
+    .research-date {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      margin-bottom: 10px;
+    }
+    .research-desc p {
+      font-size: 13px;
+      color: var(--muted2);
+      line-height: 1.75;
+    }
+    .research-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .research-links a {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .research-links a:hover {
+      color: var(--accent);
+      border-color: var(--border-hover);
+      background: rgba(91, 170, 255, 0.07);
+    }
+
+    /* ─── PROJECTS GRID ─────────────────────────────────────── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 6px;
+    }
+    .proj {
+      background: var(--surface2);
+      padding: 18px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.5s ease-out forwards;
+      position: relative;
+      overflow: hidden;
+    }
+    .proj::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    .proj:hover::after { transform: scaleX(1); }
+    .proj:nth-child(1) { animation-delay: 0.1s; }
+    .proj:nth-child(2) { animation-delay: 0.2s; }
+    .proj:nth-child(3) { animation-delay: 0.3s; }
+    .proj:nth-child(4) { animation-delay: 0.4s; }
+    .proj:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+      border-color: var(--border-hover);
+    }
+    .proj h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .proj .meta {
+      font-size: 12.5px;
+      color: var(--muted2);
+      line-height: 1.75;
+    }
+
+    /* ─── PUBLICATIONS ──────────────────────────────────────── */
+    .pub {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pub:last-child { border-bottom: none; padding-bottom: 0; }
+    .pub-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(240, 192, 96, 0.08);
+      border: 1px solid rgba(240, 192, 96, 0.2);
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    .pub strong { color: var(--accent); font-weight: 500; }
+    .pub-text { color: var(--muted2); font-size: 13.5px; line-height: 1.75; }
+
+    /* ─── SKILLS ────────────────────────────────────────────── */
+    .skills-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .skill {
+      background: var(--surface2);
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      transition: all 0.2s ease;
+      cursor: default;
+    }
+    .skill:hover {
+      background: rgba(91, 170, 255, 0.1);
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ─── ANIMATIONS ────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .left { animation: fadeUp 0.7s ease-out both; }
+    .main { animation: fadeUp 0.9s ease-out both; }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      grid-column: 1 / -1;
+      margin-top: 32px;
+      padding: 24px 0 8px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.5px;
+    }
+    footer span { color: var(--accent); }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .wrap { grid-template-columns: 1fr; padding: 20px 16px 48px; }
+      .left { position: static; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; text-align: left; }
+      .avatar-wrap { width: 100px; height: 100px; margin-right: 20px; margin-bottom: 0; }
+      .name-block { flex: 1; }
+      .sidebar-divider, .contact-icons, .resume-link { width: 100%; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .research-entry { grid-template-columns: 1fr; }
+      .research-thumb { width: 100%; height: 160px; }
+      .single-nav { margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background canvas for animated nodes -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="wrap">
+
+    <!-- ─── LEFT SIDEBAR ─────────────────────────────────── -->
+    <div class="left">
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-ring-mask"></div>
+        <div class="avatar">
+          <img src="pfp.png" alt="Muhammad Hamza photo" onerror="this.style.display='none'">
+        </div>
+      </div>
+
+      <div class="name-block">
+        <h1 class="name">Muhammad <span>Hamza</span></h1>
+        <div class="role-tag">ML Researcher</div>
+        <div class="inst-line">IIT Kharagpur · Chemical Engg + AI</div>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="contact-icons">
+        <a href="mailto:hamza.iitkgp@gmail.com" class="icon-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" class="icon-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/Hamza-Faarooq" target="_blank" class="icon-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://medium.com/@_hamza" target="_blank" class="icon-btn" title="Medium"><i class="fa-brands fa-medium"></i></a>
+        <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" class="icon-btn" title="Quora"><i class="fa-brands fa-quora"></i></a>
+      </div>
+
+      <a href="resume.pdf" target="_blank" class="resume-link"><i class="fa-solid fa-file-arrow-down" style="margin-right:6px"></i>Download Resume</a>
+    </div>
+
+    <!-- ─── MAIN CONTENT ──────────────────────────────────── -->
+    <div class="main">
+      <nav class="single-nav" aria-label="main navigation">
+        <a href="#about">About</a>
+        <a href="#updates">Updates</a>
+        <a href="#experience">Research</a>
+        <a href="#projects">Projects</a>
+        <a href="#publications">Publications</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="resume.pdf" target="_blank">Resume ↗</a>
+      </nav>
+
+      <!-- ABOUT -->
+      <section class="section reveal" id="about">
+        <h2 class="section-title">About Me</h2>
+        <p class="lead">
+          My name is <strong>Muhammad Hamza</strong>, a third-year undergraduate in Chemical Engineering with a specialisation in Artificial Intelligence at <strong>Indian Institute of Technology, Kharagpur</strong>. My interests span Theoretical Machine Learning and Large Language Models, with a long-term aim to work as an ML Engineer.
+        </p>
+        <p class="lead" style="margin-top: 12px;">
+          I am actively looking to collaborate on research in NLP, Language Models, and Computer Vision. Outside the lab, I write on <strong>Medium</strong> (primarily cricket and sports analytics) and have amassed <strong>850k+ views</strong> on Quora.
+        </p>
+      </section>
+
+      <!-- UPDATES -->
+      <section class="section reveal" id="updates">
+        <h2 class="section-title">Updates</h2>
+        <ul id="updates-list">
+          <li>
+            <span class="update-tag">Mar '26</span>
+            <span>Accepted for Research Intern at <strong>NUS Singapore</strong></span>
+          </li>
+          <li>
+            <span class="update-tag">Jan '26</span>
+            <span>Paper accepted at <strong>IEEE ICCECE Conference 2026</strong></span>
+          </li>
+          <li>
+            <span class="update-tag">Oct '25</span>
+            <span>Started Research Intern at <strong>University of Manchester</strong></span>
+          </li>
+          <li>
+            <span class="update-tag">Oct '25</span>
+            <span>Paper accepted at <strong>ISAI-NLP Conference 2025</strong></span>
+          </li>
+          <li class="hidden">
+            <span class="update-tag">Jun '25</span>
+            <span>Started research intern at <strong>University of Oulu, Finland</strong></span>
+          </li>
+          <li class="hidden">
+            <span class="update-tag">Jan '25</span>
+            <span>Started research intern at <strong>IIM Ranchi</strong></span>
+          </li>
+          <li class="hidden">
+            <span class="update-tag">Jul '23</span>
+            <span>Accepted into <strong>IIT Kharagpur</strong></span>
+          </li>
+        </ul>
+        <button class="updates-toggle" id="updates-toggle">See more ↓</button>
+      </section>
+
+      <!-- RESEARCH -->
+      <section class="section reveal" id="experience">
+        <h2 class="section-title">Research</h2>
+
+        <div class="research-entry">
+          <div class="research-thumb">
+            <img src="manchester_teaser.png" alt="DeepONet PDE Research" onerror="this.style.display='none'">
+          </div>
+          <div class="research-info">
+            <div class="research-title">Scalable Deep Operator Networks for Spatiotemporal PDEs</div>
+            <div class="research-meta">Research Intern · University of Manchester · Prof. Anirbit Mukherjee</div>
+            <div class="research-date">Oct 2025 – Present</div>
+            <div class="research-desc">
+              <p>Engineered a scalable Deep Operator Network (DeepONet) to solve the spatiotemporal Burgers PDE, achieving a minimum MSE loss of 0.0055. Developed comprehensive visualization pipelines and optimized data processing across 819K+ points, ensuring robust neural operator training across multiple initial conditions.</p>
+            </div>
+            <div class="research-links">
+              <a href="#"><i class="fa-brands fa-github"></i> Repo</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="research-entry">
+          <div class="research-thumb">
+            <img src="oulu_teaser.png" alt="SNN Pruning Research" onerror="this.style.display='none'">
+          </div>
+          <div class="research-info">
+            <div class="research-title">Sparsity-Aware Optimization for Spiking Neural Networks</div>
+            <div class="research-meta">Undergraduate Researcher · University of Oulu · Prof. Shuai Lee</div>
+            <div class="research-date">Mar 2025 – Jun 2025</div>
+            <div class="research-desc">
+              <p>Formulated a constrained quadratic optimization approach to prune Spiking Neural Networks (SNNs), achieving 87.5% spatial sparsity. Integrated criticality-based neuron selection and KL-divergence temporal regularization to jointly reduce spatial and temporal redundancy, benchmarking against ANN baselines.</p>
+            </div>
+            <div class="research-links">
+              <a href="#"><i class="fa-brands fa-github"></i> Repo</a>
+              <a href="#"><i class="fa-solid fa-file-pdf"></i> Paper</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="research-entry">
+          <div class="research-thumb">
+            <img src="iim_teaser.png" alt="Multimodal Research" onerror="this.style.display='none'">
+          </div>
+          <div class="research-info">
+            <div class="research-title">Multimodal Fusion for Movie Review Helpfulness Prediction</div>
+            <div class="research-meta">Undergraduate Researcher · IIM Ranchi · Prof. Sobhan Sarkar</div>
+            <div class="research-date">May 2025 – Aug 2025</div>
+            <div class="research-desc">
+              <p>Developed a scalable multimodal pipeline processing 54,000+ reviews and 30,000+ frames using BERT, ViT, and CLIP. Pioneered Dempster-Shafer evidential fusion for uncertainty-aware helpfulness prediction, outperforming attention and concatenation baselines.</p>
+            </div>
+            <div class="research-links">
+              <a href="#"><i class="fa-brands fa-github"></i> Repo</a>
+              <a href="#publications"><i class="fa-solid fa-trophy"></i> Accepted · iSAI-NLP 2025</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section class="section reveal" id="projects">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid">
+
+          <div class="proj">
+            <h3>ML-Driven Volatility Surface Modeling for High-Frequency NIFTY50 Options</h3>
+            <div class="meta">
+              Engineered a high-frequency options volatility forecasting pipeline on 578,000+ NIFTY50 records with 100+ engineered features. Achieved ultra-low MSE of 0.00009 using a batch-wise ensemble model with strike-aware feature selection — outperforming standard baselines by over 10×.
+            </div>
+          </div>
+
+          <div class="proj">
+            <h3>Handwritten Digit Recognition — Neural Network from Scratch</h3>
+            <div class="meta">
+              Achieved 91.8% test accuracy and minimum loss of 0.007 with a fully custom-built, modular feedforward neural network — zero reliance on ML frameworks. Engineered and optimized the complete training pipeline including backprop, activations, and weight initialization.
+            </div>
+          </div>
+
+          <div class="proj">
+            <h3>Competitions & Hackathons</h3>
+            <div class="meta">
+              <strong style="color:var(--text)">NK Securities Research Hackathon 2025</strong> — Global Rank 198 / 6000+; per-second IV modeling on 178K records, public MSE 0.0000198.<br><br>
+              <strong style="color:var(--text)">Convolve 3.0 · Pan IIT AI/ML Hackathon</strong> — Top 50 / 4000+ teams; explainable loan default prediction with XGBoost.
+            </div>
+          </div>
+
+          <div class="proj">
+            <h3>Other Noteworthy Projects</h3>
+            <div class="meta">
+              • <strong style="color:var(--text)">Multimodal Movie Review</strong> — BERT + ViT + CLIP + Dempster-Shafer fusion; accepted at iSAI-NLP 2025.<br><br>
+              • <strong style="color:var(--text)">Operator Learning (DeepONet)</strong> — Spatiotemporal Burgers PDE; see Research · University of Manchester.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PUBLICATIONS -->
+      <section class="section reveal" id="publications">
+        <h2 class="section-title">Publications</h2>
+        <div class="pub">
+          <span class="pub-badge">Conference</span>
+          <div class="pub-text" style="margin-top:10px">
+            <strong>Muhammad Hamza, et al. (2025).</strong> Movie Review Helpfulness Prediction using Semantic Alignment and Evidential Fusion-based Multimodal Approach. <em style="color:var(--muted)">Accepted · International Joint Symposium on Artificial Intelligence and Natural Language Processing (iSAI-NLP) 2025.</em>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /main -->
+
+    <footer>
+      © <span id="year"></span> <span>Muhammad Hamza</span> · IIT Kharagpur · Hosted on GitHub Pages
+    </footer>
+  </div>
+
+  <script>
+    /* ─── Year ──────────────────────────────────────────────── */
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ─── Smooth scroll ─────────────────────────────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+
+    /* ─── Updates toggle ────────────────────────────────────── */
+    const toggle = document.getElementById('updates-toggle');
+    let expanded = false;
+    toggle.addEventListener('click', () => {
+      expanded = !expanded;
+      document.querySelectorAll('#updates-list li.hidden').forEach(li => {
+        li.style.display = expanded ? 'flex' : 'none';
+      });
+      toggle.textContent = expanded ? 'See less ↑' : 'See more ↓';
+    });
+
+    /* ─── Scroll reveal ─────────────────────────────────────── */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ─── Background canvas: floating nodes + edges ─────────── */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, nodes;
+
+    const COLORS = ['#5baaff', '#a78bfa', '#34d399'];
+
+    function initCanvas() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      const count = Math.floor((W * H) / 18000);
+      nodes = Array.from({ length: count }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.8 + 0.5,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        opacity: Math.random() * 0.5 + 0.2,
+      }));
+    }
+
+    function drawCanvas() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw edges
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            const alpha = (1 - dist / 120) * 0.12;
+            ctx.strokeStyle = `rgba(91,170,255,${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw nodes
+      nodes.forEach(n => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        const hex = n.color;
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        ctx.fillStyle = `rgba(${r},${g},${b},${n.opacity})`;
+        ctx.fill();
+      });
+
+      // Move
+      nodes.forEach(n => {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+      });
+
+      requestAnimationFrame(drawCanvas);
+    }
+
+    initCanvas();
+    drawCanvas();
+    window.addEventListener('resize', initCanvas);
+  </script>
+</body>
+</html>
