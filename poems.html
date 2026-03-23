@@ -348,6 +348,10 @@
       margin-bottom:32px;
     }
     .pv-stanza:last-child { margin-bottom:0; }
+    /* couplet stanzas (2 lines) get a touch more air */
+    .pv-stanza:has(.pv-line:nth-child(2):last-child) {
+      margin-bottom:38px;
+    }
     .pv-line {
       font-size:16.5px;
       line-height:2;
@@ -441,7 +445,7 @@
             <div class="poem-count">
               <span class="poem-count-dot"></span>
               <!-- UPDATE THIS NUMBER when you add poems -->
-              1 Poem &nbsp;·&nbsp; Memory · Philosophy · Verse
+              2 Poems &nbsp;·&nbsp; Memory · War · Philosophy · Verse
             </div>
           </div>
         </div>
@@ -471,6 +475,23 @@
               <div class="poem-meta">
                 <span class="poem-tag tag-elegy">Philosophy</span>
                 <span class="poem-tag tag-life">Memory</span>
+              </div>
+            </div>
+          </div>
+          <div class="poem-arrow"><i class="fa-solid fa-feather-pointed"></i></div>
+        </div>
+
+        <!-- POEM 2 — The Unanswering Heavens -->
+        <div class="poem-card type-b" style="cursor:pointer" onclick="openPoem('p2')" role="button" tabindex="0" aria-label="Open poem: The Unanswering Heavens">
+          <div class="accent-bar"></div>
+          <div class="poem-body">
+            <div class="poem-num">II</div>
+            <div class="poem-content">
+              <div class="poem-title">The Unanswering Heavens</div>
+              <div class="poem-tagline">"Beneath a sky that once remembered lullabies, now fractured into ash…"</div>
+              <div class="poem-meta">
+                <span class="poem-tag tag-elegy">Elegy</span>
+                <span class="poem-tag tag-life">War &amp; Innocence</span>
               </div>
             </div>
           </div>
@@ -674,6 +695,65 @@
             '~For what is truth if stripped of all the meanings we assign?',
             'If memory be a fiction, still it plays its vital part—',
             '~A fragile myth, yet all the more enduringly divine.',
+          ],
+        ],
+      },
+
+      p2: {
+        title: 'The Unanswering Heavens',
+        theme: 'On war, childhood, and the miracle of endurance',
+        tags: [
+          { text:'Elegy',          cls:'tag-elegy' },
+          { text:'War & Innocence', cls:'tag-life'  },
+        ],
+        stanzas: [
+          [
+            'Beneath a sky that once remembered lullabies, now fractured into ash,',
+            '~Small hands still trace the ghosts of kites that never learned returning.',
+          ],
+          [
+            'The streets, once fluent in the language of bread, laughter, and morning,',
+            '~Now murmur only dust, each stone a syllable of something broken.',
+          ],
+          [
+            'Children, with eyes too ancient for the arithmetic of their years,',
+            '~Gather fragments of light as though hope were a scattered inheritance.',
+          ],
+          [
+            'They do not speak of war, for war is too small a word,',
+            '~But of absences—of doors that open only into memory\'s unlit corridors.',
+          ],
+          [
+            'A cradle rocks where no wind dares linger long enough to sing,',
+            '~And silence grows thick, like roots drinking deeply from unnamed sorrow.',
+          ],
+          [
+            'The world, vast and articulate in its grand declarations of justice,',
+            '~Falls strangely mute where innocence is bartered for invisible borders.',
+          ],
+          [
+            'What crime is written in the soft grammar of a child\'s breathing,',
+            '~That warrants the erasure of entire futures before they are imagined?',
+          ],
+          [
+            'And yet, amid the ruin, a stubborn bloom insists on unfolding,',
+            '~Petals trembling, not in fear, but in quiet defiance of forgetting.',
+          ],
+          [
+            'They were not born seeking freedom, nor chanting for its arrival,',
+            '~Only asking for mornings unbroken by the architecture of falling fire.',
+          ],
+          [
+            'But freedom, it seems, is a word imposed by distant tongues,',
+            '~While they desired merely the ordinary miracle of continuing to be.',
+          ],
+          [
+            'So history will write of nations, of power, of victories and losses,',
+            '~But not of the child who learned the weight of sky too early.',
+          ],
+          [
+            'And still, somewhere beneath the ruin, beneath the unanswering heavens,',
+            '~Life, unpermitted yet unyielding, gathers breath and begins again.',
           ],
         ],
       },
