@@ -8,7 +8,7 @@
   <meta name="description" content="Poems by Muhammad Hamza — IIT Kharagpur." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
@@ -21,6 +21,7 @@
       --mono:'DM Mono','Courier New',monospace;
       --serif:'DM Serif Display',Georgia,serif;
       --body:'Lora',Georgia,serif;
+      --archaic:'IM Fell English','Palatino Linotype',Palatino,serif;
       /* poem palette — warm rose/amber */
       --p1:#f472b6; --p2:#fb923c; --p3:#a78bfa;
       --p1-bg:rgba(244,114,182,0.07); --p1-bdr:rgba(244,114,182,0.2);
@@ -268,6 +269,108 @@
       body { background:#fff; color:#111; }
       .wrap { display:block; }
     }
+
+    /* ── POEM VIEWER OVERLAY ────────────────────────────────── */
+    #poem-overlay {
+      position:fixed; inset:0; z-index:500;
+      display:flex; align-items:center; justify-content:center;
+      padding:24px 16px;
+      opacity:0; visibility:hidden;
+      transition:opacity 0.4s ease, visibility 0.4s ease;
+    }
+    #poem-overlay.open { opacity:1; visibility:visible; }
+    #poem-overlay::before {
+      content:''; position:absolute; inset:0;
+      background:rgba(7,9,14,0.88);
+      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    }
+    html.light #poem-overlay::before { background:rgba(244,246,251,0.88); }
+
+    .poem-viewer {
+      position:relative; z-index:1;
+      max-width:680px; width:100%;
+      max-height:90vh; overflow-y:auto;
+      background:var(--surface);
+      border:1px solid var(--p1-bdr);
+      border-radius:16px;
+      padding:48px 52px;
+      box-shadow:0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(244,114,182,0.08);
+      transform:translateY(20px) scale(0.97);
+      transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    #poem-overlay.open .poem-viewer { transform:translateY(0) scale(1); }
+    html.light .poem-viewer { box-shadow:0 20px 60px rgba(0,0,0,0.12); }
+
+    /* scroll inside viewer */
+    .poem-viewer::-webkit-scrollbar { width:4px; }
+    .poem-viewer::-webkit-scrollbar-track { background:transparent; }
+    .poem-viewer::-webkit-scrollbar-thumb { background:rgba(244,114,182,0.3); border-radius:99px; }
+
+    .pv-close {
+      position:absolute; top:18px; right:18px;
+      background:transparent; border:1px solid var(--border);
+      color:var(--muted); width:34px; height:34px; border-radius:8px;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; font-size:14px;
+      transition:all 0.2s ease;
+    }
+    .pv-close:hover { color:var(--p1); border-color:var(--p1-bdr); background:var(--p1-bg); }
+
+    /* Decorative drop-cap rule */
+    .pv-rule {
+      display:flex; align-items:center; gap:14px;
+      margin-bottom:32px;
+    }
+    .pv-rule::before, .pv-rule::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(to right, transparent, rgba(244,114,182,0.25), transparent);
+    }
+    .pv-rule-feather { color:rgba(244,114,182,0.4); font-size:14px; }
+
+    /* Poem title inside viewer */
+    .pv-title {
+      font-family:var(--archaic);
+      font-size:22px; font-style:italic;
+      color:var(--text); text-align:center;
+      line-height:1.35; margin-bottom:6px;
+      letter-spacing:0.5px;
+    }
+    .pv-theme {
+      font-family:var(--mono); font-size:10px;
+      letter-spacing:2px; text-transform:uppercase;
+      color:var(--p1); text-align:center;
+      margin-bottom:36px; opacity:0.8;
+    }
+
+    /* Stanzas */
+    .pv-poem { font-family:var(--archaic); }
+    .pv-stanza {
+      margin-bottom:32px;
+    }
+    .pv-stanza:last-child { margin-bottom:0; }
+    .pv-line {
+      font-size:16.5px;
+      line-height:2;
+      color:var(--text);
+      letter-spacing:0.2px;
+      display:block;
+    }
+    html.light .pv-line { color:#1a2030; }
+    /* Indent alternate lines for a classical ballad feel */
+    .pv-line.indent { padding-left:24px; }
+
+    /* Bottom meta */
+    .pv-footer {
+      margin-top:40px; padding-top:20px;
+      border-top:1px solid rgba(244,114,182,0.12);
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:10px;
+    }
+    .pv-author {
+      font-family:var(--archaic); font-style:italic;
+      font-size:14px; color:var(--muted2);
+    }
+    .pv-tag-row { display:flex; gap:7px; flex-wrap:wrap; }
   </style>
 </head>
 <body>
@@ -338,7 +441,7 @@
             <div class="poem-count">
               <span class="poem-count-dot"></span>
               <!-- UPDATE THIS NUMBER when you add poems -->
-              Add your poem count here &nbsp;·&nbsp; Cricket · Sport · Life
+              1 Poem &nbsp;·&nbsp; Memory · Philosophy · Verse
             </div>
           </div>
         </div>
@@ -357,21 +460,22 @@
           6. Update the count in the page header above.
         -->
 
-        <!-- POEM 1 — replace href and content -->
-        <a href="#" target="_blank" rel="noopener" class="poem-card type-a">
+        <!-- POEM 1 — Memory as Distortion, Not Truth -->
+        <div class="poem-card type-a" style="cursor:pointer" onclick="openPoem('p1')" role="button" tabindex="0" aria-label="Open poem: Memory as Distortion, Not Truth">
           <div class="accent-bar"></div>
           <div class="poem-body">
             <div class="poem-num">I</div>
             <div class="poem-content">
-              <div class="poem-title">Your Poem Title Here</div>
-              <div class="poem-tagline">A one-line flavour note or opening line of the poem.</div>
+              <div class="poem-title">Memory as Distortion, Not Truth</div>
+              <div class="poem-tagline">"In chambers dim where recollection feigns its fragile art…"</div>
               <div class="poem-meta">
-                <span class="poem-tag tag-cricket">Cricket</span>
+                <span class="poem-tag tag-elegy">Philosophy</span>
+                <span class="poem-tag tag-life">Memory</span>
               </div>
             </div>
           </div>
-          <div class="poem-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </a>
+          <div class="poem-arrow"><i class="fa-solid fa-feather-pointed"></i></div>
+        </div>
 
         <!-- POEM 2 -->
         <a href="#" target="_blank" rel="noopener" class="poem-card type-c">
@@ -428,6 +532,21 @@
 
   </div>
 
+  <!-- POEM VIEWER OVERLAY -->
+  <div id="poem-overlay" role="dialog" aria-modal="true" aria-label="Poem viewer">
+    <div class="poem-viewer" id="poem-viewer-box">
+      <button class="pv-close" onclick="closePoem()" aria-label="Close poem"><i class="fa-solid fa-xmark"></i></button>
+      <div class="pv-rule"><span class="pv-rule-feather"><i class="fa-solid fa-feather-pointed"></i></span></div>
+      <div class="pv-title" id="pv-title"></div>
+      <div class="pv-theme" id="pv-theme"></div>
+      <div class="pv-poem" id="pv-poem"></div>
+      <div class="pv-footer">
+        <span class="pv-author">— Muhammad Hamza</span>
+        <div class="pv-tag-row" id="pv-tags"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
     window.addEventListener('load',()=>{ setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1000); });
 
@@ -446,14 +565,14 @@
     const dot=document.getElementById('cursor-dot'),ring=document.getElementById('cursor-ring');
     let mx=0,my=0,rx=0,ry=0;
     document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-    document.querySelectorAll('a,button').forEach(el=>{
+    document.querySelectorAll('a,button,[role=button]').forEach(el=>{
       el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
       el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
     });
     (function animC(){ rx+=(mx-rx)*0.14; ry+=(my-ry)*0.14; dot.style.left=mx+'px'; dot.style.top=my+'px'; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animC); })();
     if('ontouchstart' in window){dot.style.display='none';ring.style.display='none';}
 
-    /* BG CANVAS — soft rose/violet/amber nodes */
+    /* BG CANVAS */
     const cv=document.getElementById('bg-canvas'),cx=cv.getContext('2d');
     let W,H,nodes;
     const PAL=['#f472b6','#fb923c','#a78bfa','#2ed3a0'];
@@ -488,7 +607,123 @@
     },{threshold:0.07});
     document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
 
-    document.getElementById('year').textContent=new Date().getFullYear();
+    /* keyboard open for poem cards */
+    document.querySelectorAll('[role=button]').forEach(el=>{
+      el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
+    });
+
+    /* ── POEM DATA ───────────────────────────────────────────── */
+    /*
+      Each poem: { title, theme, tags:[{text,cls}], stanzas:[[line,...]] }
+      lines that start with "~" get the .indent class (optional classical indent).
+      Add new poems here and add a card in the HTML with onclick="openPoem('pN')".
+    */
+    const POEMS = {
+      p1: {
+        title: 'Memory as Distortion, Not Truth',
+        theme: 'On the treachery of recollection',
+        tags: [
+          { text:'Philosophy', cls:'tag-elegy' },
+          { text:'Memory',     cls:'tag-life'  },
+        ],
+        stanzas: [
+          [
+            'In chambers dim where recollection feigns its fragile art,',
+            '~There lies no truth unblemished by the hand that dares recall;',
+            'Each memory, a painter skilled in tearing fact apart,',
+            '~Rewrites the past in hues that never truly were at all.',
+          ],
+          [
+            'We summon ghosts, yet clothe them in a borrowed, softened light,',
+            '~And bid them speak the words we wish they might have once conveyed;',
+            'What once was sharp with anguish dulls beneath the mind\'s rewrite,',
+            '~While trivial joys in gilded false magnificence are arrayed.',
+          ],
+          [
+            'O treacherous archive, housed within the marrow of the mind,',
+            '~Thou curatest not truth, but solace shaped from fractured glass;',
+            'Each fragment turned and polished till its edges seem refined,',
+            '~Though still they cut the soul that dares too closely let them pass.',
+          ],
+          [
+            'A childhood lane returns not as it stood in dust and stone,',
+            '~But bathed in some invented glow of innocence and grace;',
+            'The cracks, the cries, the silent griefs are subtly overthrown,',
+            '~Replaced by gentle echoes time has chosen to erase.',
+          ],
+          [
+            'And those we loved—ah, they are never rendered as they were,',
+            '~But rise as saints or spectres, shaped by longing or regret;',
+            'We crown them now with virtues memory did not confer,',
+            '~Or curse them still for wounds our present selves cannot forget.',
+          ],
+          [
+            'Thus do we wander not through time, but through revision\'s veil,',
+            '~Each step a negotiation with what we choose to see;',
+            'The past, no fixed dominion, but a story prone to fail,',
+            '~Re-authored endlessly by what we need it yet to be.',
+          ],
+          [
+            'And should some truth, unbidden, pierce the fabric of this guise,',
+            '~It startles like a shard of ice within a tempered flame;',
+            'For we have built our inward worlds on carefully crafted lies,',
+            '~And fear the cost of calling every shadow by its name.',
+          ],
+          [
+            'So let me keep, perhaps, this gentle falsehood close at heart,',
+            '~For what is truth if stripped of all the meanings we assign?',
+            'If memory be a fiction, still it plays its vital part—',
+            '~A fragile myth, yet all the more enduringly divine.',
+          ],
+        ],
+      },
+    };
+
+    /* ── VIEWER LOGIC ────────────────────────────────────────── */
+    const overlay   = document.getElementById('poem-overlay');
+    const pvTitle   = document.getElementById('pv-title');
+    const pvTheme   = document.getElementById('pv-theme');
+    const pvPoem    = document.getElementById('pv-poem');
+    const pvTags    = document.getElementById('pv-tags');
+    const viewerBox = document.getElementById('poem-viewer-box');
+
+    function openPoem(id) {
+      const p = POEMS[id];
+      if (!p) return;
+
+      pvTitle.textContent = p.title;
+      pvTheme.textContent = p.theme;
+
+      pvTags.innerHTML = p.tags.map(t =>
+        `<span class="poem-tag ${t.cls}">${t.text}</span>`
+      ).join('');
+
+      pvPoem.innerHTML = p.stanzas.map(stanza =>
+        `<div class="pv-stanza">${
+          stanza.map(line => {
+            const indent = line.startsWith('~');
+            const text   = indent ? line.slice(1) : line;
+            return `<span class="pv-line${indent?' indent':''}">${text}</span>`;
+          }).join('')
+        }</div>`
+      ).join('');
+
+      viewerBox.scrollTop = 0;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePoem() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* close on backdrop click */
+    overlay.addEventListener('click', e => { if (e.target === overlay) closePoem(); });
+    /* close on Escape */
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePoem(); });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
