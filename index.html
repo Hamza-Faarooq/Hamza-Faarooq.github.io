@@ -322,20 +322,113 @@ html.light .r-thumb-ph{background:linear-gradient(135deg,#d8e4f8,#e4edf8);color:
 .r-link:hover{color:var(--accent);border-color:var(--border-hi);background:rgba(91,143,255,0.05);}
 
 /* ── PROJECTS GRID ── */
-.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;margin-top:4px;}
+.projects-grid{display:flex;flex-direction:column;gap:0;margin-top:4px;}
+
+/* project card — horizontal research-paper style */
 .proj{
-  background:var(--surface2);padding:17px 19px;border-radius:9px;border:1px solid var(--border);
-  opacity:0;transform:translateY(12px);animation:fadeUp 0.45s ease-out forwards;
-  position:relative;overflow:hidden;
-  transition:transform 0.28s cubic-bezier(0.34,1.2,0.64,1),box-shadow 0.28s,border-color 0.28s,background-color 0.35s;
+  background:transparent;
+  padding:18px 0;
+  border-bottom:1px solid var(--border);
+  position:relative;
+  opacity:0;transform:translateY(12px);
+  animation:fadeUp 0.45s ease-out forwards;
+  transition:background-color 0.35s;
 }
-.proj:nth-child(1){animation-delay:0.04s}.proj:nth-child(2){animation-delay:0.1s}
-.proj:nth-child(3){animation-delay:0.16s}.proj:nth-child(4){animation-delay:0.22s}
-.proj::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(to right,var(--accent),var(--accent3));transform:scaleX(0);transform-origin:left;transition:transform 0.28s ease;}
-.proj:hover::after{transform:scaleX(1);}
-.proj:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,0.18);border-color:var(--border-hi);}
-.proj h3{font-family:var(--serif);font-size:14.5px;font-weight:600;color:var(--text);margin-bottom:9px;line-height:1.38;}
-.proj .meta{font-size:12px;color:var(--muted2);line-height:1.72;}
+.proj:last-child{border-bottom:none;padding-bottom:0;}
+.proj:first-child{padding-top:0;}
+.proj:nth-child(1){animation-delay:0.04s}.proj:nth-child(2){animation-delay:0.09s}
+.proj:nth-child(3){animation-delay:0.14s}.proj:nth-child(4){animation-delay:0.19s}
+.proj:nth-child(5){animation-delay:0.24s}.proj:nth-child(6){animation-delay:0.29s}
+
+/* project header row */
+.proj-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:7px;flex-wrap:wrap;}
+.proj-title-wrap{flex:1;}
+.proj h3{
+  font-family:var(--serif);font-size:15px;font-weight:600;
+  color:var(--text);line-height:1.35;margin-bottom:5px;
+  transition:color 0.2s;
+}
+.proj:hover h3{color:var(--accent);}
+.proj-year{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:1px;padding-top:3px;flex-shrink:0;}
+
+/* tech tags */
+.proj-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
+.proj-tag{
+  font-size:9px;font-family:var(--mono);letter-spacing:0.8px;
+  padding:2px 8px;border-radius:3px;
+}
+.tag-torch  {color:#f59e0b;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.18);}
+.tag-tf     {color:#f97316;background:rgba(249,115,22,0.07);border:1px solid rgba(249,115,22,0.18);}
+.tag-green  {color:var(--accent3);background:rgba(31,185,142,0.07);border:1px solid rgba(31,185,142,0.16);}
+.tag-blue   {color:var(--accent);background:rgba(91,143,255,0.07);border:1px solid rgba(91,143,255,0.16);}
+.tag-purple {color:#a07ef5;background:rgba(160,126,245,0.07);border:1px solid rgba(160,126,245,0.16);}
+.tag-gold   {color:var(--gold);background:rgba(212,160,23,0.07);border:1px solid rgba(212,160,23,0.18);}
+
+/* short description + expandable full desc */
+.proj-short{font-size:12.5px;color:var(--muted2);line-height:1.72;margin-bottom:8px;}
+.proj-full{
+  font-size:12px;color:var(--muted2);line-height:1.75;
+  max-height:0;overflow:hidden;
+  transition:max-height 0.38s ease,opacity 0.3s ease;
+  opacity:0;
+}
+.proj-full.open{max-height:300px;opacity:1;}
+.proj-full ul{padding-left:16px;margin-top:4px;}
+.proj-full ul li{margin-bottom:5px;}
+
+/* project footer */
+.proj-footer{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;}
+.proj-gh-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted2);text-decoration:none;
+  background:var(--surface2);border:1px solid var(--border);
+  padding:4px 11px;border-radius:5px;
+  transition:all 0.18s ease;
+}
+.proj-gh-btn:hover{color:var(--accent);border-color:var(--border-hi);background:rgba(91,143,255,0.06);}
+.proj-expand-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:10px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent);padding:4px 0;transition:opacity 0.2s;
+}
+.proj-expand-btn:hover{opacity:0.65;}
+
+/* metric chips on projects */
+.proj-metrics{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+.proj-metric{
+  font-size:9px;font-family:var(--mono);
+  padding:2px 8px;border-radius:3px;
+  color:var(--accent3);background:rgba(31,185,142,0.06);border:1px solid rgba(31,185,142,0.14);
+}
+
+/* ── COMPETITIONS SUB-SECTION ── */
+.comp-title{
+  font-size:10px;font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin:24px 0 12px;
+  display:flex;align-items:center;gap:10px;
+}
+.comp-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border-hi),transparent);}
+.comp-list{display:flex;flex-direction:column;gap:10px;}
+.comp-card{
+  background:var(--surface2);border:1px solid var(--border);border-radius:9px;
+  padding:13px 16px;
+  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;
+  transition:border-color 0.22s,background 0.22s,transform 0.22s;
+  text-decoration:none;color:inherit;
+}
+.comp-card:hover{border-color:var(--border-hi);background:var(--surface3);transform:translateX(3px);}
+.comp-card.no-link{pointer-events:none;opacity:0.75;}
+.comp-name{font-family:var(--serif);font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.3;}
+.comp-desc{font-size:11.5px;color:var(--muted2);line-height:1.6;font-family:var(--mono);}
+.comp-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;}
+.comp-rank{
+  font-size:11px;font-family:var(--mono);font-weight:500;
+  color:var(--gold);background:rgba(212,160,23,0.08);
+  border:1px solid rgba(212,160,23,0.2);padding:3px 9px;border-radius:4px;
+  white-space:nowrap;
+}
+.comp-date{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:0.5px;}
 
 /* ── PUBLICATIONS (arXiv-style) ── */
 .pub-list{display:flex;flex-direction:column;gap:0;}
@@ -455,13 +548,22 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     <div class="stat-box"><div class="stat-num" data-target="900" data-suffix="k">0</div><div class="stat-label">Quora</div></div>
   </div>
 
+  <div class="divider"></div>
 
- 
+  <!-- Tech stack bars -->
+  <div class="stack-section">
+    <div class="stack-title">Research Stack</div>
+    <div class="stack-item"><span class="stack-name">PyTorch</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="92" style="width:0%"></div></div></div>
+    <div class="stack-item"><span class="stack-name">Python</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="95" style="width:0%"></div></div></div>
+    <div class="stack-item"><span class="stack-name">Transformers</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="82" style="width:0%"></div></div></div>
+    <div class="stack-item"><span class="stack-name">Scikit-learn</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="88" style="width:0%"></div></div></div>
+    <div class="stack-item"><span class="stack-name">CVXPY</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="75" style="width:0%"></div></div></div>
+  </div>
 
   <div class="divider"></div>
 
   <div class="contact-icons">
-    <a href="mailto:hamza.iitkgp@gmail.com" class="icon-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    <a href="/cdn-cgi/l/email-protection#472f262a3d26692e2e332c203707202a262e2b6924282a" class="icon-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
     <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" rel="noopener" class="icon-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
     <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="icon-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
     <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="icon-btn" title="Medium"><i class="fa-brands fa-medium"></i></a>
@@ -551,7 +653,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         <div class="r-desc" id="rd1">Engineered a scalable Deep Operator Network (DeepONet) to solve the spatiotemporal Burgers PDE, achieving a minimum MSE loss of 0.0055. Developed comprehensive visualization pipelines and optimized data processing across 819K+ points, ensuring robust neural operator training across multiple initial conditions.</div>
         <button class="r-expand" onclick="toggleRd('rd1',this)">Read more ↓</button>
         <div class="r-links">
-          <a href="https://github.com/Vision-jarvis/DeepONet-Project" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
+          <a href="#" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
         </div>
       </div>
     </div>
@@ -576,7 +678,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         <div class="r-desc" id="rd2">Formulated a constrained quadratic optimization approach to prune Spiking Neural Networks (SNNs), achieving 87.5% spatial sparsity. Integrated criticality-based neuron selection and KL-divergence temporal regularization to jointly reduce spatial and temporal redundancy, benchmarking against standard ANN baselines.</div>
         <button class="r-expand" onclick="toggleRd('rd2',this)">Read more ↓</button>
         <div class="r-links">
-          <a href="https://github.com/Hamza-Faarooq/Research-UoF" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
+          <a href="#" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
           <a href="#" class="r-link"><i class="fa-solid fa-file-pdf"></i> Paper</a>
         </div>
       </div>
@@ -603,7 +705,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         <div class="r-desc" id="rd3">Developed a scalable multimodal pipeline processing 54,000+ IMDB reviews and 30,000+ frames using BERT, ViT, and CLIP. Pioneered Dempster-Shafer evidential fusion for uncertainty-aware helpfulness prediction, outperforming attention and concatenation baselines across all five industry-standard metrics.</div>
         <button class="r-expand" onclick="toggleRd('rd3',this)">Read more ↓</button>
         <div class="r-links">
-          <a href="https://github.com/Hamza-Faarooq/IIM_Research_Intern" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
+          <a href="#" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
           <a href="#publications" class="r-link"><i class="fa-solid fa-trophy"></i> Accepted · iSAI-NLP 2025</a>
         </div>
       </div>
@@ -614,23 +716,175 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
   <section class="section reveal" id="projects">
     <h2 class="section-title"><span class="tnum">04</span>Projects</h2>
     <div class="projects-grid">
+
+      <!-- PROJECT 1: CFD Solver -->
       <div class="proj">
-        <h3>ML-Driven Volatility Surface Modeling — NIFTY50 Options</h3>
-        <p class="meta">High-frequency forecasting on 578,000+ records with 100+ engineered features across 50+ strikes &amp; maturities. Achieved ultra-low MSE of <strong>0.00009</strong> via batch-wise ensemble — outperforming baselines by over <strong>10×</strong>.</p>
+        <div class="proj-header">
+          <div class="proj-title-wrap">
+            <h3>Physics-Informed Generative CFD Solver</h3>
+          </div>
+          <span class="proj-year">2025</span>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag tag-torch">PyTorch</span>
+          <span class="proj-tag tag-green">Neural Operators</span>
+          <span class="proj-tag tag-purple">DDPM</span>
+          <span class="proj-tag tag-blue">PIKAN-FNO</span>
+        </div>
+        <div class="proj-metrics">
+          <span class="proj-metric">Navier-Stokes PDEs</span>
+          <span class="proj-metric">U-Net backbone</span>
+          <span class="proj-metric">Physics-constrained</span>
+        </div>
+        <p class="proj-short">Designed a physics-informed generative framework (PIKAN-FNO) integrating Kolmogorov Arnold Networks with Fourier Neural Operators to solve steady-state Navier-Stokes equations with high-fidelity approximations.</p>
+        <div class="proj-full" id="pf1">
+          <ul>
+            <li>Developed a Denoising Diffusion Probabilistic Model (DDPM) with a custom U-Net backbone to generate continuous fluid flow fields, enabling data-driven initialization for physics-constrained refinement.</li>
+            <li>Addressed training instability in PINNs by formulating an Ansatz for exact boundary condition enforcement and implementing dynamic loss-weighting to balance PDE residuals and constraint terms.</li>
+            <li>Validated model performance through quantitative error analysis and qualitative flow-field visualization, demonstrating consistency with governing fluid dynamics.</li>
+          </ul>
+        </div>
+        <div class="proj-footer">
+          <a href="#" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <button class="proj-expand-btn" onclick="toggleProj('pf1',this)">Read more ↓</button>
+        </div>
       </div>
+
+      <!-- PROJECT 2: Transformer Robustness -->
       <div class="proj">
-        <h3>Handwritten Digit Recognition — Neural Network from Scratch</h3>
-        <p class="meta"><strong>91.8% test accuracy</strong> and minimum loss of <strong>0.007</strong> using a fully custom-built modular feedforward neural network with zero ML-framework dependency. Complete backprop pipeline from scratch.</p>
+        <div class="proj-header">
+          <div class="proj-title-wrap">
+            <h3>Robustness &amp; Calibration Analysis of Transformer Classifiers</h3>
+          </div>
+          <span class="proj-year">2025</span>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag tag-torch">PyTorch</span>
+          <span class="proj-tag tag-blue">Transformers</span>
+          <span class="proj-tag tag-purple">DistilBERT</span>
+          <span class="proj-tag tag-gold">Calibration</span>
+        </div>
+        <div class="proj-metrics">
+          <span class="proj-metric">67k-sample SST-2</span>
+          <span class="proj-metric">38% relative ECE increase</span>
+          <span class="proj-metric">ECE 0.074→0.103</span>
+        </div>
+        <p class="proj-short">Fine-tuned DistilBERT on 67k-sample SST-2 dataset, achieving 90% validation accuracy and evaluated robustness under prompt and token-level perturbations, observing 38% relative ECE increase despite accuracy degradation.</p>
+        <div class="proj-full" id="pf2">
+          <ul>
+            <li>Performed reliability analysis using ECE (0.074 → 0.103) and reliability diagrams, revealing systematic overconfidence and confidence–accuracy misalignment of softmax outputs under simulated distribution shifts.</li>
+            <li>Benchmarked against standard baselines to isolate calibration drift from accuracy degradation under out-of-distribution prompts and adversarial token-level perturbations.</li>
+          </ul>
+        </div>
+        <div class="proj-footer">
+          <a href="#" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <button class="proj-expand-btn" onclick="toggleProj('pf2',this)">Read more ↓</button>
+        </div>
       </div>
+
+      <!-- PROJECT 3: Volatility Surface -->
       <div class="proj">
-        <h3>Competitions &amp; Hackathons</h3>
-        <p class="meta"><strong>NK Securities Hackathon 2025</strong> — Global Rank <strong>198 / 6,000+</strong>; per-second IV modeling, public MSE 0.0000198.<br><br><strong>Convolve 3.0 · Pan IIT AI/ML</strong> — Top <strong>50 / 4,000+</strong>; explainable loan default prediction with XGBoost.</p>
+        <div class="proj-header">
+          <div class="proj-title-wrap">
+            <h3>ML-Driven Volatility Surface Modeling — NIFTY50 Options</h3>
+          </div>
+          <span class="proj-year">2025</span>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag tag-torch">Python</span>
+          <span class="proj-tag tag-green">Ensemble ML</span>
+          <span class="proj-tag tag-gold">Quantitative Finance</span>
+        </div>
+        <div class="proj-metrics">
+          <span class="proj-metric">578K+ records</span>
+          <span class="proj-metric">100+ features</span>
+          <span class="proj-metric">MSE 0.00009</span>
+          <span class="proj-metric">10× baseline</span>
+        </div>
+        <p class="proj-short">High-frequency options volatility forecasting pipeline on 578,000+ NIFTY50 index records across 50+ strikes &amp; maturities. Achieved ultra-low MSE of <strong>0.00009</strong> via batch-wise ensemble with strike-aware feature selection.</p>
+        <div class="proj-full" id="pf3">
+          <ul>
+            <li>Engineered 100+ features including Greeks, moneyness, term structure, and microstructure signals for implied volatility surface modelling.</li>
+            <li>Designed a batch-wise ensemble model integrating gradient boosting and regularised regression, outperforming standard ML baselines by over 10× in accuracy.</li>
+          </ul>
+        </div>
+        <div class="proj-footer">
+          <a href="#" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <button class="proj-expand-btn" onclick="toggleProj('pf3',this)">Read more ↓</button>
+        </div>
       </div>
+
+      <!-- PROJECT 4: Handwritten Digit Recognition -->
       <div class="proj">
-        <h3>Other Noteworthy Work</h3>
-        <p class="meta">• <strong>Multimodal Movie Review</strong> — BERT + ViT + CLIP + Dempster-Shafer; accepted iSAI-NLP 2025.<br><br>• <strong>Operator Learning (DeepONet)</strong> — Spatiotemporal Burgers PDE; see Research · Manchester.</p>
+        <div class="proj-header">
+          <div class="proj-title-wrap">
+            <h3>Handwritten Digit Recognition — Neural Network from Scratch</h3>
+          </div>
+          <span class="proj-year">2025</span>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag tag-torch">Python</span>
+          <span class="proj-tag tag-green">NumPy</span>
+          <span class="proj-tag tag-blue">From Scratch</span>
+        </div>
+        <div class="proj-metrics">
+          <span class="proj-metric">91.8% test accuracy</span>
+          <span class="proj-metric">Loss 0.007</span>
+          <span class="proj-metric">Zero ML frameworks</span>
+        </div>
+        <p class="proj-short">Fully custom-built modular feedforward neural network with zero ML-framework dependency achieving <strong>91.8% test accuracy</strong>. Complete backprop pipeline including activations, weight initialisation, and optimiser — all from scratch.</p>
+        <div class="proj-full" id="pf4">
+          <ul>
+            <li>Engineered and optimised the training pipeline, consistently reducing validation loss and improving prediction accuracy across epochs.</li>
+            <li>Designed the architecture to be modular, extensible and scalable — supporting arbitrary layer depths and activation functions without code refactoring.</li>
+          </ul>
+        </div>
+        <div class="proj-footer">
+          <a href="#" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <button class="proj-expand-btn" onclick="toggleProj('pf4',this)">Read more ↓</button>
+        </div>
       </div>
-    </div>
+
+    </div><!-- /projects-grid -->
+
+    <!-- COMPETITIONS -->
+    <div class="comp-title">Competitions &amp; Hackathons</div>
+    <div class="comp-list">
+
+      <a href="#" target="_blank" rel="noopener" class="comp-card">
+        <div>
+          <div class="comp-name">Optiver Trade-athon 2026</div>
+          <div class="comp-desc">Real-time market-making, pricing strategies &amp; decision-making under dynamic simulated market conditions.</div>
+        </div>
+        <div class="comp-right">
+          <span class="comp-rank">Rank 23</span>
+          <span class="comp-date">Mar 2026</span>
+        </div>
+      </a>
+
+      <a href="#" target="_blank" rel="noopener" class="comp-card">
+        <div>
+          <div class="comp-name">NK Securities: Research Hackathon 2025</div>
+          <div class="comp-desc">Per-second implied volatility modeling for NIFTY50 options · 178K+ records · 90+ engineered features.</div>
+        </div>
+        <div class="comp-right">
+          <span class="comp-rank">Rank 197 / 6000+</span>
+          <span class="comp-date">Jun 2025</span>
+        </div>
+      </a>
+
+      <div class="comp-card no-link">
+        <div>
+          <div class="comp-name">Convolve 3.0 · Pan-IIT AI/ML Hackathon</div>
+          <div class="comp-desc">Explainable loan default prediction · XGBoost · hyperparameter optimisation · class imbalance handling.</div>
+        </div>
+        <div class="comp-right">
+          <span class="comp-rank">Top 50 / 4000+</span>
+          <span class="comp-date">Jan 2025 · IIT Guwahati</span>
+        </div>
+      </div>
+
+    </div><!-- /comp-list -->
   </section>
 
   <!-- PUBLICATIONS -->
@@ -670,7 +924,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
 <footer>
   <div class="footer-left">© <span id="year"></span> <span>Muhammad Hamza</span> · IIT Kharagpur · Built with care</div>
   <nav class="footer-right">
-    <a href="mailto:hamza.iitkgp@gmail.com" class="footer-link">Email</a>
+    <a href="/cdn-cgi/l/email-protection#c0a8a1adbaa1eea9a9b4aba7b080a7ada1a9aceea3afad" class="footer-link">Email</a>
     <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="footer-link">GitHub</a>
     <a href="resume.pdf" target="_blank" rel="noopener" class="footer-link">CV</a>
   </nav>
@@ -678,7 +932,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
 
 </div><!-- /wrap -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* LOADER */
 window.addEventListener('load',()=>{
   setTimeout(()=>{
@@ -803,6 +1057,13 @@ document.getElementById('tl-toggle').addEventListener('click',function(){
 function toggleRd(id,btn){
   const el=document.getElementById(id);
   btn.textContent=el.classList.toggle('expanded')?'Show less ↑':'Read more ↓';
+}
+
+/* PROJECT EXPAND */
+function toggleProj(id,btn){
+  const el=document.getElementById(id);
+  const open=el.classList.toggle('open');
+  btn.textContent=open?'Show less ↑':'Read more ↓';
 }
 
 /* SMOOTH SCROLL */
