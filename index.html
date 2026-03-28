@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Muhammad Hamza — ML Researcher · IIT Kharagpur</title>
   <link rel="icon" type="image/jpg" href="bh.jpg">
-  <meta name="description" content="Muhammad Hamza — ML researcher, IIT Kharagpur. Neural operators, LLMs, SNNs."/>
+  <meta name="description" content="Muhammad Hamza — ML researcher, IIT Kharagpur. Dual Degree B.Tech+M.Tech, CGPA 8.68. Neural operators, spherical PDEs, SNNs, multimodal ML."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@300;400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
@@ -413,22 +413,23 @@ html.light .r-thumb-ph{background:linear-gradient(135deg,#d8e4f8,#e4edf8);color:
 .comp-card{
   background:var(--surface2);border:1px solid var(--border);border-radius:9px;
   padding:13px 16px;
-  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;
+  display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;
   transition:border-color 0.22s,background 0.22s,transform 0.22s;
-  text-decoration:none;color:inherit;
+  text-decoration:none;color:inherit;cursor:default;
 }
-.comp-card:hover{border-color:var(--border-hi);background:var(--surface3);transform:translateX(3px);}
-.comp-card.no-link{pointer-events:none;opacity:0.75;}
+a.comp-card{cursor:pointer;}
+a.comp-card:hover{border-color:var(--border-hi);background:var(--surface3);transform:translateX(3px);}
+.comp-card.no-link{opacity:0.75;}
 .comp-name{font-family:var(--serif);font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.3;}
-.comp-desc{font-size:11.5px;color:var(--muted2);line-height:1.6;font-family:var(--mono);}
-.comp-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;}
+.comp-desc{font-size:11px;color:var(--muted2);line-height:1.6;font-family:var(--mono);}
+.comp-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;min-width:0;}
 .comp-rank{
   font-size:11px;font-family:var(--mono);font-weight:500;
   color:var(--gold);background:rgba(212,160,23,0.08);
   border:1px solid rgba(212,160,23,0.2);padding:3px 9px;border-radius:4px;
-  white-space:nowrap;
+  white-space:nowrap;text-align:right;
 }
-.comp-date{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:0.5px;}
+.comp-date{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:0.5px;white-space:nowrap;text-align:right;}
 
 /* ── PUBLICATIONS (arXiv-style) ── */
 .pub-list{display:flex;flex-direction:column;gap:0;}
@@ -453,6 +454,32 @@ html.light .r-thumb-ph{background:linear-gradient(135deg,#d8e4f8,#e4edf8);color:
 .pub-authors{font-size:11.5px;color:var(--muted2);font-family:var(--mono);line-height:1.5;}
 .pub-authors .me{color:var(--accent);font-weight:500;}
 .pub-venue-line{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:3px;font-style:italic;}
+
+
+/* ── SCHOLASTIC ACHIEVEMENTS ── */
+.achiev-list{display:flex;flex-direction:column;gap:10px;margin-top:2px;}
+.achiev-item{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:12px 16px;
+  transition:border-color 0.22s,background 0.22s;
+}
+.achiev-item:hover{border-color:var(--border-hi);background:var(--surface3);}
+.achiev-icon{
+  width:34px;height:34px;border-radius:7px;flex-shrink:0;
+  background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--gold);
+}
+.achiev-text{flex:1;}
+.achiev-title{font-family:var(--serif);font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.35;}
+.achiev-sub{font-size:11px;font-family:var(--mono);color:var(--muted2);line-height:1.5;}
+.achiev-badge{
+  flex-shrink:0;align-self:flex-start;
+  font-size:9.5px;font-family:var(--mono);letter-spacing:0.8px;text-transform:uppercase;
+  color:var(--gold);background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.18);
+  padding:3px 8px;border-radius:4px;white-space:nowrap;
+}
 
 /* ── POEMS SECTION ── */
 .poems-tease{
@@ -534,7 +561,8 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
   <div class="name-card">
     <h1 class="name">Muhammad Hamza</h1>
     <div class="affil-line">Indian Institute of Technology, Kharagpur</div>
-    <div class="affil-line" style="margin-top:2px">Chemical Engineering · AI Specialisation</div>
+    <div class="affil-line" style="margin-top:2px">Dual Degree (B.Tech + M.Tech) · AI Specialisation</div>
+    <div class="affil-line" style="margin-top:2px;color:var(--accent3)">CGPA&nbsp;8.68 / 10.00 &nbsp;·&nbsp; Graduating May 2028</div>
   </div>
 
   <div class="role-chips">
@@ -548,8 +576,18 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     <div class="stat-box"><div class="stat-num" data-target="900" data-suffix="k">0</div><div class="stat-label">Quora</div></div>
   </div>
 
+  <div class="divider"></div>
 
- 
+  <!-- Tech stack bars -->
+  <div class="stack-section">
+    <div class="stack-title">Research Stack</div>
+    <div class="stack-item"><span class="stack-name">Python</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="96" style="width:0%"></div></div></div>
+    <div class="stack-item"><span class="stack-name">PyTorch</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="92" style="width:0%"></div></div></div>
+    <div class="stack-item"><span class="stack-name">Transformers</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="84" style="width:0%"></div></div></div>
+    <div class="stack-item"><span class="stack-name">Neural Ops (FNO)</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="88" style="width:0%"></div></div></div>
+    <div class="stack-item"><span class="stack-name">TensorFlow</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="76" style="width:0%"></div></div></div>
+    <div class="stack-item"><span class="stack-name">C++ / C</span><div class="stack-bar-track"><div class="stack-bar-fill" data-w="70" style="width:0%"></div></div></div>
+  </div>
 
   <div class="divider"></div>
 
@@ -557,11 +595,12 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     <a href="/cdn-cgi/l/email-protection#472f262a3d26692e2e332c203707202a262e2b6924282a" class="icon-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
     <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" rel="noopener" class="icon-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
     <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="icon-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
+    <a href="https://hamza-faarooq.github.io" target="_blank" rel="noopener" class="icon-btn" title="Personal Website"><i class="fa-solid fa-globe"></i></a>
     <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="icon-btn" title="Medium"><i class="fa-brands fa-medium"></i></a>
     <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" rel="noopener" class="icon-btn" title="Quora"><i class="fa-brands fa-quora"></i></a>
   </div>
 
-  <a href="Research_CV_Hamza.pdf" target="_blank" rel="noopener" class="resume-btn">
+  <a href="resume.pdf" target="_blank" rel="noopener" class="resume-btn">
     <i class="fa-solid fa-file-arrow-down"></i> Curriculum Vitae
   </a>
 </aside>
@@ -575,9 +614,10 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     <a href="#experience"   class="nav-link" data-section="experience">Research</a>
     <a href="#projects"     class="nav-link" data-section="projects">Projects</a>
     <a href="#publications" class="nav-link" data-section="publications">Publications</a>
+    <a href="#achievements" class="nav-link" data-section="achievements">Awards</a>
     <a href="poems.html"    class="nav-link">Poems</a>
     <a href="blogs.html"    class="nav-link">Blogs</a>
-    <a href="Research_CV_Hamza.pdf" target="_blank" rel="noopener" class="nav-link">CV <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:8px;margin-left:2px"></i></a>
+    <a href="resume.pdf" target="_blank" rel="noopener" class="nav-link">CV <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:8px;margin-left:2px"></i></a>
   </nav>
 
   <!-- ABOUT -->
@@ -585,8 +625,8 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     <h2 class="section-title"><span class="tnum">01</span>About</h2>
     <p class="lead">
       I'm <strong>Muhammad Hamza</strong> — a third-year undergraduate at
-      <strong>Indian Institute of Technology, Kharagpur</strong>, majoring in Chemical Engineering
-      with a specialisation in <strong>Artificial Intelligence &amp; Applications</strong>.
+      <strong>Indian Institute of Technology, Kharagpur</strong>, pursuing a <strong>Dual Degree (B.Tech + M.Tech)</strong> in Chemical Engineering
+      with a specialisation in <strong>Artificial Intelligence &amp; Applications</strong> (CGPA&nbsp;8.68).
       My research interests span <span id="typed-phrase"></span><span class="typed-cursor"></span>
     </p>
     <p class="lead" style="margin-top:12px">
@@ -603,6 +643,8 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
       <span class="kw kw-purple">NLP</span>
       <span class="kw kw-gold">Theoretical ML</span>
       <span class="kw kw-gold">Operator Learning</span>
+      <span class="kw kw-blue">PINNs</span>
+      <span class="kw kw-purple">Diffusion Models</span>
     </div>
   </section>
 
@@ -611,10 +653,10 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     <h2 class="section-title"><span class="tnum">02</span>News</h2>
     <div class="timeline">
       <div class="tl-item"><div class="tl-badge">Jan '26</div><div class="tl-text">Paper accepted at <strong>IEEE ICCECE Conference 2026</strong></div></div>
-      <div class="tl-item"><div class="tl-badge">Oct '25</div><div class="tl-text">Started Research Intern at <strong>University of Manchester</strong> · Neural Operator Learning</div></div>
+      <div class="tl-item"><div class="tl-badge">May '25</div><div class="tl-text">Started Research Intern at <strong>University of Manchester</strong> · Spherical Neural Operators</div></div>
       <div class="tl-item"><div class="tl-badge">Oct '25</div><div class="tl-text">Paper accepted at <strong>iSAI-NLP Conference 2025</strong></div></div>
-      <div class="tl-item tl-hidden"><div class="tl-badge">Jun '25</div><div class="tl-text">Started Research Intern at <strong>University of Oulu, Finland</strong> · Neuromorphic Computing</div></div>
-      <div class="tl-item tl-hidden"><div class="tl-badge">Jan '25</div><div class="tl-text">Started Research Intern at <strong>IIM Ranchi</strong> · Multimodal ML</div></div>
+      <div class="tl-item tl-hidden"><div class="tl-badge">May '25</div><div class="tl-text">Started Research Intern at <strong>University of Oulu, Finland</strong> · SNN Pruning &amp; Constrained Optimisation</div></div>
+      <div class="tl-item tl-hidden"><div class="tl-badge">Apr '25</div><div class="tl-text">Started Research Intern at <strong>IIM Ranchi</strong> · Multimodal ML</div></div>
       <div class="tl-item tl-hidden"><div class="tl-badge">Jul '23</div><div class="tl-text">Accepted into <strong>IIT Kharagpur</strong></div></div>
     </div>
     <button class="tl-toggle" id="tl-toggle" aria-expanded="false">Show all ↓</button>
@@ -631,20 +673,21 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
       </div>
       <div>
         <div class="r-header">
-          <div class="r-title">Scalable Deep Operator Networks for Spatiotemporal PDEs</div>
+          <div class="r-title">Neural Operators on Spherical Domains for PDE Learning</div>
           <span class="venue-badge venue-intern">Research Intern</span>
         </div>
         <div class="r-meta">University of Manchester · Prof. Anirbit Mukherjee</div>
-        <div class="r-date">Oct 2025 – Present</div>
+        <div class="r-date">May 2025 – Present</div>
         <div class="r-metrics">
-          <span class="metric-chip">MSE 0.0055</span>
-          <span class="metric-chip">819K+ datapoints</span>
-          <span class="metric-chip">Burgers PDE</span>
+          <span class="metric-chip">S² manifolds</span>
+          <span class="metric-chip">HEALPix ~196K nodes</span>
+          <span class="metric-chip">L_max = 511</span>
+          <span class="metric-chip">40× compute reduction</span>
         </div>
-        <div class="r-desc" id="rd1">Engineered a scalable Deep Operator Network (DeepONet) to solve the spatiotemporal Burgers PDE, achieving a minimum MSE loss of 0.0055. Developed comprehensive visualization pipelines and optimized data processing across 819K+ points, ensuring robust neural operator training across multiple initial conditions.</div>
+        <div class="r-desc" id="rd1">Designed and implemented DeepONet-based neural operators on spherical domains, modeling heat PDE dynamics with L_max = 100+ harmonic modes, achieving stable spectral evolution and accurate eigenvalue decay. Engineered geometry-aware architectures combining Graph CNN (HEALPix, ~196K nodes) &amp; SIREN trunk networks, mitigating spectral bias and enabling high-frequency function reconstruction on S² manifolds. Optimized scalable training pipelines via stochastic spatial sampling (5K/196K nodes per step), reducing computational cost by ~40× while preserving convergence.</div>
         <button class="r-expand" onclick="toggleRd('rd1',this)">Read more ↓</button>
         <div class="r-links">
-          <a href="https://github.com/Vision-jarvis/DeepONet-Project" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
+          <a href="#" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
         </div>
       </div>
     </div>
@@ -669,7 +712,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         <div class="r-desc" id="rd2">Formulated a constrained quadratic optimization approach to prune Spiking Neural Networks (SNNs), achieving 87.5% spatial sparsity. Integrated criticality-based neuron selection and KL-divergence temporal regularization to jointly reduce spatial and temporal redundancy, benchmarking against standard ANN baselines.</div>
         <button class="r-expand" onclick="toggleRd('rd2',this)">Read more ↓</button>
         <div class="r-links">
-          <a href="https://github.com/Hamza-Faarooq/Research-UoF" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
+          <a href="#" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
           <a href="#" class="r-link"><i class="fa-solid fa-file-pdf"></i> Paper</a>
         </div>
       </div>
@@ -686,7 +729,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
           <span class="venue-badge venue-intl">iSAI-NLP 2025</span>
         </div>
         <div class="r-meta">IIM Ranchi · Prof. Sobhan Sarkar</div>
-        <div class="r-date">May 2025 – Aug 2025</div>
+        <div class="r-date">April 2025 – Aug 2025</div>
         <div class="r-metrics">
           <span class="metric-chip">Acc 0.875</span>
           <span class="metric-chip">AUC 0.884</span>
@@ -696,7 +739,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         <div class="r-desc" id="rd3">Developed a scalable multimodal pipeline processing 54,000+ IMDB reviews and 30,000+ frames using BERT, ViT, and CLIP. Pioneered Dempster-Shafer evidential fusion for uncertainty-aware helpfulness prediction, outperforming attention and concatenation baselines across all five industry-standard metrics.</div>
         <button class="r-expand" onclick="toggleRd('rd3',this)">Read more ↓</button>
         <div class="r-links">
-          <a href="https://github.com/Hamza-Faarooq/IIM_Research_Intern" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
+          <a href="#" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
           <a href="#publications" class="r-link"><i class="fa-solid fa-trophy"></i> Accepted · iSAI-NLP 2025</a>
         </div>
       </div>
@@ -714,7 +757,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
           <div class="proj-title-wrap">
             <h3>Physics-Informed Generative CFD Solver</h3>
           </div>
-          <span class="proj-year">2025</span>
+          <span class="proj-year">2026</span>
         </div>
         <div class="proj-tags">
           <span class="proj-tag tag-torch">PyTorch</span>
@@ -736,7 +779,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
           </ul>
         </div>
         <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/Physics-Guided-Diffusion-with-Kolmogorov-Arnold-Neural-Operators" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <a href="#" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
           <button class="proj-expand-btn" onclick="toggleProj('pf1',this)">Read more ↓</button>
         </div>
       </div>
@@ -768,7 +811,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
           </ul>
         </div>
         <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/Robustness-and-Calibration-Analysis-of-Transformer-Classifiers-" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <a href="#" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
           <button class="proj-expand-btn" onclick="toggleProj('pf2',this)">Read more ↓</button>
         </div>
       </div>
@@ -800,7 +843,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
           </ul>
         </div>
         <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/NK_Securities_Hackathon" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <a href="#" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
           <button class="proj-expand-btn" onclick="toggleProj('pf3',this)">Read more ↓</button>
         </div>
       </div>
@@ -811,7 +854,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
           <div class="proj-title-wrap">
             <h3>Handwritten Digit Recognition — Neural Network from Scratch</h3>
           </div>
-          <span class="proj-year">2025</span>
+          <span class="proj-year">2024</span>
         </div>
         <div class="proj-tags">
           <span class="proj-tag tag-torch">Python</span>
@@ -831,7 +874,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
           </ul>
         </div>
         <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/Handwritten-Mathematical-Symbols-Recognition-using-NeuralNets-from-Scratch" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <a href="#" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
           <button class="proj-expand-btn" onclick="toggleProj('pf4',this)">Read more ↓</button>
         </div>
       </div>
@@ -842,32 +885,43 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     <div class="comp-title">Competitions &amp; Hackathons</div>
     <div class="comp-list">
 
-      <a href="#" target="_blank" rel="noopener" class="comp-card">
+      <div class="comp-card">
         <div>
           <div class="comp-name">Optiver Trade-athon 2026</div>
-          <div class="comp-desc">Real-time market-making, pricing strategies &amp; decision-making under dynamic simulated market conditions.</div>
+          <div class="comp-desc">Real-time market-making &amp; pricing strategies under dynamic simulated market conditions — amongst top IIT competitors.</div>
         </div>
         <div class="comp-right">
           <span class="comp-rank">Rank 23</span>
-          <span class="comp-date">Mar 2026</span>
+          <span class="comp-date">Mar 2026 · Optiver</span>
         </div>
-      </a>
+      </div>
 
-      <a href="https://github.com/Hamza-Faarooq/NK_Securities_Hackathon" target="_blank" rel="noopener" class="comp-card">
+      <div class="comp-card">
         <div>
-          <div class="comp-name">NK Securities: Research Hackathon 2025</div>
-          <div class="comp-desc">Per-second implied volatility modeling for NIFTY50 options · 178K+ records · 90+ engineered features.</div>
+          <div class="comp-name">Convolve 4.0 — Pan-IIT AI/ML Hackathon</div>
+          <div class="comp-desc">Screening ML/AI assessment among 3,000+ students from IITs across India.</div>
         </div>
         <div class="comp-right">
-          <span class="comp-rank">Rank 197 / 6000+</span>
+          <span class="comp-rank">All India Rank 102</span>
+          <span class="comp-date">Feb 2026 · IIT Madras</span>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div>
+          <div class="comp-name">NK Securities: Research Hackathon 2025</div>
+          <div class="comp-desc">Per-second implied volatility modeling · MSE 0.000098 · 178K+ records · 90+ engineered features · 10× baseline accuracy.</div>
+        </div>
+        <div class="comp-right">
+          <span class="comp-rank">Rank 198 / 6000+</span>
           <span class="comp-date">Jun 2025</span>
         </div>
-      </a>
+      </div>
 
-      <a href="        https://github.com/Hamza-Faarooq/Optimized-XGBoost-Based-Loan-Default-Prediction" target="_blank" rel="noopener" class="comp-card">
+      <div class="comp-card">
         <div>
-          <div class="comp-name">Convolve 3.0 · Pan-IIT AI/ML Hackathon</div>
-          <div class="comp-desc">Explainable loan default prediction · XGBoost · hyperparameter optimisation · class imbalance handling.</div>
+          <div class="comp-name">Convolve 3.0 — Pan-IIT AI/ML Hackathon</div>
+          <div class="comp-desc">XGBoost loan default prediction · 0.85 precision · 0.91 F1-score · robust class-imbalance handling.</div>
         </div>
         <div class="comp-right">
           <span class="comp-rank">Top 50 / 4000+</span>
@@ -886,20 +940,47 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         <div class="pub-idx">[1]</div>
         <div class="pub-body">
           <div class="pub-badges">
-            <span class="pub-badge badge-conf">Conference</span>
+            <span class="pub-badge badge-conf">iSAI-NLP 2025</span>
+            <span class="pub-badge badge-ieee">IEEE ICEEE 2026</span>
             <span class="pub-badge badge-nlp">NLP · Vision</span>
           </div>
           <div class="pub-title">Movie Review Helpfulness Prediction using Semantic Alignment and Evidential Fusion-based Multimodal Approach</div>
           <div class="pub-authors"><span class="me">Muhammad Hamza</span>, et al.</div>
-          <div class="pub-venue-line">International Joint Symposium on Artificial Intelligence and Natural Language Processing (iSAI-NLP), 2025</div>
+          <div class="pub-venue-line">iSAI-NLP 2025 &amp; also accepted at <strong style="color:var(--accent)">ICEEE–IEEE Conference 2026</strong></div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- SCHOLASTIC ACHIEVEMENTS -->
+  <section class="section reveal" id="achievements">
+    <h2 class="section-title"><span class="tnum">06</span>Scholastic Achievements</h2>
+    <div class="achiev-list">
+
+      <div class="achiev-item">
+        <div class="achiev-icon"><i class="fa-solid fa-trophy"></i></div>
+        <div class="achiev-text">
+          <div class="achiev-title">JEE Main 2023 — Top 0.26% nationally</div>
+          <div class="achiev-sub">Ranked among the top 0.26% of <strong>1.2M+ candidates</strong> in the Joint Entrance Examination Main, 2023.</div>
+        </div>
+        <span class="achiev-badge">Top 0.26%</span>
+      </div>
+
+      <div class="achiev-item">
+        <div class="achiev-icon"><i class="fa-solid fa-medal"></i></div>
+        <div class="achiev-text">
+          <div class="achiev-title">JEE Advanced 2023 — Top 3% nationally</div>
+          <div class="achiev-sub">Ranked among the top 3% of <strong>200K+ candidates</strong> in the Joint Entrance Examination Advanced, 2023.</div>
+        </div>
+        <span class="achiev-badge">Top 3%</span>
+      </div>
+
+    </div>
+  </section>
+
   <!-- POEMS -->
   <section class="section reveal" id="poems">
-    <h2 class="section-title"><span class="tnum">06</span>Poems</h2>
+    <h2 class="section-title"><span class="tnum">07</span>Poems</h2>
     <a href="poems.html" class="poems-tease">
       <div class="poems-icon"><i class="fa-solid fa-feather-pointed"></i></div>
       <div class="poems-text">
@@ -917,7 +998,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
   <nav class="footer-right">
     <a href="/cdn-cgi/l/email-protection#c0a8a1adbaa1eea9a9b4aba7b080a7ada1a9aceea3afad" class="footer-link">Email</a>
     <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="footer-link">GitHub</a>
-    <a href="Research_CV_Hamza.pdf" target="_blank" rel="noopener" class="footer-link">CV</a>
+    <a href="resume.pdf" target="_blank" rel="noopener" class="footer-link">CV</a>
   </nav>
 </footer>
 
@@ -1005,7 +1086,7 @@ const navObs=new IntersectionObserver(es=>{
     }
   });
 },{threshold:0.3});
-['about','updates','experience','projects','publications'].forEach(id=>{const el=document.getElementById(id);if(el)navObs.observe(el);});
+['about','updates','experience','projects','publications','achievements'].forEach(id=>{const el=document.getElementById(id);if(el)navObs.observe(el);});
 
 /* TYPED TEXT */
 const phrases=['Theoretical Machine Learning.','Large Language Models.','Neural Operator Learning.','NLP & Computer Vision.','Spiking Neural Networks.'];
