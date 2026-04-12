@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Short Stories — Muhammad Hamza</title>
+  <link rel="icon" type="image/jpg" href="bh.jpg">
+  <meta name="description" content="Original short stories and fiction by Muhammad Hamza — mystery, philosophy, and the uncanny." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@300;400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ── TOKENS (mirrors index.html exactly) ─────────────────── */
+    :root{
+      --bg:#060810; --surface:#0a0d16; --surface2:#0f1320; --surface3:#141828;
+      --border:rgba(80,130,255,0.08); --border-hi:rgba(80,130,255,0.22);
+      --accent:#5b8fff; --accent2:#7c5cbf; --accent3:#1fb98e; --gold:#d4a017;
+      --text:#d8e4f8; --muted:#4e6280; --muted2:#7a90b0;
+      --radius:12px; --maxw:1160px;
+      --mono:'JetBrains Mono','Courier New',monospace;
+      --serif:'Playfair Display',Georgia,serif;
+      --body:'Source Serif 4',Georgia,serif;
+      --grid:rgba(80,130,255,0.028);
+      /* story palette — gold/amber/sepia */
+      --s1:#d4a017; --s2:#c47a2a; --s3:#9b59b6;
+      --s1-bg:rgba(212,160,23,0.07);  --s1-bdr:rgba(212,160,23,0.2);
+      --s2-bg:rgba(196,122,42,0.07);  --s2-bdr:rgba(196,122,42,0.2);
+      --s3-bg:rgba(155,89,182,0.07);  --s3-bdr:rgba(155,89,182,0.2);
+    }
+    html.light{
+      --bg:#f2f4fa; --surface:#ffffff; --surface2:#eaecf5; --surface3:#e0e4f0;
+      --border:rgba(50,90,220,0.1); --border-hi:rgba(50,90,220,0.28);
+      --accent:#2855c8; --accent2:#5a3a9a; --accent3:#0a7c5e; --gold:#a07800;
+      --text:#0d1422; --muted:#6b7fa0; --muted2:#3a5070;
+      --grid:rgba(50,90,220,0.04);
+      --s1:#9a6f00; --s1-bg:rgba(154,111,0,0.07);  --s1-bdr:rgba(154,111,0,0.2);
+      --s2:#8a4a10; --s2-bg:rgba(138,74,16,0.07);  --s2-bdr:rgba(138,74,16,0.2);
+      --s3:#6a2f9a; --s3-bg:rgba(106,47,154,0.07); --s3-bdr:rgba(106,47,154,0.2);
+    }
+    html.light body{background:var(--bg);}
+    html.light body::before{opacity:0.55;}
+    html.light #bg-canvas{opacity:0.08;}
+    html.light ::-webkit-scrollbar-track{background:#e4e8f4;}
+    html.light ::-webkit-scrollbar-thumb{background:#b8c4dc;}
+    html.light .avatar-ring-mask{background:var(--bg);}
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{
+      background:var(--bg);color:var(--text);
+      font-family:var(--body);font-size:15px;line-height:1.75;
+      -webkit-font-smoothing:antialiased;overflow-x:hidden;
+      transition:background-color 0.35s,color 0.35s;
+    }
+
+    /* coordinate-paper grid */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+      background-size:40px 40px; transition:opacity 0.35s;
+    }
+    /* noise */
+    body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");background-size:160px;}
+
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:#1a2035;border-radius:99px;}
+    ::-webkit-scrollbar-thumb:hover{background:var(--s1);}
+
+    /* LOADER */
+    #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;transition:opacity 0.6s ease,visibility 0.6s ease;}
+    #loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+    .loader-name{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--s1);letter-spacing:1px;}
+    .loader-sub{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:-8px;}
+    .loader-bar{width:160px;height:1px;background:var(--surface3);border-radius:99px;overflow:hidden;}
+    .loader-bar-fill{height:100%;background:linear-gradient(to right,var(--s1),var(--s3));animation:loaderAnim 1s cubic-bezier(0.4,0,0.2,1) forwards;}
+    @keyframes loaderAnim{from{width:0}to{width:100%}}
+
+    /* THEME TOGGLE */
+    #theme-toggle{position:fixed;top:18px;right:22px;z-index:300;width:40px;height:40px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:var(--muted2);box-shadow:0 2px 12px rgba(0,0,0,0.3);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+    #theme-toggle:hover{border-color:var(--s1-bdr);color:var(--s1);transform:scale(1.08) rotate(12deg);}
+    .t-moon{display:block;}.t-sun{display:none;}
+    html.light .t-moon{display:none;}html.light .t-sun{display:block;}
+
+    /* CURSOR */
+    #cursor-dot{position:fixed;z-index:9998;pointer-events:none;width:6px;height:6px;border-radius:50%;background:var(--s1);transform:translate(-50%,-50%);mix-blend-mode:screen;}
+    #cursor-ring{position:fixed;z-index:9997;pointer-events:none;width:28px;height:28px;border-radius:50%;border:1px solid rgba(212,160,23,0.35);transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,border-color 0.2s;}
+    #cursor-ring.hover{width:44px;height:44px;border-color:var(--s1);}
+
+    #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.25;transition:opacity 0.35s;}
+    #scroll-progress{position:fixed;top:0;left:0;z-index:200;height:1px;width:0%;background:linear-gradient(to right,var(--s1),var(--s2),var(--s3));transition:width 0.08s linear;}
+
+    /* LAYOUT */
+    .wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:44px 28px 72px;display:grid;grid-template-columns:272px 1fr;gap:40px;align-items:start;}
+
+    /* SIDEBAR */
+    .left{position:sticky;top:28px;display:flex;flex-direction:column;align-items:center;text-align:center;animation:slideIn 0.8s cubic-bezier(0.22,1,0.36,1) both;}
+    @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+
+    .avatar-wrap{position:relative;width:178px;height:178px;margin-bottom:22px;}
+    .avatar-ring-outer{position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,var(--s1) 0%,var(--s2) 35%,var(--s3) 68%,var(--s1) 100%);animation:rotateRing 8s linear infinite;opacity:0.55;}
+    @keyframes rotateRing{to{transform:rotate(360deg)}}
+    .avatar-ring-mask{position:absolute;inset:3px;border-radius:50%;background:var(--bg);transition:background 0.35s;}
+    .avatar{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:var(--surface2);display:flex;align-items:center;justify-content:center;}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+    .avatar-init{font-family:var(--serif);font-size:48px;color:rgba(212,160,23,0.18);}
+
+    .name-card{margin-bottom:16px;width:100%;}
+    h1.name{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text);line-height:1.15;}
+    .affil-line{margin-top:7px;font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:0.3px;}
+
+    .role-pill{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:9px;font-family:var(--mono);letter-spacing:1.8px;text-transform:uppercase;color:var(--s1);background:var(--s1-bg);border:1px solid var(--s1-bdr);padding:5px 14px;border-radius:99px;}
+    .role-pill::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--s2);animation:pulseDot 2s ease-in-out infinite;}
+    @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
+
+    .divider{width:80%;height:1px;background:linear-gradient(to right,transparent,rgba(212,160,23,0.18),transparent);margin:14px 0;}
+
+    .contact-icons{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:14px;}
+    .icon-btn{width:38px;height:38px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--muted2);font-size:14px;transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);}
+    .icon-btn:hover{color:var(--s1);border-color:var(--s1-bdr);transform:translateY(-3px) scale(1.08);box-shadow:0 6px 18px rgba(212,160,23,0.12);}
+    .icon-btn[title="LinkedIn"]:hover{color:#0a66c2;border-color:rgba(10,102,194,0.45);box-shadow:none;}
+    .icon-btn[title="GitHub"]:hover{color:#cdd9f5;border-color:rgba(200,215,245,0.25);box-shadow:none;}
+    html.light .icon-btn[title="GitHub"]:hover{color:#111;border-color:rgba(0,0,0,0.25);}
+    .icon-btn[title="Medium"]:hover{color:#00ab6c;border-color:rgba(0,171,108,0.4);box-shadow:none;}
+    .icon-btn[title="Quora"]:hover{color:#b92b27;border-color:rgba(185,43,39,0.4);box-shadow:none;}
+
+    .back-btn{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);letter-spacing:1.8px;text-transform:uppercase;color:var(--muted2);text-decoration:none;background:var(--surface2);border:1px solid var(--border);padding:9px 18px;border-radius:7px;transition:all 0.2s ease;width:100%;justify-content:center;}
+    .back-btn:hover{color:var(--s1);border-color:var(--s1-bdr);background:var(--s1-bg);}
+
+    /* MAIN */
+    .main{animation:fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.12s both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+    /* BREADCRUMB */
+    .top-nav{display:flex;gap:5px;align-items:center;margin-bottom:28px;flex-wrap:wrap;}
+    .nav-link{color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:6px 13px;border-radius:6px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-family:var(--mono);transition:all 0.18s ease;}
+    .nav-link:hover{color:var(--s1);background:var(--s1-bg);border-color:var(--s1-bdr);}
+    .nav-sep{color:var(--muted);font-size:11px;font-family:var(--mono);opacity:0.4;}
+
+    /* PAGE HEADER */
+    .page-header{background:var(--surface);padding:28px 30px;border-radius:var(--radius);margin-bottom:24px;border:1px solid var(--border);position:relative;overflow:hidden;transition:background-color 0.35s,border-color 0.3s;}
+    .page-header::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(to right,var(--s1),var(--s2),var(--s3));}
+    /* quill-nib decoration */
+    .page-header::after{content:'';position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;border:36px solid rgba(212,160,23,0.04);pointer-events:none;}
+    .page-header-inner{position:relative;z-index:1;display:flex;align-items:flex-start;gap:18px;}
+    .page-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;background:var(--s1-bg);border:1px solid var(--s1-bdr);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--s1);}
+    .page-header h2{font-family:var(--serif);font-size:28px;font-weight:600;font-style:italic;color:var(--text);margin-bottom:8px;line-height:1.2;}
+    .page-header p{font-size:14px;color:var(--muted2);max-width:58ch;line-height:1.8;}
+    .story-count{margin-top:14px;display:inline-flex;align-items:center;gap:8px;font-size:11px;font-family:var(--mono);letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+    .story-count-dot{width:6px;height:6px;border-radius:50%;background:var(--s1);animation:pulseDot 2s ease-in-out infinite;}
+
+    /* FILTER CHIPS */
+    .filter-row{display:flex;gap:7px;margin-bottom:22px;flex-wrap:wrap;align-items:center;}
+    .filter-label{font-size:9px;font-family:var(--mono);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-right:4px;}
+    .chip{font-size:10px;font-family:var(--mono);letter-spacing:0.8px;color:var(--muted2);background:var(--surface2);border:1px solid var(--border);padding:5px 14px;border-radius:99px;cursor:pointer;transition:all 0.18s ease;text-transform:uppercase;}
+    .chip:hover,.chip.active{color:var(--s1);border-color:var(--s1-bdr);background:var(--s1-bg);}
+    .chip.active{box-shadow:0 0 0 1px var(--s1) inset;}
+
+    /* STORY CARDS */
+    .stories-list{display:flex;flex-direction:column;gap:16px;}
+
+    .story-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      display:grid;grid-template-columns:1fr 52px;
+      position:relative;overflow:hidden;
+      opacity:0;transform:translateY(14px);
+      animation:fadeUp 0.45s ease-out forwards;
+      transition:border-color 0.3s,box-shadow 0.3s,background-color 0.35s,transform 0.28s;
+    }
+    .story-card:nth-child(1){animation-delay:0.06s}
+    .story-card:nth-child(2){animation-delay:0.12s}
+    .story-card:nth-child(3){animation-delay:0.18s}
+
+    /* genre-coded top strip */
+    .story-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;transform:scaleX(0);transform-origin:left;transition:transform 0.35s ease;}
+    .story-card:hover::before{transform:scaleX(1);}
+    .genre-mystery::before{background:linear-gradient(to right,var(--s1),var(--s2));}
+    .genre-scifi::before{background:linear-gradient(to right,var(--accent),var(--accent2));}
+    .genre-philosophy::before{background:linear-gradient(to right,var(--s3),var(--accent2));}
+
+    .story-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 16px 40px rgba(0,0,0,0.22);
+    }
+    html.light .story-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.07);}
+    .genre-mystery:hover{border-color:var(--s1-bdr);}
+    .genre-scifi:hover{border-color:rgba(91,143,255,0.3);}
+    .genre-philosophy:hover{border-color:var(--s3-bdr);}
+
+    /* card body */
+    .story-body{padding:22px 24px;display:flex;flex-direction:column;}
+
+    .story-tags{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+    .story-badge{font-size:9px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:4px;}
+    .badge-mystery   {color:var(--s1);background:var(--s1-bg);border:1px solid var(--s1-bdr);}
+    .badge-scifi     {color:var(--accent);background:rgba(91,143,255,0.07);border:1px solid rgba(91,143,255,0.18);}
+    .badge-philosophy{color:var(--s3);background:var(--s3-bg);border:1px solid var(--s3-bdr);}
+    .badge-original  {color:var(--accent3);background:rgba(31,185,142,0.07);border:1px solid rgba(31,185,142,0.18);}
+    .badge-coming    {color:var(--muted);background:var(--surface3);border:1px solid var(--border);}
+    .badge-wc        {font-size:9px;font-family:var(--mono);letter-spacing:0.5px;color:var(--muted);background:var(--surface3);border:1px solid var(--border);padding:3px 9px;border-radius:4px;}
+
+    .story-title{font-family:var(--serif);font-size:20px;font-weight:600;font-style:italic;color:var(--text);line-height:1.3;margin-bottom:7px;transition:color 0.2s;}
+    .genre-mystery:hover .story-title{color:var(--s1);}
+    .genre-scifi:hover .story-title{color:var(--accent);}
+    .genre-philosophy:hover .story-title{color:var(--s3);}
+
+    .story-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:12px;}
+    .story-meta i{margin-right:3px;}
+
+    .story-excerpt{font-size:13.5px;color:var(--muted2);line-height:1.8;flex:1;
+      display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+
+    .story-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:13px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px;}
+
+    .read-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:gap 0.2s;}
+    .genre-mystery .read-link{color:var(--s1);}
+    .genre-scifi .read-link{color:var(--accent);}
+    .genre-philosophy .read-link{color:var(--s3);}
+    .story-card:hover .read-link{gap:10px;}
+    .read-link i{font-size:9px;transition:transform 0.2s;}
+    .story-card:hover .read-link i{transform:translateX(3px);}
+
+    .read-time-badge{font-size:10px;font-family:var(--mono);color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:3px 10px;border-radius:99px;}
+
+    /* right number column */
+    .story-num{
+      display:flex;align-items:flex-start;justify-content:center;
+      padding-top:26px;
+      font-family:var(--serif);font-size:38px;font-style:italic;font-weight:600;
+      color:rgba(212,160,23,0.08);line-height:1;
+      border-left:1px solid var(--border);
+      transition:color 0.3s,border-color 0.3s;
+      user-select:none;
+    }
+    .genre-mystery:hover .story-num{color:rgba(212,160,23,0.18);border-color:var(--s1-bdr);}
+    .genre-scifi:hover .story-num{color:rgba(91,143,255,0.16);border-color:rgba(91,143,255,0.2);}
+    .genre-philosophy:hover .story-num{color:rgba(155,89,182,0.18);border-color:var(--s3-bdr);}
+
+    /* coming soon story */
+    .story-card.coming-soon{opacity:0.5;pointer-events:none;animation-delay:0.12s;}
+    .story-card.coming-soon .story-title{font-style:italic;}
+
+    /* STORY READER OVERLAY */
+    #story-overlay{
+      position:fixed;inset:0;z-index:500;
+      display:flex;align-items:flex-start;justify-content:center;
+      padding:40px 16px 40px;
+      opacity:0;visibility:hidden;
+      transition:opacity 0.4s ease,visibility 0.4s ease;
+      overflow-y:auto;
+    }
+    #story-overlay.open{opacity:1;visibility:visible;}
+    #story-overlay::before{
+      content:'';position:fixed;inset:0;
+      background:rgba(6,8,16,0.93);
+      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    }
+    html.light #story-overlay::before{background:rgba(242,244,250,0.93);}
+
+    .story-reader{
+      position:relative;z-index:1;
+      max-width:740px;width:100%;
+      background:var(--surface);
+      border:1px solid var(--s1-bdr);
+      border-radius:16px;
+      padding:56px 60px;
+      box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(212,160,23,0.06);
+      transform:translateY(16px) scale(0.98);
+      transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    #story-overlay.open .story-reader{transform:translateY(0) scale(1);}
+    html.light .story-reader{box-shadow:0 20px 60px rgba(0,0,0,0.1);}
+
+    .sr-close{position:absolute;top:20px;right:20px;background:transparent;border:1px solid var(--border);color:var(--muted);width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all 0.2s ease;}
+    .sr-close:hover{color:var(--s1);border-color:var(--s1-bdr);background:var(--s1-bg);}
+
+    /* decorative rule */
+    .sr-rule{display:flex;align-items:center;gap:14px;margin-bottom:28px;}
+    .sr-rule::before,.sr-rule::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(212,160,23,0.22),transparent);}
+    .sr-rule-icon{color:rgba(212,160,23,0.35);font-size:14px;}
+
+    .sr-genre-row{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
+    .sr-title{font-family:var(--serif);font-size:28px;font-weight:700;font-style:italic;color:var(--text);line-height:1.25;margin-bottom:10px;letter-spacing:-0.2px;}
+    .sr-meta{font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:32px;display:flex;gap:16px;flex-wrap:wrap;}
+
+    /* Story body typography — the real reading experience */
+    .sr-body{font-family:var(--body);font-size:16px;line-height:2;color:var(--muted2);}
+    html.light .sr-body{color:#2a3a50;}
+
+    .sr-body h2{
+      font-family:var(--serif);font-size:20px;font-weight:600;font-style:italic;
+      color:var(--s1);margin:40px 0 16px;
+      display:flex;align-items:center;gap:12px;
+    }
+    .sr-body h2::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--s1-bdr),transparent);}
+
+    .sr-body p{margin-bottom:20px;}
+    .sr-body p:first-child::first-letter{
+      font-family:var(--serif);font-size:58px;font-weight:700;
+      color:var(--s1);float:left;line-height:0.85;
+      margin:4px 8px -2px 0;
+      text-shadow:2px 2px 0px rgba(212,160,23,0.12);
+    }
+
+    .sr-body em{color:var(--text);font-style:italic;}
+    .sr-body strong{color:var(--text);font-weight:600;}
+
+    /* end ornament */
+    .sr-end{text-align:center;margin-top:48px;color:rgba(212,160,23,0.25);font-size:20px;letter-spacing:8px;}
+
+    .sr-footer{margin-top:36px;padding-top:20px;border-top:1px solid rgba(212,160,23,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+    .sr-author{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--muted2);}
+    .sr-scroll-top{background:transparent;border:1px solid var(--s1-bdr);color:var(--s1);padding:6px 16px;border-radius:6px;cursor:pointer;font-size:10px;font-family:var(--mono);letter-spacing:1.2px;text-transform:uppercase;transition:all 0.2s ease;}
+    .sr-scroll-top:hover{background:var(--s1-bg);}
+
+    /* FOOTER */
+    footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+    .footer-left{font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:0.5px;}
+    .footer-left span{color:var(--s1);}
+    .footer-right{display:flex;gap:14px;}
+    .footer-link{font-size:10px;font-family:var(--mono);color:var(--muted);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
+    .footer-link:hover{color:var(--s1);}
+
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:880px){
+      .wrap{grid-template-columns:1fr;padding:20px 16px 56px;}
+      .left{position:static;flex-direction:row;flex-wrap:wrap;justify-content:flex-start;text-align:left;}
+      .avatar-wrap{width:86px;height:86px;margin-right:16px;margin-bottom:0;}
+      .name-card{flex:1;min-width:170px;}
+      .divider,.contact-icons,.back-btn{width:100%;}
+      .story-card{grid-template-columns:1fr;}
+      .story-num{display:none;}
+      #theme-toggle{top:12px;right:12px;}
+      footer{flex-direction:column;align-items:flex-start;}
+      .story-reader{padding:36px 24px;}
+      .sr-body p:first-child::first-letter{font-size:44px;}
+      #story-overlay{padding:20px 8px;}
+    }
+    @media print{
+      #bg-canvas,#loader,#cursor-dot,#cursor-ring,#scroll-progress,#theme-toggle,#story-overlay,body::before{display:none!important;}
+      body{background:#fff;color:#111;}
+      .wrap{display:block;}
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader">
+    <div class="loader-name">Short Stories</div>
+    <div class="loader-sub">Fiction &amp; Prose · Muhammad Hamza</div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <button id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+    <i class="fa-solid fa-moon t-moon"></i>
+    <i class="fa-solid fa-sun t-sun"></i>
+  </button>
+
+  <div id="scroll-progress"></div>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="wrap">
+
+    <!-- SIDEBAR -->
+    <aside class="left">
+      <div class="avatar-wrap">
+        <div class="avatar-ring-outer"></div>
+        <div class="avatar-ring-mask"></div>
+        <div class="avatar">
+          <img src="pfp.png" alt="Muhammad Hamza"
+               onerror="this.style.display='none';document.getElementById('av-init').style.display='flex'">
+          <div class="avatar-init" id="av-init" style="display:none">MH</div>
+        </div>
+      </div>
+      <div class="name-card">
+        <h1 class="name">Muhammad Hamza</h1>
+        <div class="affil-line">IIT Kharagpur &nbsp;·&nbsp; ChE + AI/ML</div>
+        <div class="affil-line" style="margin-top:2px">Dual Degree · Graduating 2028</div>
+      </div>
+      <div class="role-pill">Writer &amp; Researcher</div>
+      <div class="divider"></div>
+      <div class="contact-icons">
+        <a href="mailto:hamza.iitkgp@gmail.com" class="icon-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" rel="noopener" class="icon-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="icon-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="icon-btn" title="Medium"><i class="fa-brands fa-medium"></i></a>
+        <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" rel="noopener" class="icon-btn" title="Quora"><i class="fa-brands fa-quora"></i></a>
+      </div>
+      <a href="index.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back to Portfolio
+      </a>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- Breadcrumb -->
+      <nav class="top-nav">
+        <a href="index.html" class="nav-link"><i class="fa-solid fa-house" style="margin-right:5px"></i>Home</a>
+        <span class="nav-sep">›</span>
+        <a href="#" class="nav-link" style="color:var(--s1);border-color:var(--s1-bdr);">Stories</a>
+      </nav>
+
+      <!-- Page header -->
+      <div class="page-header reveal">
+        <div class="page-header-inner">
+          <div class="page-icon"><i class="fa-solid fa-book-open"></i></div>
+          <div>
+            <h2>Short Stories</h2>
+            <p>Original fiction — mystery, speculative science, and philosophical prose. Click any story to read it here in full.</p>
+            <div class="story-count">
+              <span class="story-count-dot"></span>
+              1 Story published &nbsp;·&nbsp; Mystery · Speculative Fiction
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter chips -->
+      <div class="filter-row reveal">
+        <span class="filter-label">Genre:</span>
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="mystery">Mystery</button>
+        <button class="chip" data-filter="scifi">Speculative</button>
+        <button class="chip" data-filter="philosophy">Philosophy</button>
+      </div>
+
+      <!-- Story list -->
+      <div class="stories-list reveal" id="stories-list">
+
+        <!-- STORY 1 -->
+        <div class="story-card genre-mystery" data-tags="mystery,scifi" onclick="openStory('s1')" style="cursor:pointer;" role="button" tabindex="0" aria-label="Read: The Adventure of the Chromatic Silence">
+          <div class="story-body">
+            <div class="story-tags">
+              <span class="story-badge badge-mystery"><i class="fa-solid fa-magnifying-glass" style="margin-right:4px"></i>Mystery</span>
+              <span class="story-badge badge-scifi">Speculative</span>
+              <span class="story-badge badge-original">Original</span>
+              <span class="badge-wc">~4,200 words</span>
+            </div>
+            <div class="story-title">The Adventure of the Chromatic Silence</div>
+            <div class="story-meta">
+              <span><i class="fa-regular fa-clock"></i>18 min read</span>
+              <span><i class="fa-solid fa-pen-nib"></i>Muhammad Hamza</span>
+              <span><i class="fa-solid fa-flask"></i>Sherlock Holmes Universe</span>
+            </div>
+            <div class="story-excerpt">
+              The winter of 1894 began not with a flurry of snow, but with a stagnant, suffocating fog that seemed to seep through the very masonry of Baker Street. Sherlock Holmes had been in the grip of a corrosive melancholia for a fortnight — and into this glacial stasis walked a man who was being erased from reality itself. A Keeper of the Royal Observatory, whose wife had been vibrated out of existence, whose desk had dissolved into perfect, pristine floorboards, whose life was being edited by a scientist who believed he could silence the frequencies of human existence.
+            </div>
+            <div class="story-footer">
+              <span class="read-link">Read Story <i class="fa-solid fa-arrow-right"></i></span>
+              <span class="read-time-badge">18 min</span>
+            </div>
+          </div>
+          <div class="story-num">1</div>
+        </div>
+
+        <!-- COMING SOON PLACEHOLDER -->
+        <div class="story-card genre-philosophy coming-soon" data-tags="philosophy">
+          <div class="story-body">
+            <div class="story-tags">
+              <span class="story-badge badge-philosophy">Philosophy</span>
+              <span class="story-badge badge-original">Original</span>
+              <span class="badge-coming">Coming Soon</span>
+            </div>
+            <div class="story-title">The Man Who Refused to Exist</div>
+            <div class="story-meta">
+              <span><i class="fa-solid fa-pen-nib"></i>Muhammad Hamza</span>
+            </div>
+            <div class="story-excerpt">
+              A philosopher decides — after years of study — that consciousness is an error, existence a bureaucratic mistake, and sets about formally petitioning reality for a refund.
+            </div>
+            <div class="story-footer">
+              <span class="read-link" style="opacity:0.4;cursor:default;">In Progress</span>
+            </div>
+          </div>
+          <div class="story-num">2</div>
+        </div>
+
+      </div><!-- /stories-list -->
+
+    </main>
+
+    <footer>
+      <div class="footer-left">© <span id="year"></span> <span>Muhammad Hamza</span> · IIT Kharagpur · Built with care</div>
+      <nav class="footer-right">
+        <a href="mailto:hamza.iitkgp@gmail.com" class="footer-link">Email</a>
+        <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+        <a href="index.html" class="footer-link">Portfolio</a>
+      </nav>
+    </footer>
+
+  </div><!-- /wrap -->
+
+  <!-- STORY READER OVERLAY -->
+  <div id="story-overlay" role="dialog" aria-modal="true" aria-label="Story reader">
+    <div class="story-reader" id="story-reader-box">
+      <button class="sr-close" onclick="closeStory()" aria-label="Close story"><i class="fa-solid fa-xmark"></i></button>
+      <div class="sr-rule"><span class="sr-rule-icon"><i class="fa-solid fa-book-open"></i></span></div>
+      <div class="sr-genre-row" id="sr-genres"></div>
+      <div class="sr-title" id="sr-title"></div>
+      <div class="sr-meta" id="sr-meta"></div>
+      <div class="sr-body" id="sr-body"></div>
+      <div class="sr-end">✦ &nbsp; ✦ &nbsp; ✦</div>
+      <div class="sr-footer">
+        <span class="sr-author">— Muhammad Hamza</span>
+        <button class="sr-scroll-top" onclick="document.getElementById('story-reader-box').scrollTop=0">↑ Back to top</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* LOADER */
+    window.addEventListener('load',()=>{ setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1000); });
+
+    /* THEME */
+    const html=document.documentElement;
+    if(localStorage.getItem('theme')==='light') html.classList.add('light');
+    document.getElementById('theme-toggle').addEventListener('click',()=>{
+      html.classList.toggle('light');
+      localStorage.setItem('theme',html.classList.contains('light')?'light':'dark');
+    });
+
+    /* SCROLL PROGRESS */
+    window.addEventListener('scroll',()=>{
+      const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
+      document.getElementById('scroll-progress').style.width=(pct*100)+'%';
+    },{passive:true});
+
+    /* CURSOR */
+    const dot=document.getElementById('cursor-dot'),ring=document.getElementById('cursor-ring');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    document.querySelectorAll('a,button,[role=button]').forEach(el=>{
+      el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
+      el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
+    });
+    (function animC(){ rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13; dot.style.left=mx+'px'; dot.style.top=my+'px'; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animC); })();
+    if('ontouchstart' in window){dot.style.display='none';ring.style.display='none';}
+
+    /* BG CANVAS — warm amber/gold nodes for fiction atmosphere */
+    const cv=document.getElementById('bg-canvas'),cx=cv.getContext('2d');
+    let W,H,nodes;
+    const PAL=['#d4a017','#c47a2a','#9b59b6','#1fb98e'];
+    function initCv(){
+      W=cv.width=window.innerWidth; H=cv.height=window.innerHeight;
+      nodes=Array.from({length:Math.floor(W*H/18000)},()=>({
+        x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.4,
+        vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,
+        c:PAL[Math.floor(Math.random()*4)],o:Math.random()*.35+.1
+      }));
+    }
+    function drawCv(){
+      cx.clearRect(0,0,W,H);
+      for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
+        const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.hypot(dx,dy);
+        if(d<110){ cx.beginPath();cx.moveTo(nodes[i].x,nodes[i].y);cx.lineTo(nodes[j].x,nodes[j].y); cx.strokeStyle='rgba(212,160,23,'+(1-d/110)*.08+')';cx.lineWidth=.6;cx.stroke(); }
+      }
+      nodes.forEach(n=>{
+        cx.beginPath();cx.arc(n.x,n.y,n.r,0,Math.PI*2);
+        const r=parseInt(n.c.slice(1,3),16),g=parseInt(n.c.slice(3,5),16),b=parseInt(n.c.slice(5,7),16);
+        cx.fillStyle='rgba('+r+','+g+','+b+','+n.o+')';cx.fill();
+        n.x+=n.vx;n.y+=n.vy;
+        if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;
+      });
+      requestAnimationFrame(drawCv);
+    }
+    initCv();drawCv();
+    window.addEventListener('resize',initCv);
+
+    /* SCROLL REVEAL */
+    const revObs=new IntersectionObserver(es=>{
+      es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
+    },{threshold:0.07});
+    document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+    /* KEYBOARD OPEN */
+    document.querySelectorAll('[role=button]').forEach(el=>{
+      el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
+    });
+
+    /* FILTER CHIPS */
+    const chips=document.querySelectorAll('.chip');
+    const cards=document.querySelectorAll('#stories-list .story-card');
+    chips.forEach(chip=>{
+      chip.addEventListener('click',()=>{
+        chips.forEach(c=>c.classList.remove('active'));
+        chip.classList.add('active');
+        const filter=chip.dataset.filter;
+        cards.forEach(card=>{
+          const tags=(card.dataset.tags||'').split(',');
+          card.style.display=(filter==='all'||tags.includes(filter))?'':'none';
+        });
+      });
+    });
+
+    /* ══════════════════════════════════════════════
+       STORY DATA
+    ══════════════════════════════════════════════ */
+    const STORIES = {
+      s1: {
+        title: 'The Adventure of the Chromatic Silence',
+        genres: [
+          { text:'Mystery', cls:'badge-mystery' },
+          { text:'Speculative', cls:'badge-scifi' },
+          { text:'Original', cls:'badge-original' },
+        ],
+        meta: { words:'~4,200 words', read:'18 min read', universe:'Sherlock Holmes Universe' },
+        sections: [
+          {
+            heading: null,
+            paras: [
+              `The winter of 1894 began not with a flurry of snow, but with a stagnant, suffocating fog that seemed to seep through the very masonry of Baker Street. It was a "pea-souper" of the most malignant variety, a yellow-grey miasma that reduced the Great Metropolis to a series of disjointed islands of lamplight. Inside our quarters at 221B, the atmosphere was scarcely more breathable. Sherlock Holmes had been in the grip of a corrosive melancholia for a fortnight, a state he termed his "glacial stasis."`,
+              `He spent his hours perched like a gaunt, predatory bird upon the chemical stool, his long, thin fingers stained a vivid iodine-yellow. The mantelpiece was a chaotic landscape of discarded syringes, half-finished monographs on the polyphonic motifs of Lassus, and a particularly odious experiment involving the putrefaction of various river muds.`,
+              `"The tragedy of the modern mind, Watson," Holmes remarked, his voice a brittle rasp that broke a three-hour silence, "is not that it fails to see the truth, but that it no longer finds the truth worth seeking. We are living in an age of intellectual bankruptcy. The criminal has become a tradesman, and the detective a mere auditor of obvious sins."`,
+              `"Surely, Holmes," I ventured, looking up from a particularly grisly account of a cholera outbreak in the East End, "the human heart remains as complex as ever. The motives of greed, passion, and revenge—"`,
+              `"Are as weary as a thrice-told tale!" he snapped, his grey eyes flashing with a sudden, febrile intensity. "I do not seek motives, Watson; I seek anomalies. I seek the pebble that ripples the pond in a direction the laws of physics did not intend. But look at that street! A million souls, and not one of them possesses the imagination to commit a crime that is not a dismal repetition of a thousand others. I am bored, Watson. And boredom is the rust of the soul."`,
+              `He turned back to his test tubes, his silhouette casting a distorted, gargantuan shadow against the wallpaper. I feared for his mind in these dark intervals. When the world provided no fuel for his monumental intellect, the engine began to consume itself.`,
+              `However, the "black dog" was destined to be evicted by a most singular knock at our door. It was not the crisp rap of a gentleman or the frantic pounding of a victim, but a hesitant, scraping sound, as if something brittle were being dragged against the wood.`,
+            ]
+          },
+          {
+            heading: 'The Hollow Man',
+            paras: [
+              `Mrs. Hudson ushered in a figure that seemed to have been exhaled by the fog itself. Silas Vane was a man whose very existence appeared to be under negotiation. He was tall and skeletal, dressed in the fine, dark broadcloth of a scholar, but his attire was in a state of catastrophic disarray. His collar was unfastened, his cravat trailed like a dead serpent, and most strikingly, he wore one polished evening shoe while his other foot was encased in a mud-spattered riding boot.`,
+              `But it was his face that arrested my medical attention. It was the color of curdled milk, and his eyes—wide, pale, and swimming with a frantic terror—seemed unable to focus on any solid object. He did not sit so much as collapse into the armchair, his breath coming in ragged, whistling gasps.`,
+              `"I am... I am being edited, Mr. Holmes," he whispered, his voice a dry susurrus. "The margins of my life are shrinking. If you do not help me, there will be nothing left but a blank page."`,
+              `Holmes leaned forward, his ennui vanishing instantly, replaced by that terrifying, cold alertness that characterized his working mind. "A fascinating metaphor, Mr. Vane. But let us deal in prose before we succumb to poetry. You are the Keeper of the Archives at the Royal Observatory, I believe?"`,
+              `The man started. "How could you possibly—?"`,
+              `"The callosity on your left index finger suggests the constant turning of heavy parchment ledgers. The faint scent of ozone and lubricating oil is characteristic of the great equatorial telescopes. And the violet ink staining your cuticles is a proprietary blend used only by the Admiralty for celestial charting. Now, tell us why you believe you are being 'edited'."`,
+              `Vane shuddered, burying his face in his translucent hands. "It began three nights ago. I was in my study at Greenwich, working on the lunar occultations. I heard a sound—not a loud sound, but a vibration, a frequency that seemed to hum in the very marrow of my teeth. I looked up, and my desk was gone."`,
+              `"Stolen?" I asked.`,
+              `"No, Dr. Watson. <em>Gone.</em> The space where it had been was occupied by nothing. Not even air, it seemed. And then, the memory of the desk began to flicker. I looked at the floorboards, and they were pristine, as if no heavy furniture had ever rested there. I went to call my wife, Celeste. I reached for the door handle, and the door was merely a wall. I have been married for fifteen years, sirs. I have a thousand memories of her laughter, the scent of her lavender water... but when I looked at the mantelpiece, her portrait was a blank canvas. I checked the parish registers this morning. There is no record of our marriage. There is no record of her birth. It is as if the universe has taken an eraser to the person I love most."`,
+              `Holmes stood up, his movements fluid and electric. "And your physical condition? You look thin, Vane. Thinner than a man of your frame should be."`,
+              `"I am losing weight, but not mass," Vane sobbed. "I held a silver spoon today, and it passed through my palm as if I were a ghost. I am becoming a shadow in my own life."`,
+              `Holmes turned to me. "What do you make of it, Watson? A clinical diagnosis?"`,
+              `"Advanced neurasthenia? A dissociative fugue triggered by overwork?" I suggested, though I felt the inadequacy of the words even as I spoke them.`,
+              `"No," Holmes murmured, pacing the room. "The boots, Watson! Look at the boots. The evening shoe is dry, polished for a floor that no longer exists. The riding boot is caked in the clay of Greenwich Hill. He is existing in two divergent realities simultaneously. He is a man caught in a temporal cross-current."`,
+              `He stopped and looked at Vane with a grim, almost pitying intensity. "You are not being deleted, Mr. Vane. You are being <em>inverted</em>. Someone is playing a very dangerous game with the fundamental frequencies of matter. Pack your bag, Watson. We must go to Greenwich. And bring your service revolver. We are hunting a predator that stalks not through space, but through the very fabric of 'When'."`,
+            ]
+          },
+          {
+            heading: 'The Observatory on the Hill',
+            paras: [
+              `The train journey to Greenwich was conducted in a silence that was heavy with Holmes's unspoken deductions. He sat with his chin on his hands, his eyes fixed on the blurring landscape of chimney pots and iron bridges.`,
+              `"The world is a fragile consensus, Watson," he said as we crossed the Thames, the water below looking like liquid lead. "We believe in the solidity of the stone and the permanence of the past because our senses are too dull to perceive the vibration. But if one could find the 'keynote' of an object—the specific frequency at which its molecules resonate—one could, in theory, shatter it. Or, if one were more ambitious, one could phase it out of our perception entirely."`,
+              `"But to erase a human being from history?" I protested. "That is the province of God, not man."`,
+              `"Or a man who fancies himself a god," Holmes replied. "The Royal Observatory is the heart of Time for the entire British Empire. It is where the 'Now' is regulated. If one wished to sabotage reality, that is where one would place the lever."`,
+              `Upon our arrival at the Observatory, we were met by Dr. Aristhor, the Assistant Keeper. He was a man of singular appearance—monastic, with a high, domed forehead and eyes that seemed to be looking at something several miles behind your head.`,
+              `"Silas is unwell," Aristhor said, his voice as dry as the rustling of ancient scrolls. "He has been babbling about 'chromatic erasures' and 'ghost wives.' I fear the solitude of the Archives has unseated his reason."`,
+              `"A tragic possibility," Holmes said, his voice dripping with a false sympathy that I knew heralded a trap. "Yet, Dr. Aristhor, I find myself intrigued by the 'zenith telescope' you have recently modified. I understand you are using it to study the 'Schumann Resonance'—the electromagnetic heartbeat of the Earth?"`,
+              `Aristhor's eyes narrowed, a flicker of something dark and ancient passing through them. "You are well-informed, Mr. Holmes. I am merely seeking to harmonize our celestial observations with the terrestrial vibration. It is pure science."`,
+              `"Pure science is rarely so quiet," Holmes remarked, looking toward the great dome. "I noticed as we climbed the hill that the birds have ceased to sing within a hundred-yard radius of this building. Even the insects are silent. It is a very specific kind of silence, Aristhor. It is the silence of a vacuum."`,
+            ]
+          },
+          {
+            heading: 'The Library of Vanishing Truths',
+            paras: [
+              `As we entered the Archives, the air grew unnaturally cold. The room was a cathedral of books, but as Holmes moved through the aisles, he pointed out things that made my skin crawl.`,
+              `"Look here, Watson," he whispered. He pulled a volume from the shelf: <em>The Star Charts of 1850</em>. As he opened it, the pages were white. Not aged, not faded, but as if the ink had never touched the paper. And yet, as I ran my fingers over the sheets, I could feel the microscopic indentations where the words had once been—a ghost of a text.`,
+              `"It is a chromatic solvent," Holmes murmured. "Aristhor has developed a device that emits a focused, subsonic frequency. It doesn't destroy the ink; it vibrates the pigment molecules until they lose their affinity for the paper. They fall away as a fine, invisible dust. And he is doing the same to Silas Vane's life. He is vibrating the 'memories' of Vane's existence—the physical artifacts, the legal records, even the people associated with him—until they simply... disconnect from the present."`,
+              `"But why?" I cried.`,
+              `"Because Silas Vane discovered the error," a voice boomed from the shadows.`,
+              `Aristhor stepped out from behind a massive brass orrery, a heavy, specialized lens in his hand. His face was no longer that of a scholar; it was the face of a fanatic.`,
+              `"Vane found the discrepancy in the Greenwich Mean!" Aristhor shouted. "He realized that our time—the time we give to the world—is drifting. The Earth is slowing, the stars are shifting, and the 'Now' is a lie! I am not destroying reality, Holmes. I am <em>correcting</em> it. I am erasing the 'interference'—the redundant lives, the messy histories, the unnecessary people—to return us to a state of perfect, timeless equilibrium!"`,
+              `"By murdering a man's wife and stealing his very soul?" I yelled, my hand moving toward my holster.`,
+              `"She was an outlier!" Aristhor screamed. "A statistical noise! I phased her first to test the machine. She is still here, Dr. Watson, in the spaces between the seconds. Can't you hear her?"`,
+              `And then, I heard it. A sound so thin and piercing it felt like a needle being driven into my ear. It was a woman's scream, but it was slowed down, stretched across an eternity, a shimmering, violet sound that made the very air tremble.`,
+            ]
+          },
+          {
+            heading: 'The Breaking of the Frequency',
+            paras: [
+              `The great clock in the hall began to chime. But the rhythm was wrong. It was a stumbling, syncopated beat that seemed to pull at my very heartstrings.`,
+              `<em>One... Two... Three...</em>`,
+              `At the thirteenth stroke, the room began to dissolve. The floor beneath my feet became as translucent as ice. I saw the earth below, the dark roots of the trees, the ancient stones of the hill. Silas Vane shrieked, his body flickering like a dying candle.`,
+              `"The machine, Watson!" Holmes roared over the rising thrum. "The bellows in the sub-basement! It is focused through the zenith lens!"`,
+              `Aristhor lunged at Holmes with the strength of a madman, his fingers clawing at Holmes's throat. They crashed into a shelf of ledgers, a rain of blank paper falling over them like snow. I tried to move, but my legs felt like they were made of smoke. I was sinking into the floor.`,
+              `"The ink, Watson!" Holmes gasped, pinning Aristhor's arms. "The violet ink on the table! It is lead-based! It is the only thing with enough density to break the resonance!"`,
+              `I lunged for the heavy crystal inkwell. My hand passed through the edge of the mahogany table, but I managed to grip the cold glass. With a cry, I hurled it not at Aristhor, but directly into the aperture of the great telescope that rose through the center of the room.`,
+              `The inkwell shattered against the primary lens. The iridescent violet liquid splattered across the glass, a dark, heavy stain that instantly disrupted the focused beam of the machine.`,
+              `The effect was instantaneous and violent. A sound like the shattering of a thousand mirrors erupted through the Observatory. A wave of physical force threw me against the wall. The violet light that had filled the room imploded, turning into a blinding white flash that seemed to sear my very retinas. I blacked out.`,
+            ]
+          },
+          {
+            heading: 'The Residue of Being',
+            paras: [
+              `When I came to, the fog had lifted, and a pale, cold moon was shining through the shattered dome of the Observatory.`,
+              `Holmes was sitting on the floor, his coat torn, his face smeared with blood and ink. He was holding the hand of a woman—a pale, trembling woman in a tattered blue dress who had not been there moments before. Silas Vane lay nearby, his breathing deep and rhythmic, his body once again as solid as the stones of the hill.`,
+              `Dr. Aristhor was gone.`,
+              `"Where is he?" I whispered, struggling to my feet.`,
+              `Holmes pointed to the center of the room. There was a scorch mark on the floor, a perfect circle of charred wood. In the center lay Aristhor's spectacles. The glass was melted, but the frames were untouched.`,
+              `"He became the 'statistical noise' he so despised," Holmes said, his voice heavy with a profound exhaustion. "When the frequency broke, the feedback loop sought the nearest resonant object. Aristhor was so attuned to his machine that he was the first to be phased out. He is now part of the 'interstice,' Watson. A man composed of silence."`,
+              `The woman, Celeste Vane, began to weep—a sound of pure, beautiful, human grief. It was the most solid thing I had heard in days.`,
+            ]
+          },
+          {
+            heading: 'The Melancholy of the Victor',
+            paras: [
+              `We sat in 221B two nights later. The Vanes had been sent to a seaside cottage in Cornwall to knit their lives back together. The official report would speak of a gas explosion and a tragic case of scholarly overwork.`,
+              `Holmes was playing the violin—not the frantic, jagged pieces of his boredom, but a slow, aching melody that seemed to speak of the brevity of all things.`,
+              `"You saved them, Holmes," I said, staring into the fire. "You restored a woman to life and a man to his senses."`,
+              `"Did I, Watson?" Holmes set the violin aside and stared at the glowing embers. "I restored them to a world that is still decaying. I gave them back their memories, but memories are just shadows of things already lost. Aristhor was a monster, but he saw a truth that most are too cowardly to face."`,
+              `"And what truth is that?"`,
+              `"That we are all being deleted," Holmes said, his eyes reflecting the dying fire. "Every breath we take is an erasure of the breath before. Every second that passes is a theft. We build our houses of stone and our reputations of paper, and we imagine they are permanent. But we are all just vibrations in a dark room, Watson. Fading notes in a symphony that no one is conducting."`,
+              `"That is a bleak view, Holmes," I said softly.`,
+              `"It is the only logical one," he replied. He picked up a magnifying glass and examined a flake of ash on his sleeve. "But as long as the music plays, I suppose we must dance. Tell me, Watson, have you finished your notes on the 'Red-Headed League'? The public prefers a good heist to a metaphysical crisis. They want their villains in handcuffs, not in frequencies."`,
+              `I looked at my friend—the man who saw too much, who felt the pulse of the universe and found it wanting. He was already reaching for a new chemical bottle, his mind seeking the next puzzle to stave off the encroaching silence.`,
+              `"I shall write it up tonight, Holmes," I said.`,
+              `"Good," he murmured, his eyes already distant. "Make it exciting, Watson. Make them believe the world is solid. <em>It is the kindest lie we can tell.</em>"`,
+              `As I took up my pen, I noticed a faint stain of violet ink on my thumb. I went to rub it off, but then I stopped. I left it there—a small, dark mark of reality in a world that was, perhaps, only waiting for the next chime of the clock to vanish.`,
+            ]
+          },
+        ]
+      }
+    };
+
+    /* ══════════════════════════════════════════════
+       READER LOGIC
+    ══════════════════════════════════════════════ */
+    const overlay    = document.getElementById('story-overlay');
+    const readerBox  = document.getElementById('story-reader-box');
+    const srTitle    = document.getElementById('sr-title');
+    const srMeta     = document.getElementById('sr-meta');
+    const srGenres   = document.getElementById('sr-genres');
+    const srBody     = document.getElementById('sr-body');
+
+    function openStory(id) {
+      const s = STORIES[id];
+      if (!s) return;
+
+      srTitle.textContent = s.title;
+      srGenres.innerHTML  = s.genres.map(g=>`<span class="story-badge ${g.cls}">${g.text}</span>`).join('');
+      srMeta.innerHTML    = `<span><i class="fa-regular fa-clock"></i> ${s.meta.read}</span><span><i class="fa-solid fa-pen-nib"></i> ${s.meta.words}</span><span><i class="fa-solid fa-flask"></i> ${s.meta.universe}</span>`;
+
+      srBody.innerHTML = s.sections.map(sec => {
+        let html = '';
+        if (sec.heading) {
+          html += `<h2>${sec.heading}</h2>`;
+        }
+        html += sec.paras.map(p => `<p>${p}</p>`).join('');
+        return html;
+      }).join('');
+
+      readerBox.scrollTop = 0;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeStory() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeStory(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeStory(); });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
