@@ -464,27 +464,35 @@
           <div class="story-num">2</div>
         </div>
 
-        <!-- COMING SOON PLACEHOLDER -->
-        <div class="story-card genre-philosophy coming-soon" data-tags="philosophy">
+
+
+
+        <div class="story-card genre-mystery" data-tags="mystery,psychological" onclick="openStory('s3')" style="cursor:pointer;" role="button" tabindex="0" aria-label="Read: The Adventure of the Echoing Guest">
           <div class="story-body">
             <div class="story-tags">
-              <span class="story-badge badge-philosophy">Philosophy</span>
+              <span class="story-badge badge-mystery"><i class="fa-solid fa-magnifying-glass" style="margin-right:4px"></i>Mystery</span>
+              <span class="story-badge badge-noir">Psychological</span>
               <span class="story-badge badge-original">Original</span>
-              <span class="badge-coming">Coming Soon</span>
+              <span class="badge-wc">~4,500 words</span>
             </div>
-            <div class="story-title">The Man Who Refused to Exist</div>
+            <div class="story-title">The Adventure of the Echoing Guest</div>
             <div class="story-meta">
+              <span><i class="fa-regular fa-clock"></i>20 min read</span>
               <span><i class="fa-solid fa-pen-nib"></i>Muhammad Hamza</span>
+              <span><i class="fa-solid fa-flask"></i>Sherlock Holmes Universe</span>
             </div>
             <div class="story-excerpt">
-              A philosopher decides — after years of study — that consciousness is an error, existence a bureaucratic mistake, and sets about formally petitioning reality for a refund.
+              In the winter of 1896, London became a city of breath and shadow. Arthur Penhaligon, a man of fastidious habits and a quiet life, finds his solitary home invaded by a guest who leaves no footsteps. Books are rearranged by theme, clothes are worn by a body not his own, and steaming tea appears on a bedside table in a locked house. Sherlock Holmes must confront a "shadow-self"—a buried genius reclaiming a life suppressed by routine—in a devastating struggle where being "whole" means being mediocre, and being brilliant means being broken.
             </div>
             <div class="story-footer">
-              <span class="read-link" style="opacity:0.4;cursor:default;">In Progress</span>
+              <span class="read-link">Read Story <i class="fa-solid fa-arrow-right"></i></span>
+              <span class="read-time-badge">20 min</span>
             </div>
           </div>
           <div class="story-num">3</div>
         </div>
+
+             
 
       </div><!-- /stories-list -->
 
@@ -829,6 +837,99 @@
       }
     };
 
+
+
+
+const s3 = {
+  title: 'The Adventure of the Echoing Guest',
+  genres: [
+    { text: 'Mystery', cls: 'badge-mystery' },
+    { text: 'Psychological', cls: 'badge-noir' },
+    { text: 'Original', cls: 'badge-original' },
+  ],
+  meta: { words: '3,000+ words', read: '25 min read', universe: 'Sherlock Holmes Universe' },
+  sections: [
+    {
+      heading: null,
+      paras: [
+        "London in the winter of 1896 was not a city of stone and mortar, but a city of breath and shadow. A persistent, bone-chilling sleet had turned the streets into a dark mirror, reflecting the flickering gaslights and the desperate faces of the millions who scurried beneath the soot-stained sky. Inside 221B Baker Street, the silence was so heavy it felt tangible, broken only by the rhythmic scratching of my pen and the occasional hiss of a coal settling in the grate.",
+        "Sherlock Holmes was in one of his most unreachable humors. He had spent the morning staring at the pattern of the wallpaper, his long, pallid fingers interlaced, his eyes vacant and terrifyingly still. He had not eaten since Sunday, and the gauntness of his cheeks gave him the appearance of a medieval ascetic waiting for a vision that refused to come.",
+        "\"The terrifying thing about the human mind, Watson,\" he said, his voice a low, melodic thrum that seemed to emerge from the walls themselves, \"is its desperate need for causality. We see a shadow and we invent a ghost. We see a bloodstain and we invent a monster. But the true horror lies in the vacuum—the crime that has no motive, the presence that leaves no trace, the life that is lived in the margins of another man’s existence.\"",
+        "\"You are speaking in riddles again, Holmes,\" I said, setting aside my medical journals. \"The world is quite solid enough for most of us. A man eats, he works, he sleeps, and eventually, he ceases. There is no vacuum in that.\"",
+        "\"Is there not?\" Holmes turned his head, his grey eyes suddenly igniting with a cold, predatory light. \"Consider the man who lives in a crowd but is never seen. Consider the life that is a perfect reflection of another, yet possesses no light of its own. I find the 'simple' life to be the most profound deception of all. We are all just echoes, Watson. Some of us just happen to sound louder than the original.\"",
+        "Our philosophical drift was interrupted by the arrival of a client who looked as though he had been pursued through the fog by a nightmare. **Mr. Arthur Penhaligon** was a man of fastidious habits, his frock coat brushed to a shine, yet his hands shook with a palsy that suggested a total collapse of the nervous system. He did not sit; he hovered near the door, as if afraid that the furniture might move if he took his eyes off it.",
+        "\"I am not a madman, Mr. Holmes,\" he began, his voice a thin, reedy whistle. \"But I am a man who has lost his shadow. I live alone in a house in Chelsea—a quiet house, a dead house. But for the last month, I have been sharing it with a guest who does not exist. There are no footsteps. There are no voices. But every morning, the world is... subtly rearranged.\"",
+        "Holmes leaned forward, the lethargy of his mood replaced by a sharp, needle-like focus. \"Rearranged? Give me the specifics, Mr. Penhaligon. Details are the only currency I accept.\"",
+        "\"My books, sir,\" Penhaligon whispered. \"I am a collector of rare Latin treatises. I keep them in a specific, chronological order. But every night, they are moved. Not stolen—moved. They are rearranged not by date, but by *theme*. Passages are marked with a fingernail, indentations in the paper that form sentences I never wrote. My clothes are worn and then returned to the wardrobe, still warm with the heat of a body that is not mine. And last night... last night I found a cup of tea on my bedside table. It was still steaming. I live alone, Mr. Holmes. I lock my doors. I bolt my windows. Yet someone is living my life alongside me, and they are doing a better job of it than I am.\""
+      ]
+    },
+    {
+      heading: 'The Geometry of a Ghost',
+      paras: [
+        "\"A parasite of identity,\" Holmes murmured, rising and reaching for his heavy Ulster coat. \"A most refreshing change from the vulgarity of the street-thief. Come, Watson. We must see this house. I wish to see the tea that was brewed by a ghost.\"",
+        "The house in Chelsea was a tall, narrow structure of blackened brick, standing between two larger estates like an afterthought. Inside, the atmosphere was one of stifling, airless precision. Every ornament was placed with mathematical exactitude; every rug was aligned with the floorboards. It was the home of a man who used order as a fortress against the chaos of his own mind.",
+        "Holmes did not begin by looking for hidden doors or broken locks. Instead, he walked to the library and began to run his fingers over the spines of the Latin volumes. \"The Art of Memory, The Divine Proportion, The Architecture of Silence... your guest has a predilection for the abstract, Mr. Penhaligon. They are not interested in your wealth; they are interested in your intellect.\"",
+        "I watched as Holmes examined the bedside table where the mysterious tea had appeared. He did not look at the cup. He looked at the dust on the base of the lamp. \"Tell me, Mr. Penhaligon, do you ever find yourself waking up with a headache? A feeling of profound, leaden exhaustion?\"",
+        "\"Every morning, sir. I assumed it was the stress of the haunting.\"",
+        "\"Or the cause of it,\" Holmes muttered. He turned to me, his face a mask of inscrutable thought. \"Watson, look at the patient. Observe the pallor of the skin, the slight tremor in the right eyelid, the scent of bitter almonds clinging to the hair. What do you see?\"",
+        "\"Exhaustion, certainly,\" I replied. \"Perhaps a slow-acting poison? Arsenic?\"",
+        "\"No, not poison. A displacement. Mr. Penhaligon, your guest is not coming from the outside. The house is perfectly sealed. The locks are unpicked. The windows are undisturbed. The rearrange-ment of your life is being conducted by a master of the house, and there is only one master here.\"",
+        "\"You mean... I am doing this to myself?\" Penhaligon cried, his face contorting with horror. \"I am moving my own books? I am wearing my own clothes in my sleep?\"",
+        "\"In a sense,\" Holmes said, his voice dropping to a somber, hollow tone. \"But the hand that moves the books is not the hand that signs your checks. There is a second occupant in that brain of yours, a 'shadow-self' that has grown tired of your mediocrity. It is waking up when you sleep, seeking the intellectual stimulation you deny it during the day. You are not being haunted by a ghost, sir. You are being haunted by the man you were meant to be.\""
+      ]
+    },
+    {
+      heading: 'The Silent Dialogue',
+      paras: [
+        "The mind-twist of the case lay not in a secret passageway, but in the terrifying realization of the human psyche's capacity for fracture. Holmes sat in the dark library of the Chelsea house, the only light coming from the glowing tip of his cigarette. He had sent Penhaligon to bed, under the strict instruction that he was not to resist the 'sleep' when it came.",
+        "\"We are waiting for the shadow, Watson,\" Holmes whispered. \"The human mind is like a house with many rooms. Most of us live in the parlor, unaware of the entities residing in the cellar. But occasionally, the cellar door is left unbolted. Mr. Penhaligon has spent forty years being a dull, uninspired clerk. His subconscious, however, is a genius. It is a polymath that has been starved for decades. It is now feeding itself.\"",
+        "Hours passed in a silence so deep I could hear the pulse in my own temples. Then, at precisely two in the morning, the door to the bedroom creaked open.",
+        "Arthur Penhaligon walked into the room. But he was no longer the trembling, broken man we had met that morning. His posture was regal; his eyes, though glazed, burned with a terrifying, cold intelligence. He moved to the library shelf and began to pull down books with a fluid, practiced grace. He opened a notebook and began to write, his pen flying across the page in a complex, elegant script that bore no resemblance to his usual cramped hand.",
+        "\"Observe,\" Holmes breathed. \"The muscle memory is different. The breathing is deeper. This is not a man walking in his sleep; this is a different man inhabiting the same meat.\"",
+        "I watched in fascinated horror as the 'Shadow-Penhaligon' brewed a pot of tea, his movements precise and effortless. He sat in the armchair and began to read, his face a mask of profound, tragic beauty. He looked like a man who had finally found his home, only to realize he was a trespasser in his own body.",
+        "Suddenly, the figure stopped. He turned his head and looked directly at the corner where we sat in shadow. He didn't scream. He didn't run. He simply smiled—a sad, knowing smile that made my heart go cold.",
+        "\"He knows we are here, Watson,\" Holmes said, stepping into the light. \"And he knows his time is short.\""
+      ]
+    },
+    {
+      heading: 'The Final Erasure',
+      paras: [
+        "The confrontation was not one of violence, but of a devastating, psychological surrender. The Shadow-Penhaligon spoke, and his voice was not the reedy whistle of the client, but a rich, resonant baritone that filled the room.",
+        "\"You have found me out, Mr. Holmes,\" the shadow said. \"I suppose it was inevitable. You are the only other man in London who understands the loneliness of an unused mind. I am the 'might-have-been.' I am the architect who never built, the poet who never wrote. I have lived in the cracks of Arthur’s dullness for forty years, waiting for a chance to breathe.\"",
+        "\"You are killing him,\" I said, stepping forward. \"The strain on his heart, the metabolic cost of your 'sessions'... he cannot sustain two lives.\"",
+        "\"He is already dead!\" the shadow snapped, his eyes flashing with a terrible fire. \"He is a walking corpse of routine and habit! I am the only thing in this body that is truly alive! I am the one who understands the Latin, the one who sees the patterns in the stars! If I go back into the cellar, Arthur becomes a vegetable. If I stay, he becomes a memory. Which is the greater crime, Mr. Holmes?\"",
+        "Holmes stood silent for a long moment, his features carved in an expression of such profound melancholy that it rivaled the shadow’s own. \"The tragedy of existence, sir, is that the world only has room for one version of us. To be 'whole' is often to be mediocre. To be 'brilliant' is often to be broken.\"",
+        "Holmes reached into his pocket and produced a small, silver snuff-box. \"This is a concentrated sedative of my own design. If Arthur takes it, the 'cellar door' will be bolted forever. The genius will die, and the clerk will live. It is a murder of the soul to save the body.\"",
+        "The shadow looked at the box, then at the books he had so carefully rearranged. He looked at the tea, the small comfort of a life he could never truly own. \"Give it to him,\" he whispered. \"A man cannot live as an echo. The silence is preferable to a stolen voice.\"",
+        "The figure collapsed. When Arthur Penhaligon woke an hour later, he was the trembling, dull man he had always been. He remembered nothing. He looked at the books on the floor and apologized for the mess. He was safe. He was whole. And he was utterly, devastatingly uninteresting."
+      ]
+    },
+    {
+      heading: 'The Reflection in the Shard',
+      paras: [
+        "The return to Baker Street was a journey through a London that felt thinner, more ephemeral than before. Holmes sat by the fire, his violin across his knees, but he did not play. He stared at the flame, his eyes mirrors of a cold, internal winter.",
+        "\"You did the right thing, Holmes,\" I said, though the words felt hollow in my mouth. \"Penhaligon is himself again.\"",
+        "\"Is he, Watson? Or did we just execute the only part of him that was worth knowing?\" Holmes plucked a single string, a low, dissonant note that seemed to vibrate in the very air. \"The world is full of Penhaligons—men who have buried their genius beneath the weight of their own fear. We call them 'sane' because they are predictable. We call them 'healthy' because they do not bother us with their brilliance.\"",
+        "\"You are being too hard on yourself. You solved the mystery.\"",
+        "\"There was no mystery, Watson. Only a mirror. I saw myself in that shadow—the man who would rather burn out in a night of madness than flicker for a century in a parlor of routine. We are all haunted, my friend. Some of us are just better at hiding the guests.\"",
+        "He turned to the window, watching the fog swallow the street below. \"The public will never hear of the 'Echoing Guest.' They want their villains to be tangible—men with knives and greed. They are not ready for a villain that is simply the best version of themselves. No, Watson. Let the record show that Mr. Penhaligon was suffering from a 'nervous affliction' caused by a faulty chimney. It is the kind of truth the world can digest.\"",
+        "And so, the master of the mind returned to his silence, a man who had won the case but lost a piece of his own light. I watched him, and for a moment, I saw a shadow behind him—a taller, darker Holmes that did not move when he moved, a ghost of the man who knew too much to ever truly be at peace. We are all echoes, I realized. And tonight, the silence was the only sound left."
+      ]
+    }
+  ]
+};
+
+
+
+
+
+
+
+
+
+
+
+    
     /* ══════════════════════════════════════════════
        READER LOGIC
     ══════════════════════════════════════════════ */
