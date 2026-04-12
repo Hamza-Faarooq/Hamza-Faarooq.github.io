@@ -54,13 +54,11 @@
       transition:background-color 0.35s,color 0.35s;
     }
 
-    /* coordinate-paper grid */
     body::before{
       content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
       background-size:40px 40px; transition:opacity 0.35s;
     }
-    /* noise */
     body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");background-size:160px;}
 
     ::-webkit-scrollbar{width:5px;}
@@ -68,7 +66,6 @@
     ::-webkit-scrollbar-thumb{background:#1a2035;border-radius:99px;}
     ::-webkit-scrollbar-thumb:hover{background:var(--s1);}
 
-    /* LOADER */
     #loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;transition:opacity 0.6s ease,visibility 0.6s ease;}
     #loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
     .loader-name{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--s1);letter-spacing:1px;}
@@ -77,13 +74,11 @@
     .loader-bar-fill{height:100%;background:linear-gradient(to right,var(--s1),var(--s3));animation:loaderAnim 1s cubic-bezier(0.4,0,0.2,1) forwards;}
     @keyframes loaderAnim{from{width:0}to{width:100%}}
 
-    /* THEME TOGGLE */
     #theme-toggle{position:fixed;top:18px;right:22px;z-index:300;width:40px;height:40px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:var(--muted2);box-shadow:0 2px 12px rgba(0,0,0,0.3);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);}
     #theme-toggle:hover{border-color:var(--s1-bdr);color:var(--s1);transform:scale(1.08) rotate(12deg);}
     .t-moon{display:block;}.t-sun{display:none;}
     html.light .t-moon{display:none;}html.light .t-sun{display:block;}
 
-    /* CURSOR */
     #cursor-dot{position:fixed;z-index:9998;pointer-events:none;width:6px;height:6px;border-radius:50%;background:var(--s1);transform:translate(-50%,-50%);mix-blend-mode:screen;}
     #cursor-ring{position:fixed;z-index:9997;pointer-events:none;width:28px;height:28px;border-radius:50%;border:1px solid rgba(212,160,23,0.35);transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,border-color 0.2s;}
     #cursor-ring.hover{width:44px;height:44px;border-color:var(--s1);}
@@ -91,10 +86,8 @@
     #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.25;transition:opacity 0.35s;}
     #scroll-progress{position:fixed;top:0;left:0;z-index:200;height:1px;width:0%;background:linear-gradient(to right,var(--s1),var(--s2),var(--s3));transition:width 0.08s linear;}
 
-    /* LAYOUT */
     .wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:44px 28px 72px;display:grid;grid-template-columns:272px 1fr;gap:40px;align-items:start;}
 
-    /* SIDEBAR */
     .left{position:sticky;top:28px;display:flex;flex-direction:column;align-items:center;text-align:center;animation:slideIn 0.8s cubic-bezier(0.22,1,0.36,1) both;}
     @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
 
@@ -128,20 +121,16 @@
     .back-btn{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);letter-spacing:1.8px;text-transform:uppercase;color:var(--muted2);text-decoration:none;background:var(--surface2);border:1px solid var(--border);padding:9px 18px;border-radius:7px;transition:all 0.2s ease;width:100%;justify-content:center;}
     .back-btn:hover{color:var(--s1);border-color:var(--s1-bdr);background:var(--s1-bg);}
 
-    /* MAIN */
     .main{animation:fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.12s both;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-    /* BREADCRUMB */
     .top-nav{display:flex;gap:5px;align-items:center;margin-bottom:28px;flex-wrap:wrap;}
     .nav-link{color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:6px 13px;border-radius:6px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-family:var(--mono);transition:all 0.18s ease;}
     .nav-link:hover{color:var(--s1);background:var(--s1-bg);border-color:var(--s1-bdr);}
     .nav-sep{color:var(--muted);font-size:11px;font-family:var(--mono);opacity:0.4;}
 
-    /* PAGE HEADER */
     .page-header{background:var(--surface);padding:28px 30px;border-radius:var(--radius);margin-bottom:24px;border:1px solid var(--border);position:relative;overflow:hidden;transition:background-color 0.35s,border-color 0.3s;}
     .page-header::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(to right,var(--s1),var(--s2),var(--s3));}
-    /* quill-nib decoration */
     .page-header::after{content:'';position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;border:36px solid rgba(212,160,23,0.04);pointer-events:none;}
     .page-header-inner{position:relative;z-index:1;display:flex;align-items:flex-start;gap:18px;}
     .page-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;background:var(--s1-bg);border:1px solid var(--s1-bdr);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--s1);}
@@ -150,14 +139,12 @@
     .story-count{margin-top:14px;display:inline-flex;align-items:center;gap:8px;font-size:11px;font-family:var(--mono);letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
     .story-count-dot{width:6px;height:6px;border-radius:50%;background:var(--s1);animation:pulseDot 2s ease-in-out infinite;}
 
-    /* FILTER CHIPS */
     .filter-row{display:flex;gap:7px;margin-bottom:22px;flex-wrap:wrap;align-items:center;}
     .filter-label{font-size:9px;font-family:var(--mono);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-right:4px;}
     .chip{font-size:10px;font-family:var(--mono);letter-spacing:0.8px;color:var(--muted2);background:var(--surface2);border:1px solid var(--border);padding:5px 14px;border-radius:99px;cursor:pointer;transition:all 0.18s ease;text-transform:uppercase;}
     .chip:hover,.chip.active{color:var(--s1);border-color:var(--s1-bdr);background:var(--s1-bg);}
     .chip.active{box-shadow:0 0 0 1px var(--s1) inset;}
 
-    /* STORY CARDS */
     .stories-list{display:flex;flex-direction:column;gap:16px;}
 
     .story-card{
@@ -173,7 +160,6 @@
     .story-card:nth-child(2){animation-delay:0.12s}
     .story-card:nth-child(3){animation-delay:0.18s}
 
-    /* genre-coded top strip */
     .story-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;transform:scaleX(0);transform-origin:left;transition:transform 0.35s ease;}
     .story-card:hover::before{transform:scaleX(1);}
     .genre-mystery::before{background:linear-gradient(to right,var(--s1),var(--s2));}
@@ -189,7 +175,6 @@
     .genre-scifi:hover{border-color:rgba(91,143,255,0.3);}
     .genre-philosophy:hover{border-color:var(--s3-bdr);}
 
-    /* card body */
     .story-body{padding:22px 24px;display:flex;flex-direction:column;}
 
     .story-tags{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
@@ -224,7 +209,6 @@
 
     .read-time-badge{font-size:10px;font-family:var(--mono);color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:3px 10px;border-radius:99px;}
 
-    /* right number column */
     .story-num{
       display:flex;align-items:flex-start;justify-content:center;
       padding-top:26px;
@@ -238,11 +222,9 @@
     .genre-scifi:hover .story-num{color:rgba(91,143,255,0.16);border-color:rgba(91,143,255,0.2);}
     .genre-philosophy:hover .story-num{color:rgba(155,89,182,0.18);border-color:var(--s3-bdr);}
 
-    /* coming soon story */
     .story-card.coming-soon{opacity:0.5;pointer-events:none;animation-delay:0.12s;}
     .story-card.coming-soon .story-title{font-style:italic;}
 
-    /* STORY READER OVERLAY */
     #story-overlay{
       position:fixed;inset:0;z-index:500;
       display:flex;align-items:flex-start;justify-content:center;
@@ -276,7 +258,6 @@
     .sr-close{position:absolute;top:20px;right:20px;background:transparent;border:1px solid var(--border);color:var(--muted);width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all 0.2s ease;}
     .sr-close:hover{color:var(--s1);border-color:var(--s1-bdr);background:var(--s1-bg);}
 
-    /* decorative rule */
     .sr-rule{display:flex;align-items:center;gap:14px;margin-bottom:28px;}
     .sr-rule::before,.sr-rule::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(212,160,23,0.22),transparent);}
     .sr-rule-icon{color:rgba(212,160,23,0.35);font-size:14px;}
@@ -285,7 +266,6 @@
     .sr-title{font-family:var(--serif);font-size:28px;font-weight:700;font-style:italic;color:var(--text);line-height:1.25;margin-bottom:10px;letter-spacing:-0.2px;}
     .sr-meta{font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:32px;display:flex;gap:16px;flex-wrap:wrap;}
 
-    /* Story body typography — the real reading experience */
     .sr-body{font-family:var(--body);font-size:16px;line-height:2;color:var(--muted2);}
     html.light .sr-body{color:#2a3a50;}
 
@@ -307,7 +287,6 @@
     .sr-body em{color:var(--text);font-style:italic;}
     .sr-body strong{color:var(--text);font-weight:600;}
 
-    /* end ornament */
     .sr-end{text-align:center;margin-top:48px;color:rgba(212,160,23,0.25);font-size:20px;letter-spacing:8px;}
 
     .sr-footer{margin-top:36px;padding-top:20px;border-top:1px solid rgba(212,160,23,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
@@ -315,7 +294,6 @@
     .sr-scroll-top{background:transparent;border:1px solid var(--s1-bdr);color:var(--s1);padding:6px 16px;border-radius:6px;cursor:pointer;font-size:10px;font-family:var(--mono);letter-spacing:1.2px;text-transform:uppercase;transition:all 0.2s ease;}
     .sr-scroll-top:hover{background:var(--s1-bg);}
 
-    /* FOOTER */
     footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
     .footer-left{font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:0.5px;}
     .footer-left span{color:var(--s1);}
@@ -416,7 +394,7 @@
             <p>Original fiction — mystery, speculative science, and philosophical prose. Click any story to read it here in full.</p>
             <div class="story-count">
               <span class="story-count-dot"></span>
-              1 Story published &nbsp;·&nbsp; Mystery · Speculative Fiction
+              2 Stories published &nbsp;·&nbsp; Mystery · Speculative Fiction
             </div>
           </div>
         </div>
@@ -460,41 +438,32 @@
           <div class="story-num">1</div>
         </div>
 
+        <!-- STORY 2 -->
+        <div class="story-card genre-mystery" data-tags="mystery,scifi" onclick="openStory('s2')" style="cursor:pointer;" role="button" tabindex="0" aria-label="Read: The Adventure of the Ossified Hour">
+          <div class="story-body">
+            <div class="story-tags">
+              <span class="story-badge badge-mystery"><i class="fa-solid fa-magnifying-glass" style="margin-right:4px"></i>Mystery</span>
+              <span class="story-badge badge-scifi">Speculative</span>
+              <span class="story-badge badge-original">Original</span>
+              <span class="badge-wc">~3,200 words</span>
+            </div>
+            <div class="story-title">The Adventure of the Ossified Hour</div>
+            <div class="story-meta">
+              <span><i class="fa-regular fa-clock"></i>20 min read</span>
+              <span><i class="fa-solid fa-pen-nib"></i>Muhammad Hamza</span>
+              <span><i class="fa-solid fa-flask"></i>Sherlock Holmes Universe</span>
+            </div>
+            <div class="story-excerpt">
+              The London of 1895 was a city of ghosts, draped in a shroud of soot and secrets. Into the acrid air of Baker Street walked a woman whose father, a legendary architect, was physically transforming into cold, unyielding marble. A "Memory Palace" in a secluded Highgate valley was aging centuries in a single afternoon, controlled by the mysterious Count de St. Germain. Holmes must confront a fanatic who has mastered the "solvent of years" to preserve the world as a gallery of frozen, stony moments before the ticking clock of reality stops forever.
+            </div>
+            <div class="story-footer">
+              <span class="read-link">Read Story <i class="fa-solid fa-arrow-right"></i></span>
+              <span class="read-time-badge">20 min</span>
+            </div>
+          </div>
+          <div class="story-num">2</div>
+        </div>
 
-
-<div class="story-card genre-mystery" data-tags="mystery,scifi" onclick="openStory('s2')" style="cursor:pointer;" role="button" tabindex="0" aria-label="Read: The Adventure of the Ossified Hour">
-  <div class="story-body">
-    <div class="story-tags">
-      <span class="story-badge badge-mystery"><i class="fa-solid fa-magnifying-glass" style="margin-right:4px"></i>Mystery</span>
-      <span class="story-badge badge-scifi">Speculative</span>
-      <span class="story-badge badge-original">Original</span>
-      <span class="badge-wc">~3,200 words</span>
-    </div>
-    <div class="story-title">The Adventure of the Ossified Hour</div>
-    <div class="story-meta">
-      <span><i class="fa-regular fa-clock"></i>20 min read</span>
-      <span><i class="fa-solid fa-pen-nib"></i>Muhammad Hamza</span>
-      <span><i class="fa-solid fa-flask"></i>Sherlock Holmes Universe</span>
-    </div>
-    <div class="story-excerpt">
-      The London of 1895 was a city of ghosts, draped in a shroud of soot and secrets. Into the acrid air of Baker Street walked a woman whose father, a legendary architect, was physically transforming into cold, unyielding marble. A "Memory Palace" in a secluded Highgate valley was aging centuries in a single afternoon, controlled by the mysterious Count de St. Germain. Holmes must confront a fanatic who has mastered the "solvent of years" to preserve the world as a gallery of frozen, stony moments before the ticking clock of reality stops forever.
-    </div>
-    <div class="story-footer">
-      <span class="read-link">Read Story <i class="fa-solid fa-arrow-right"></i></span>
-      <span class="read-time-badge">20 min</span>
-    </div>
-  </div>
-  <div class="story-num">2</div>
-</div>
-
-
-
-
-
-
-
-
-        
         <!-- COMING SOON PLACEHOLDER -->
         <div class="story-card genre-philosophy coming-soon" data-tags="philosophy">
           <div class="story-body">
@@ -514,7 +483,7 @@
               <span class="read-link" style="opacity:0.4;cursor:default;">In Progress</span>
             </div>
           </div>
-          <div class="story-num">2</div>
+          <div class="story-num">3</div>
         </div>
 
       </div><!-- /stories-list -->
@@ -578,7 +547,7 @@
     (function animC(){ rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13; dot.style.left=mx+'px'; dot.style.top=my+'px'; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animC); })();
     if('ontouchstart' in window){dot.style.display='none';ring.style.display='none';}
 
-    /* BG CANVAS — warm amber/gold nodes for fiction atmosphere */
+    /* BG CANVAS */
     const cv=document.getElementById('bg-canvas'),cx=cv.getContext('2d');
     let W,H,nodes;
     const PAL=['#d4a017','#c47a2a','#9b59b6','#1fb98e'];
@@ -752,99 +721,114 @@
             ]
           },
         ]
-      },  
+      },
+
+      s2: {
+        title: 'The Adventure of the Ossified Hour',
+        genres: [
+          { text: 'Mystery', cls: 'badge-mystery' },
+          { text: 'Speculative', cls: 'badge-scifi' },
+          { text: 'Original', cls: 'badge-original' },
+        ],
+        meta: { words: '~3,200 words', read: '20 min read', universe: 'Sherlock Holmes Universe' },
+        sections: [
+          {
+            heading: null,
+            paras: [
+              `The London of 1895 was a city of ghosts, draped in a shroud of soot and secrets. It was a November evening, characterized by a rain so fine and persistent it felt like the breath of the drowned. Inside 221B Baker Street, the air was thick with the acrid tang of Sherlock Holmes's latest obsession: the fractional distillation of medieval vellum.`,
+              `Holmes sat hunched over a retort, the blue flame of the Bunsen burner casting long, skeletal shadows across his aquiline features. He had not spoken for five hours, save for a low, rhythmic chanting of chemical formulas that sounded more like an incantation than an inquiry.`,
+              `"The soul of the city is rotting, Watson," he said suddenly, his voice cutting through the silence like a scalpel. He did not turn from his glass tubes. "It is becoming a mausoleum of its own memories. People no longer live; they merely persist, like stains upon a rug that the Great Laundress has forgotten to scrub."`,
+              `"A bit grim for a Tuesday, Holmes," I remarked, looking up from a volume of military history. "The papers are full of the Jubilee preparations. There is a sense of progress, of permanence."`,
+              `"Permanence!" Holmes scoffed, finally turning his piercing grey eyes toward me. "Permanence is the delusion of the doomed. We are but mayflies dancing on a stagnant pond, mistaking the ripples of our own decay for the tides of history. I find the silence of the grave far more honest than the chatter of the Strand."`,
+              `He reached for his violin, but before the first mournful note could be struck, a commotion erupted below. It was not a knock, but a frantic scratching, as if a cornered animal were seeking entry. Moments later, Billy the pageboy ushered in a woman whose appearance was an affront to the very concept of vitality.`,
+              `She was young, perhaps twenty, but her hair had turned a stark, bone-white. Her eyes were fixed in a stare of such profound desolation that I felt a chill that owed nothing to the damp evening. She wore a dress of fine silk, but it hung upon her frame like a shroud, and as she moved, a fine, grey dust fell from her sleeves.`,
+              `"Mr. Holmes," she whispered, her voice a dry rattle. "My father is... he is becoming a statue. And the house... the house is dying before it was ever built."`,
+            ]
+          },
+          {
+            heading: 'The House of Accelerated Shadows',
+            paras: [
+              `Holmes rose, his movements fluid and predatory. "Miss Julianne Vane, I presume? Daughter of Sir Alistair Vane, the architect of the New Admiralty wings?"`,
+              `The girl nodded slowly, her movements stiff and mechanical. "How did you—?"`,
+              `"The dust on your cuff is not London soot," Holmes said, stepping closer and sniffing the air around her. "It is pulverized limestone, but of a specific variety—Portland stone treated with a nineteenth-century preservative. Your father's trade is written in your very fibers. Now, sit. Tell us of this 'petrification.' And tell us why you smell of a tomb that has been sealed for a thousand years."`,
+              `The story Miss Vane told was one that defied the boundaries of the rational. Her father, a man of robust health and towering intellect, had been commissioned to design a 'Memory Palace'—a private museum for a reclusive nobleman known only as the Count de St. Germain. The project was being constructed in a secluded valley near Highgate.`,
+              `"Ten days ago," Julianne said, her hands trembling in her lap, "Father returned from the site. He was silent. He sat in his study, staring at a clock. But not a normal clock, Mr. Holmes. It was a water-clock of ancient design. He stopped eating. He stopped speaking. And then, his skin... it began to change. It lost its warmth. It lost its suppleness. When I touch his hand now, it feels like cold marble. He is alive—I can see the pulse in his neck, beating once every hour—but he is trapped in a body that has turned to stone."`,
+              `"And the house?" Holmes asked, his eyes alight with a cold, intellectual fire.`,
+              `"The new wing he was building... it has aged centuries in a week. The wood is rotted to punk. The iron is rusted to orange dust. It is as if Time itself has gone mad in that valley, accelerating for the stone and wood, but slowing to a crawl for my father."`,
+              `Holmes turned to me. "A most singular menu, Watson! A feast of entropy. We must depart for Highgate at once. Bring your medical bag, though I suspect the pathology we encounter will be more chronological than biological."`,
+            ]
+          },
+          {
+            heading: 'The Valley of the Scythe',
+            paras: [
+              `The carriage ride to Highgate was a journey into a deeper gloom. As we left the gas-lit streets of the city, the fog grew thicker, smelling of wet earth and ancient rot. Holmes sat in the corner, his pipe glowing like a dying star in the darkness.`,
+              `"Consider the nature of Time, Watson," he murmured. "To the physicist, it is a dimension. To the poet, a thief. But to the chemist? It is merely a rate of reaction. If one could catalyze the oxidation of matter while simultaneously inhibiting the metabolic processes of the cell, one could create the very nightmare Miss Vane describes."`,
+              `"But to what end, Holmes?"`,
+              `"Power, Watson. The ultimate power. To move through a world of statues. To outlive one's enemies by a thousand years in a single afternoon. It is the dream of the alchemist, stripped of its gold and left with only its dross."`,
+              `We arrived at the Vane estate, a sprawling Gothic manor that seemed to be shrinking into the earth. The silence was absolute—no crickets, no rustle of wind in the leaves. Even our footsteps on the gravel sounded muffled, as if the air itself were too heavy to carry sound.`,
+              `We were led into the study. Sir Alistair Vane sat in a high-backed chair. He was exactly as his daughter had described: a man carved from grey stone. His eyes were open, fixed on a point in space, the pupils dilated to the limit. I reached out to feel his pulse. His skin was unnaturally cold, and the flesh did not yield to my touch; it was as hard as granite.`,
+              `"Good God, Holmes," I whispered. "He is ossified."`,
+              `Holmes was not looking at the man. He was on his hands and knees, examining the floor. "Look here, Watson. The footprints."`,
+              `There were two sets of prints in the fine dust that coated the room. One belonged to Julianne. The other was a heavy, dragging stride, the mark of someone who walked with a deliberate, rhythmic heaviness. But more strikingly, where the second person had stepped, the floorboards had splintered and aged, the wood turning grey and brittle as if centuries had passed under that single footfall.`,
+              `"The Count de St. Germain is not a man," Holmes said, rising and dusting his hands. "He is a walking epicenter of decay. He carries the 'solvent of years' upon his very person."`,
+            ]
+          },
+          {
+            heading: 'The Labyrinth of the Count',
+            paras: [
+              `We followed the trail of aged earth and withered vegetation toward the New Admiralty wing—the 'Memory Palace.' It was a structure that should have been a triumph of modern engineering, but it looked like a ruin from the era of the Caesars. The marble pillars were pitted and scarred; the heavy oak doors were sagging on rusted hinges.`,
+              `Inside, the air was cold enough to crack bone. We moved through a hall of statues. But they were not carvings. They were the previous victims of the Count—workmen, stonemasons, even a stray dog—all frozen in mid-motion, their bodies turned to a translucent, mineralized substance.`,
+              `"A gallery of the 'Now,'" Holmes whispered. "He is preserving the world by destroying its ability to change."`,
+              `At the end of the hall, we found him. The Count de St. Germain was a man of indeterminate age, dressed in a suit of such dark velvet it seemed to absorb the very light of our lantern. He stood before a massive, humming apparatus—a series of rotating glass spheres filled with a pulsating, violet gas.`,
+              `"Mr. Sherlock Holmes," the Count said, his voice a low, melodic thrum that seemed to vibrate in my skull. "You are late. I had expected you three centuries ago."`,
+              `"Your math is as flawed as your morality, Count," Holmes replied, his hand resting on the grip of his cane. "You are using a focused field of entropic manipulation to alter the local rate of decay. You aren't 'preserving' anything. You are merely creating a graveyard of the present."`,
+              `"The present is a wound!" the Count cried, his eyes glowing with a terrifying, messianic fervor. "It bleeds away into the past, lost and forgotten! I am the bandage! I am the stitch that holds the moment together! In this valley, beauty does not fade, and love does not die—it simply stays."`,
+              `"And the cost?" I shouted. "Look at Sir Alistair! He is a prisoner in his own skin!"`,
+              `"A small price for immortality," the Count sneered. He reached for a lever on the apparatus. "And now, Dr. Watson, I shall give you the gift of permanence. You shall be the 'Chronicler of the Eternal,' a statue that never forgets."`,
+              `The humming of the spheres rose to a deafening shriek. The violet gas began to leak from the valves, coiling across the floor like a predatory snake. Where it touched my boot, the leather instantly cracked and turned to dust.`,
+              `"Holmes!" I yelled, drawing my revolver.`,
+              `"Do not fire, Watson! The combustion will ignite the gas and turn this entire valley into a pillar of salt!"`,
+              `Holmes didn't run. He didn't attack. Instead, he reached into his pocket and pulled out the small glass vial of distilled vellum he had been working on in Baker Street.`,
+              `"You forgot one thing, Count," Holmes shouted over the roar of the machine. "Entropy is not a one-way street. If you can accelerate the decay of the inorganic, you can also catalyze the reversion of the organic! Your gas relies on a specific carbon-chain affinity. This distillate is a concentrated enzyme of 'the beginning'—the pure, unreacted essence of life before it met the air!"`,
+              `Holmes hurled the vial into the heart of the rotating spheres.`,
+              `The glass shattered. A cloud of golden vapor erupted, clashing with the violet miasma. The sound was like two oceans colliding. A shockwave of pure, raw Time rippled through the room.`,
+              `I felt a sensation of incredible speed, followed by a sudden, jarring halt. My skin burned, then turned ice-cold. The world blurred into a kaleidoscope of seasons—snow falling and melting in a heartbeat, flowers blooming and withering in a second.`,
+              `Then, silence.`,
+            ]
+          },
+          {
+            heading: 'The Morning After the Ages',
+            paras: [
+              `I woke to the sound of birdsong. The heavy, oppressive silence of the valley had vanished. The fog had cleared, replaced by a crisp, autumn sun that felt like a blessing.`,
+              `I was lying on the grass outside the manor. Beside me, Holmes was sitting up, his face pale but his eyes clear.`,
+              `"The machine?" I croaked.`,
+              `"Gone, Watson. It consumed itself in a paradox of its own making. When the 'Essence of the Beginning' met the 'Solvent of the End,' the local time-field collapsed. The Count... well, he was always an anomaly. Without his machine to anchor him, he simply ceased to 'be' in our current epoch."`,
+              `We hurried back to the study. Sir Alistair Vane was no longer a statue. He was slumped in his chair, his skin warm, his pulse steady. He was sleeping—a deep, restorative sleep. His daughter knelt by his side, her hair still white, but her eyes full of a light that had nothing to do with the sun.`,
+              `"He will recover," I said, checking his vitals. "The process has been reversed. But the house... Holmes, look at the house."`,
+              `The New Admiralty wing was gone. In its place was a field of fresh, green grass, as if no building had ever stood there. The 'Memory Palace' had been edited out of existence.`,
+            ]
+          },
+          {
+            heading: 'The Reflection in the Shard',
+            paras: [
+              `The return to Baker Street was a quiet affair. Holmes returned to his chemical retorts, but he did not light the Bunsen burner. He sat by the window, watching the crowds on the street below.`,
+              `"You saved a man's soul, Holmes," I said, pouring a glass of brandy for us both. "And you stopped a madman from turning the world into a museum of horrors."`,
+              `"Did I, Watson? Or did I merely return the world to its natural state of slow, agonizing decay?" He looked at his own hand, tracing the lines on his palm. "We are still mayflies. I have merely ensured that we are allowed to die in our own time, rather than in someone else's."`,
+              `"You are in a particularly depressing mood," I remarked.`,
+              `"Logic is a depressing business, Watson. It strips away the gilding and leaves only the iron. The Count was a monster, yes, but his fear was a human one. He feared the 'Nothing' that waits at the end of the hour. We all do. We fill our lives with cases, with brandy, with stories... all to drown out the sound of the clock."`,
+              `He picked up his violin and began to play. It wasn't a lament this time, but a strange, complex piece that seemed to mimick the ticking of a watch, but with a melody that soared above the rhythm, defiant and beautiful.`,
+              `"The public will never hear of this, I assume?" I asked.`,
+              `"The public would not believe it," Holmes replied, his bow dancing across the strings. "They want a world where things stay put. They want their heroes to be made of marble and their villains of coal. They are not ready for a world made of light and shadow, where the very air can turn you to stone."`,
+              `He turned away from the window, his silhouette once again a sharp, hawklike outline against the fading light.`,
+              `"But for tonight, Watson, the clock is our friend. It tells us we are still here. And as long as the sand is still running in the glass, there is work to be done. Tell me, what do you know of the disappearance of the British Ambassador's cat? It is a trivial matter, but it possesses certain... aromatic peculiarities that I find quite refreshing after the scent of the tomb."`,
+              `And so, the master of the mind returned to the small mysteries, using the little puzzles to keep the great, terrifying silence of the universe at bay. I watched him, my friend and the most singular man I have ever known, and as I wrote the final words of this account, I felt the weight of my pen, the warmth of the fire, and the glorious, fleeting reality of the present.`,
+              `The "Adventure of the Ossified Hour" would remain in my private tin dispatch-box. Some truths are too heavy for the world to carry. They are best left to the shadows, and to the man who walks among them.`,
+            ]
+          },
+        ]
+      }
     };
 
-
-const s2 = {
-  title: 'The Adventure of the Ossified Hour',
-  genres: [
-    { text: 'Mystery', cls: 'badge-mystery' },
-    { text: 'Speculative', cls: 'badge-scifi' },
-    { text: 'Original', cls: 'badge-original' },
-  ],
-  meta: { words: '3,000+ words', read: '25 min read', universe: 'Sherlock Holmes Universe' },
-  sections: [
-    {
-      heading: null,
-      paras: [
-        "The London of 1895 was a city of ghosts, draped in a shroud of soot and secrets that seemed to exhale from the very cobblestones. It was a November evening, characterized by a rain so fine and persistent it felt like the cold, damp breath of the drowned pressing against the glass. Inside 221B Baker Street, the air was thick with the acrid, biting tang of Sherlock Holmes’s latest obsession: the fractional distillation of medieval vellum, a process that filled our quarters with the scent of ancient libraries and necrotic decay.",
-        "Holmes sat hunched over a retort, the blue, ghost-like flame of the Bunsen burner casting long, skeletal shadows across his aquiline features, making him appear more like a medieval alchemist than a modern consultant. He had not spoken for five hours, save for a low, rhythmic chanting of chemical formulas that sounded more like a funeral incantation than a scientific inquiry. The violin lay discarded in the coal-scuttle, its strings silent, as if even music had lost its ability to stave off the creeping paralysis of his boredom.",
-        "\"The soul of this city is rotting, Watson,\" he said suddenly, his voice cutting through the silence like a scalpel through silk. He did not turn from his glass tubes, his gaze fixed on the bubbling amber fluid within. \"It is becoming a mausoleum of its own memories, a place where the past is more vibrant than the present. People no longer live in London; they merely persist, like stubborn stains upon a rug that the Great Laundress of Time has forgotten to scrub. We are surrounded by the walking dead, oblivious to the fact that their heartbeat is merely a countdown to obsolescence.\"",
-        "\"A bit grim for a Tuesday, Holmes,\" I remarked, attempting to inject a note of normalcy as I looked up from a volume of military history. \"The papers are full of the Jubilee preparations. There is a sense of progress, of permanence, of a British Empire that shall never see the sun set.\"",
-        "\"Permanence!\" Holmes scoffed, finally turning his piercing grey eyes toward me, eyes that seemed to have seen through the veil of reality and found nothing but dust. \"Permanence is the grand delusion of the doomed, Watson. We are but mayflies dancing frantically on a stagnant pond, mistaking the ripples of our own decay for the tides of history. I find the silence of the grave far more honest than the mindless chatter of the Strand. At least the dead have the decency to stop pretending that they matter.\"",
-        "He reached for his violin, his fingers twitching with a nervous, electric energy, but before the first mournful note could be struck, a commotion erupted below. It was not the crisp, authoritative rap of a gentleman or the frantic pounding of a victim, but a hesitant, rhythmic scratching, as if a cornered animal were seeking entry into a sanctuary it did not truly believe in. Moments later, Billy the pageboy ushered in a woman whose appearance was a direct affront to the very concept of vitality.",
-        "She was young, perhaps twenty, but her hair had turned a stark, bone-white that shimmered unnaturally in the lamplight. Her eyes were fixed in a stare of such profound, hollow desolation that I felt a cold chill that owed nothing to the damp evening. She wore a dress of fine, midnight silk, but it hung upon her skeletal frame like a shroud, and as she moved, a fine, grey dust fell from her sleeves, settling on our rug like ash from a crematorium.",
-        "\"Mr. Holmes,\" she whispered, her voice a dry rattle that sounded like dead leaves scuttling across a tombstone. \"My father is... he is becoming a statue. And the house... the house is dying before it was ever truly built. We are being claimed by the stone, sir, and the clock refuses to strike the hour.\""
-      ]
-    },
-    {
-      heading: 'The House of Accelerated Shadows',
-      paras: [
-        "Holmes rose, his movements fluid and predatory, his ennui vanishing as if it had never been. He stepped toward the girl, his magnifying glass already in hand. \"Miss Julianne Vane, I presume? Daughter of Sir Alistair Vane, the architect whose designs for the New Admiralty wings were hailed as the future of British masonry?\"",
-        "The girl nodded slowly, her movements stiff and mechanical, as if her joints were beginning to seize. \"How could you possibly know my name?\"",
-        "\"The dust on your cuff is not London soot, Miss Vane,\" Holmes said, sniffing the air around her with a hound’s intensity. \"It is pulverized limestone, but of a specific variety—Portland stone treated with a nineteenth-century fluosilicate preservative. Your father is the only man in England currently employing such a specialized chemical treatment. His trade is written in your very fibers. Now, sit. Tell us of this 'petrification.' Tell us why you smell of a tomb that has been sealed for a thousand years while you stand in the heart of a modern metropolis.\"",
-        "The story Miss Vane told was one that defied the boundaries of the rational and pushed the limits of my medical understanding. Her father, a man of robust health and towering intellect, had been commissioned to design a 'Memory Palace'—a private museum for a reclusive, enigmatic nobleman known only as the Count de St. Germain. The project was being constructed in a secluded, shadow-drenched valley near Highgate, far from the prying eyes of the architectural guilds.",
-        "\"Ten days ago,\" Julianne said, her hands trembling in her lap with a sound like dry parchment rubbing together, \"Father returned from the site. He was silent, his eyes wide and vacant. He sat in his study, staring at a clock—but not a clock of gears and springs, Mr. Holmes. It was a water-clock of ancient, Egyptian design. He stopped eating. He stopped speaking. And then, his skin... it began to change. It lost its warmth. It lost its suppleness. When I touch his hand now, it does not feel like flesh; it feels like cold, unyielding marble. He is alive—I can see the pulse in his neck, beating once every hour, a slow, agonizing throb—but he is trapped in a body that has turned to stone.\"",
-        "\"And the house?\" Holmes asked, his eyes alight with a cold, intellectual fire that I had learned to dread. \"What of the 'Memory Palace'?\"",
-        "\"The new wing he was building... it has aged centuries in a single week. The fresh-cut oak has rotted to punk. The iron railings are rusted to orange dust. It is as if Time itself has gone mad in that valley, accelerating for the stone and wood, while slowing to a deathly crawl for my father. The shadows there do not move with the sun; they stretch and linger, as if they are trying to swallow the light entirely.\"",
-        "Holmes turned to me, a grim smile playing on his thin lips. \"A most singular menu, Watson! A feast of entropy served on a platter of architectural ambition. We must depart for Highgate at once. Bring your medical bag, though I suspect the pathology we encounter will be more chronological than biological. We are going to visit a man who is being murdered by the very seconds of his life.\""
-      ]
-    },
-    {
-      heading: 'The Valley of the Scythe',
-      paras: [
-        "The carriage ride to Highgate was a journey into a deeper, more profound gloom. As we left the gas-lit streets of the city, the fog grew thicker, smelling of wet earth, ancient rot, and something metallic—the scent of a copper coin left on the tongue. Holmes sat in the corner of the hansom, his pipe glowing like a dying star in the oppressive darkness.",
-        "\"Consider the nature of Time, Watson,\" he murmured, his voice barely audible over the rhythmic clatter of the horse’s hooves. \"To the physicist, it is a fourth dimension. To the poet, it is a thief in the night. But to the chemist? It is merely a rate of reaction. If one could catalyze the oxidation of matter while simultaneously inhibiting the metabolic processes of the living cell, one could create the very nightmare Miss Vane describes. One could make a palace crumble while the architect watches in frozen, stony silence.\"",
-        "\"But to what end, Holmes?\" I asked, checking the cylinders of my revolver. \"Who would benefit from such a distortion of nature?\"",
-        "\"Power, Watson. The ultimate power. To move through a world of statues, to be the only living thing in a gallery of the eternal. To outlive one's enemies by a thousand years in the span of a single afternoon. It is the dream of the alchemist, stripped of its gold and left with only its dross. It is the desire to be the master of the Scythe, rather than its harvest.\"",
-        "We arrived at the Vane estate, a sprawling Gothic manor that seemed to be shrinking into the earth, as if the soil itself were eager to reclaim it. The silence was absolute—no crickets chirped in the grass, no wind rustled the skeletal branches of the trees. Even our footsteps on the gravel sounded muffled, as if the air were too heavy to carry the vibration of our presence.",
-        "We were led into the study by a servant who moved with the sluggishness of a man underwater. Sir Alistair Vane sat in a high-backed chair, his face a mask of grey, crystalline agony. He was exactly as his daughter had described: a man carved from the very Portland stone he had spent his life shaping. His eyes were open, fixed on a point in space, the pupils dilated to the limit of human endurance. I reached out to feel his pulse. His skin was unnaturally cold, and the flesh did not yield; it was as hard as the pillars of the Parthenon. Only once in a minute did I feel a faint, heavy thud against his ribs.",
-        "\"Good God, Holmes,\" I whispered. \"He is ossified. He is a living fossil.\"",
-        "Holmes was not looking at the man. He was on his hands and knees, examining the floorboards with a feverish intensity. \"Look here, Watson. The footprints in the dust. There were two sets. One belongs to the daughter. The other is a heavy, dragging stride, the mark of someone who walks with a deliberate, rhythmic heaviness—as if they carried the weight of the ages on their back. But more strikingly, look at the wood. Where this second person stepped, the floorboards have splintered and aged, the oak turning grey and brittle as if centuries had passed under that single footfall. The Count de St. Germain is not merely a man; he is a walking epicenter of decay.\""
-      ]
-    },
-    {
-      heading: 'The Labyrinth of the Count',
-      paras: [
-        "We followed the trail of aged earth and withered vegetation toward the New Admiralty wing—the 'Memory Palace.' It was a structure that should have been a triumph of modern engineering, but it looked like a ruin from the era of the Caesars. The marble pillars were pitted and scarred as if by a thousand years of salt spray; the heavy oak doors were sagging on rusted hinges that groaned with the weight of centuries.",
-        "Inside, the air was cold enough to crack bone, and it carried a low, subsonic thrum that made my teeth ache. We moved through a hall of statues. But as we drew closer, I realized with a jolt of horror that they were not carvings. They were the previous victims of the Count’s ambition—stonemasons frozen in the act of hammering, a gardener clutching a withered rose, even a stray dog caught in a mid-leap, its fur turned to a translucent, mineralized substance that caught the light of our lantern like dirty ice.",
-        "\"A gallery of the 'Now,'\" Holmes whispered, his voice trembling with a rare, terrible awe. \"He is preserving the world by destroying its ability to change. He is the taxidermist of the moment.\"",
-        "At the end of the hall, we found him. The Count de St. Germain was a man of indeterminate age, dressed in a suit of such dark velvet it seemed to absorb the very light around him. He stood before a massive, humming apparatus—a series of rotating glass spheres filled with a pulsating, violet gas that looked like liquid lightning.",
-        "\"Mr. Sherlock Holmes,\" the Count said, his voice a low, melodic thrum that seemed to vibrate in my very marrow. \"You are late. I had expected your arrival three centuries ago, or perhaps three centuries from now. It is so difficult to keep track of the guests when the door is always moving.\"",
-        "\"The present is a wound, Mr. Holmes!\" the Count cried, his eyes glowing with a terrifying, messianic fervor as he turned a brass dial. \"It bleeds away into the past, lost and forgotten in the great, grey ocean of history! I am the bandage! I am the stitch that holds the moment together! In this valley, beauty does not fade, and love does not die—it simply stays, perfect and immutable!\"",
-        "\"And the cost?\" I shouted, my hand hovering over my revolver. \"Look at what you have done to Sir Alistair! He is a prisoner in a tomb of his own ribs!\"",
-        "\"A small price for immortality,\" the Count sneered, his fingers twitching toward a heavy lever. \"And now, Dr. Watson, I shall give you the gift of permanence. You shall be the 'Chronicler of the Eternal,' a statue that never forgets the horror of its own making.\"",
-        "The humming of the spheres rose to a deafening shriek. The violet gas began to leak from the valves, coiling across the floor like a predatory snake. Where it touched the hem of my trousers, the fabric instantly became brittle and turned to dust. \"Holmes!\" I yelled. \"Do not fire, Watson!\" Holmes roared, holding me back. \"The combustion will ignite the temporal gas and turn this entire valley into a pillar of salt!\"",
-        "Holmes didn't run. Instead, he reached into his pocket and pulled out the small glass vial of distilled vellum—the essence of 'the beginning.' \"Entropy is not a one-way street, Count! If you can accelerate the decay of the inorganic, you can also catalyze the reversion of the organic! This is the pure, unreacted essence of life!\" He hurled the vial into the heart of the rotating spheres. The glass shattered, and a cloud of golden vapor erupted, clashing with the violet miasma in a sound like two oceans colliding. A shockwave of pure, raw Time rippled through the room, and I felt the world blur into a kaleidoscope of seasons—snow falling and melting in a heartbeat, flowers blooming and withering in a single second."
-      ]
-    },
-    {
-      heading: 'The Morning After the Ages',
-      paras: [
-        "I woke to the sound of birdsong—the first living sound I had heard in that valley. The heavy, oppressive silence had vanished, replaced by the crisp, cool air of a normal November morning. The fog had cleared, and a pale, autumn sun was shining through the trees, casting long but healthy shadows across the grass.",
-        "I was lying on the turf outside the manor. Beside me, Holmes was sitting up, his clothes tattered and his face pale, but his eyes were clearer than I had seen them in months. He looked like a man who had stared into the abyss and found that he could still blink.",
-        "\"The machine, Holmes?\" I croaked, my throat feeling as though I had swallowed a handful of sand. \"It is gone, Watson,\" he replied, his voice quiet. \"It consumed itself in a paradox of its own making. When the 'Essence of the Beginning' met the 'Solvent of the End,' the local time-field collapsed under the weight of its own contradiction. The Count... well, he was always an anomaly. Without his machine to anchor him to the 'Now,' he simply ceased to 'be' in our current epoch. He is a ghost of a future that never arrived.\"",
-        "We hurried back to the study. Sir Alistair Vane was no longer a statue. He was slumped in his chair, his skin warm and his breathing deep and rhythmic. He was sleeping—a deep, restorative sleep of a man who had been underwater for a lifetime and had finally reached the surface. His daughter knelt by his side, her hair still bone-white—a permanent scar of the ordeal—but her eyes were full of a light that had nothing to do with the sun.",
-        "The New Admiralty wing was gone. In its place was a field of fresh, green grass and ancient, undisturbed soil, as if no stone had ever been laid there. The 'Memory Palace' had been edited out of existence by the very forces that sought to make it eternal. The earth had reclaimed its own, and the silence of the valley was now just the silence of peace."
-      ]
-    },
-    {
-      heading: 'The Reflection in the Shard',
-      paras: [
-        "The return to Baker Street was a quiet affair. The world was back to its frantic, noisy self, but to us, it felt strangely fragile. Holmes returned to his chemical retorts, but he did not light the Bunsen burner. He sat by the window for hours, watching the crowds on the street below with a look of profound, quiet contemplation.",
-        "\"You saved a man's soul, Holmes,\" I said that evening, pouring a glass of brandy for us both. \"And you stopped a madman from turning the world into a museum of horrors. Is that not enough to chase away the 'black dog'?\"",
-        "\"Did I, Watson? Or did I merely return the world to its natural state of slow, agonizing decay?\" He looked at his own hand, tracing the lines on his palm as if he expected them to fade. \"Logic is a depressing business. It strips away the gilding of our vanity and leaves only the iron of our mortality. The Count was a monster, yes, but his fear was a profoundly human one. He feared the 'Nothing' that waits at the end of the hour. We all do. We fill our lives with cases, with brandy, with stories... all to drown out the sound of the clock.\"",
-        "He picked up his violin and began to play. It wasn't a lament this time, but a strange, complex piece that seemed to mimic the ticking of a watch, but with a melody that soared above the rhythm, defiant and beautiful in its briefness. It was the music of a man who knew he was dying, but intended to enjoy the tune.",
-        "\"The public will never hear of this, I assume?\" I asked, picking up my pen.",
-        "\"The public would not believe it, Watson. They want a world where things stay put, where the floor is solid and the past is a book they can close. They are not ready for a world made of light and shadow, where the very air can turn you to stone if you stop moving. No, let them have their Jubilees and their permanence. It is the kindest lie we can tell them.\"",
-        "And so, the master of the mind returned to the small mysteries of the world, using the little puzzles of missing cats and stolen jewels to keep the great, terrifying silence of the universe at bay. I watched him, my friend and the most singular man I have ever known, and as I wrote these final words, I felt the glorious, fleeting reality of the present. The 'Adventure of the Ossified Hour' would stay in my tin dispatch-box, a secret shared only by the ghosts of Highgate and the man who outran Time."
-      ]
-    }
-  ]
-};
-
-    
     /* ══════════════════════════════════════════════
        READER LOGIC
     ══════════════════════════════════════════════ */
