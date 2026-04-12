@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@300;400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    /* ── TOKENS (mirrors index.html exactly) ─────────────────── */
     :root{
       --bg:#060810; --surface:#0a0d16; --surface2:#0f1320; --surface3:#141828;
       --border:rgba(80,130,255,0.08); --border-hi:rgba(80,130,255,0.22);
@@ -22,11 +21,12 @@
       --serif:'Playfair Display',Georgia,serif;
       --body:'Source Serif 4',Georgia,serif;
       --grid:rgba(80,130,255,0.028);
-      /* story palette — gold/amber/sepia */
       --s1:#d4a017; --s2:#c47a2a; --s3:#9b59b6;
       --s1-bg:rgba(212,160,23,0.07);  --s1-bdr:rgba(212,160,23,0.2);
       --s2-bg:rgba(196,122,42,0.07);  --s2-bdr:rgba(196,122,42,0.2);
       --s3-bg:rgba(155,89,182,0.07);  --s3-bdr:rgba(155,89,182,0.2);
+      /* psychological / noir badge */
+      --noir:#c0392b; --noir-bg:rgba(192,57,43,0.07); --noir-bdr:rgba(192,57,43,0.2);
     }
     html.light{
       --bg:#f2f4fa; --surface:#ffffff; --surface2:#eaecf5; --surface3:#e0e4f0;
@@ -37,6 +37,7 @@
       --s1:#9a6f00; --s1-bg:rgba(154,111,0,0.07);  --s1-bdr:rgba(154,111,0,0.2);
       --s2:#8a4a10; --s2-bg:rgba(138,74,16,0.07);  --s2-bdr:rgba(138,74,16,0.2);
       --s3:#6a2f9a; --s3-bg:rgba(106,47,154,0.07); --s3-bdr:rgba(106,47,154,0.2);
+      --noir:#922b21; --noir-bg:rgba(146,43,33,0.07); --noir-bdr:rgba(146,43,33,0.2);
     }
     html.light body{background:var(--bg);}
     html.light body::before{opacity:0.55;}
@@ -47,18 +48,8 @@
 
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
-    body{
-      background:var(--bg);color:var(--text);
-      font-family:var(--body);font-size:15px;line-height:1.75;
-      -webkit-font-smoothing:antialiased;overflow-x:hidden;
-      transition:background-color 0.35s,color 0.35s;
-    }
-
-    body::before{
-      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-      background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-      background-size:40px 40px; transition:opacity 0.35s;
-    }
+    body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background-color 0.35s,color 0.35s;}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:40px 40px;transition:opacity 0.35s;}
     body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");background-size:160px;}
 
     ::-webkit-scrollbar{width:5px;}
@@ -90,7 +81,6 @@
 
     .left{position:sticky;top:28px;display:flex;flex-direction:column;align-items:center;text-align:center;animation:slideIn 0.8s cubic-bezier(0.22,1,0.36,1) both;}
     @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-
     .avatar-wrap{position:relative;width:178px;height:178px;margin-bottom:22px;}
     .avatar-ring-outer{position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,var(--s1) 0%,var(--s2) 35%,var(--s3) 68%,var(--s1) 100%);animation:rotateRing 8s linear infinite;opacity:0.55;}
     @keyframes rotateRing{to{transform:rotate(360deg)}}
@@ -98,17 +88,13 @@
     .avatar{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:var(--surface2);display:flex;align-items:center;justify-content:center;}
     .avatar img{width:100%;height:100%;object-fit:cover;display:block;}
     .avatar-init{font-family:var(--serif);font-size:48px;color:rgba(212,160,23,0.18);}
-
     .name-card{margin-bottom:16px;width:100%;}
     h1.name{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text);line-height:1.15;}
     .affil-line{margin-top:7px;font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:0.3px;}
-
     .role-pill{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:9px;font-family:var(--mono);letter-spacing:1.8px;text-transform:uppercase;color:var(--s1);background:var(--s1-bg);border:1px solid var(--s1-bdr);padding:5px 14px;border-radius:99px;}
     .role-pill::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--s2);animation:pulseDot 2s ease-in-out infinite;}
     @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
-
     .divider{width:80%;height:1px;background:linear-gradient(to right,transparent,rgba(212,160,23,0.18),transparent);margin:14px 0;}
-
     .contact-icons{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:14px;}
     .icon-btn{width:38px;height:38px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--muted2);font-size:14px;transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);}
     .icon-btn:hover{color:var(--s1);border-color:var(--s1-bdr);transform:translateY(-3px) scale(1.08);box-shadow:0 6px 18px rgba(212,160,23,0.12);}
@@ -117,13 +103,11 @@
     html.light .icon-btn[title="GitHub"]:hover{color:#111;border-color:rgba(0,0,0,0.25);}
     .icon-btn[title="Medium"]:hover{color:#00ab6c;border-color:rgba(0,171,108,0.4);box-shadow:none;}
     .icon-btn[title="Quora"]:hover{color:#b92b27;border-color:rgba(185,43,39,0.4);box-shadow:none;}
-
     .back-btn{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mono);letter-spacing:1.8px;text-transform:uppercase;color:var(--muted2);text-decoration:none;background:var(--surface2);border:1px solid var(--border);padding:9px 18px;border-radius:7px;transition:all 0.2s ease;width:100%;justify-content:center;}
     .back-btn:hover{color:var(--s1);border-color:var(--s1-bdr);background:var(--s1-bg);}
 
     .main{animation:fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.12s both;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-
     .top-nav{display:flex;gap:5px;align-items:center;margin-bottom:28px;flex-wrap:wrap;}
     .nav-link{color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:6px 13px;border-radius:6px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-family:var(--mono);transition:all 0.18s ease;}
     .nav-link:hover{color:var(--s1);background:var(--s1-bg);border-color:var(--s1-bdr);}
@@ -146,37 +130,24 @@
     .chip.active{box-shadow:0 0 0 1px var(--s1) inset;}
 
     .stories-list{display:flex;flex-direction:column;gap:16px;}
-
-    .story-card{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--radius);
-      display:grid;grid-template-columns:1fr 52px;
-      position:relative;overflow:hidden;
-      opacity:0;transform:translateY(14px);
-      animation:fadeUp 0.45s ease-out forwards;
-      transition:border-color 0.3s,box-shadow 0.3s,background-color 0.35s,transform 0.28s;
-    }
+    .story-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);display:grid;grid-template-columns:1fr 52px;position:relative;overflow:hidden;opacity:0;transform:translateY(14px);animation:fadeUp 0.45s ease-out forwards;transition:border-color 0.3s,box-shadow 0.3s,background-color 0.35s,transform 0.28s;}
     .story-card:nth-child(1){animation-delay:0.06s}
     .story-card:nth-child(2){animation-delay:0.12s}
     .story-card:nth-child(3){animation-delay:0.18s}
-
     .story-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;transform:scaleX(0);transform-origin:left;transition:transform 0.35s ease;}
     .story-card:hover::before{transform:scaleX(1);}
     .genre-mystery::before{background:linear-gradient(to right,var(--s1),var(--s2));}
     .genre-scifi::before{background:linear-gradient(to right,var(--accent),var(--accent2));}
     .genre-philosophy::before{background:linear-gradient(to right,var(--s3),var(--accent2));}
-
-    .story-card:hover{
-      transform:translateY(-4px);
-      box-shadow:0 16px 40px rgba(0,0,0,0.22);
-    }
+    .genre-psychological::before{background:linear-gradient(to right,var(--noir),var(--s3));}
+    .story-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.22);}
     html.light .story-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.07);}
     .genre-mystery:hover{border-color:var(--s1-bdr);}
     .genre-scifi:hover{border-color:rgba(91,143,255,0.3);}
     .genre-philosophy:hover{border-color:var(--s3-bdr);}
+    .genre-psychological:hover{border-color:var(--noir-bdr);}
 
     .story-body{padding:22px 24px;display:flex;flex-direction:column;}
-
     .story-tags{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
     .story-badge{font-size:9px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:4px;}
     .badge-mystery   {color:var(--s1);background:var(--s1-bg);border:1px solid var(--s1-bdr);}
@@ -185,110 +156,62 @@
     .badge-original  {color:var(--accent3);background:rgba(31,185,142,0.07);border:1px solid rgba(31,185,142,0.18);}
     .badge-coming    {color:var(--muted);background:var(--surface3);border:1px solid var(--border);}
     .badge-wc        {font-size:9px;font-family:var(--mono);letter-spacing:0.5px;color:var(--muted);background:var(--surface3);border:1px solid var(--border);padding:3px 9px;border-radius:4px;}
+    /* FIX: define badge-noir */
+    .badge-noir      {color:var(--noir);background:var(--noir-bg);border:1px solid var(--noir-bdr);}
 
     .story-title{font-family:var(--serif);font-size:20px;font-weight:600;font-style:italic;color:var(--text);line-height:1.3;margin-bottom:7px;transition:color 0.2s;}
     .genre-mystery:hover .story-title{color:var(--s1);}
     .genre-scifi:hover .story-title{color:var(--accent);}
     .genre-philosophy:hover .story-title{color:var(--s3);}
+    .genre-psychological:hover .story-title{color:var(--noir);}
 
     .story-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:12px;}
     .story-meta i{margin-right:3px;}
-
-    .story-excerpt{font-size:13.5px;color:var(--muted2);line-height:1.8;flex:1;
-      display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
-
+    .story-excerpt{font-size:13.5px;color:var(--muted2);line-height:1.8;flex:1;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
     .story-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:13px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px;}
-
     .read-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:gap 0.2s;}
     .genre-mystery .read-link{color:var(--s1);}
     .genre-scifi .read-link{color:var(--accent);}
     .genre-philosophy .read-link{color:var(--s3);}
+    .genre-psychological .read-link{color:var(--noir);}
     .story-card:hover .read-link{gap:10px;}
     .read-link i{font-size:9px;transition:transform 0.2s;}
     .story-card:hover .read-link i{transform:translateX(3px);}
-
     .read-time-badge{font-size:10px;font-family:var(--mono);color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:3px 10px;border-radius:99px;}
 
-    .story-num{
-      display:flex;align-items:flex-start;justify-content:center;
-      padding-top:26px;
-      font-family:var(--serif);font-size:38px;font-style:italic;font-weight:600;
-      color:rgba(212,160,23,0.08);line-height:1;
-      border-left:1px solid var(--border);
-      transition:color 0.3s,border-color 0.3s;
-      user-select:none;
-    }
+    .story-num{display:flex;align-items:flex-start;justify-content:center;padding-top:26px;font-family:var(--serif);font-size:38px;font-style:italic;font-weight:600;color:rgba(212,160,23,0.08);line-height:1;border-left:1px solid var(--border);transition:color 0.3s,border-color 0.3s;user-select:none;}
     .genre-mystery:hover .story-num{color:rgba(212,160,23,0.18);border-color:var(--s1-bdr);}
     .genre-scifi:hover .story-num{color:rgba(91,143,255,0.16);border-color:rgba(91,143,255,0.2);}
     .genre-philosophy:hover .story-num{color:rgba(155,89,182,0.18);border-color:var(--s3-bdr);}
+    .genre-psychological:hover .story-num{color:rgba(192,57,43,0.18);border-color:var(--noir-bdr);}
 
-    .story-card.coming-soon{opacity:0.5;pointer-events:none;animation-delay:0.12s;}
+    .story-card.coming-soon{opacity:0.5;pointer-events:none;}
     .story-card.coming-soon .story-title{font-style:italic;}
 
-    #story-overlay{
-      position:fixed;inset:0;z-index:500;
-      display:flex;align-items:flex-start;justify-content:center;
-      padding:40px 16px 40px;
-      opacity:0;visibility:hidden;
-      transition:opacity 0.4s ease,visibility 0.4s ease;
-      overflow-y:auto;
-    }
+    #story-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px 40px;opacity:0;visibility:hidden;transition:opacity 0.4s ease,visibility 0.4s ease;overflow-y:auto;}
     #story-overlay.open{opacity:1;visibility:visible;}
-    #story-overlay::before{
-      content:'';position:fixed;inset:0;
-      background:rgba(6,8,16,0.93);
-      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-    }
+    #story-overlay::before{content:'';position:fixed;inset:0;background:rgba(6,8,16,0.93);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
     html.light #story-overlay::before{background:rgba(242,244,250,0.93);}
-
-    .story-reader{
-      position:relative;z-index:1;
-      max-width:740px;width:100%;
-      background:var(--surface);
-      border:1px solid var(--s1-bdr);
-      border-radius:16px;
-      padding:56px 60px;
-      box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(212,160,23,0.06);
-      transform:translateY(16px) scale(0.98);
-      transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);
-    }
+    .story-reader{position:relative;z-index:1;max-width:740px;width:100%;background:var(--surface);border:1px solid var(--s1-bdr);border-radius:16px;padding:56px 60px;box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(212,160,23,0.06);transform:translateY(16px) scale(0.98);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);}
     #story-overlay.open .story-reader{transform:translateY(0) scale(1);}
     html.light .story-reader{box-shadow:0 20px 60px rgba(0,0,0,0.1);}
-
     .sr-close{position:absolute;top:20px;right:20px;background:transparent;border:1px solid var(--border);color:var(--muted);width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all 0.2s ease;}
     .sr-close:hover{color:var(--s1);border-color:var(--s1-bdr);background:var(--s1-bg);}
-
     .sr-rule{display:flex;align-items:center;gap:14px;margin-bottom:28px;}
     .sr-rule::before,.sr-rule::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(212,160,23,0.22),transparent);}
     .sr-rule-icon{color:rgba(212,160,23,0.35);font-size:14px;}
-
     .sr-genre-row{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
     .sr-title{font-family:var(--serif);font-size:28px;font-weight:700;font-style:italic;color:var(--text);line-height:1.25;margin-bottom:10px;letter-spacing:-0.2px;}
     .sr-meta{font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:32px;display:flex;gap:16px;flex-wrap:wrap;}
-
     .sr-body{font-family:var(--body);font-size:16px;line-height:2;color:var(--muted2);}
     html.light .sr-body{color:#2a3a50;}
-
-    .sr-body h2{
-      font-family:var(--serif);font-size:20px;font-weight:600;font-style:italic;
-      color:var(--s1);margin:40px 0 16px;
-      display:flex;align-items:center;gap:12px;
-    }
+    .sr-body h2{font-family:var(--serif);font-size:20px;font-weight:600;font-style:italic;color:var(--s1);margin:40px 0 16px;display:flex;align-items:center;gap:12px;}
     .sr-body h2::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--s1-bdr),transparent);}
-
     .sr-body p{margin-bottom:20px;}
-    .sr-body p:first-child::first-letter{
-      font-family:var(--serif);font-size:58px;font-weight:700;
-      color:var(--s1);float:left;line-height:0.85;
-      margin:4px 8px -2px 0;
-      text-shadow:2px 2px 0px rgba(212,160,23,0.12);
-    }
-
+    .sr-body p:first-child::first-letter{font-family:var(--serif);font-size:58px;font-weight:700;color:var(--s1);float:left;line-height:0.85;margin:4px 8px -2px 0;text-shadow:2px 2px 0px rgba(212,160,23,0.12);}
     .sr-body em{color:var(--text);font-style:italic;}
     .sr-body strong{color:var(--text);font-weight:600;}
-
     .sr-end{text-align:center;margin-top:48px;color:rgba(212,160,23,0.25);font-size:20px;letter-spacing:8px;}
-
     .sr-footer{margin-top:36px;padding-top:20px;border-top:1px solid rgba(212,160,23,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
     .sr-author{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--muted2);}
     .sr-scroll-top{background:transparent;border:1px solid var(--s1-bdr);color:var(--s1);padding:6px 16px;border-radius:6px;cursor:pointer;font-size:10px;font-family:var(--mono);letter-spacing:1.2px;text-transform:uppercase;transition:all 0.2s ease;}
@@ -345,7 +268,6 @@
 
   <div class="wrap">
 
-    <!-- SIDEBAR -->
     <aside class="left">
       <div class="avatar-wrap">
         <div class="avatar-ring-outer"></div>
@@ -375,41 +297,37 @@
       </a>
     </aside>
 
-    <!-- MAIN -->
     <main class="main">
-
-      <!-- Breadcrumb -->
       <nav class="top-nav">
         <a href="index.html" class="nav-link"><i class="fa-solid fa-house" style="margin-right:5px"></i>Home</a>
         <span class="nav-sep">›</span>
         <a href="#" class="nav-link" style="color:var(--s1);border-color:var(--s1-bdr);">Stories</a>
       </nav>
 
-      <!-- Page header -->
       <div class="page-header reveal">
         <div class="page-header-inner">
           <div class="page-icon"><i class="fa-solid fa-book-open"></i></div>
           <div>
             <h2>Short Stories</h2>
             <p>Original fiction — mystery, speculative science, and philosophical prose. Click any story to read it here in full.</p>
+            <!-- FIX: updated to 3 stories -->
             <div class="story-count">
               <span class="story-count-dot"></span>
-              2 Stories published &nbsp;·&nbsp; Mystery · Speculative Fiction
+              3 Stories published &nbsp;·&nbsp; Mystery · Speculative · Psychological
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Filter chips -->
       <div class="filter-row reveal">
         <span class="filter-label">Genre:</span>
         <button class="chip active" data-filter="all">All</button>
         <button class="chip" data-filter="mystery">Mystery</button>
         <button class="chip" data-filter="scifi">Speculative</button>
+        <button class="chip" data-filter="psychological">Psychological</button>
         <button class="chip" data-filter="philosophy">Philosophy</button>
       </div>
 
-      <!-- Story list -->
       <div class="stories-list reveal" id="stories-list">
 
         <!-- STORY 1 -->
@@ -464,11 +382,9 @@
           <div class="story-num">2</div>
         </div>
 
-
-
         <!-- STORY 3 -->
-
-        <div class="story-card genre-mystery" data-tags="mystery,psychological" onclick="openStory('s3')" style="cursor:pointer;" role="button" tabindex="0" aria-label="Read: The Adventure of the Echoing Guest">
+        <!-- FIX: genre class + data-tags updated to match filter chip -->
+        <div class="story-card genre-psychological" data-tags="mystery,psychological" onclick="openStory('s3')" style="cursor:pointer;" role="button" tabindex="0" aria-label="Read: The Adventure of the Echoing Guest">
           <div class="story-body">
             <div class="story-tags">
               <span class="story-badge badge-mystery"><i class="fa-solid fa-magnifying-glass" style="margin-right:4px"></i>Mystery</span>
@@ -493,10 +409,7 @@
           <div class="story-num">3</div>
         </div>
 
-             
-
-      </div><!-- /stories-list -->
-
+      </div>
     </main>
 
     <footer>
@@ -508,9 +421,8 @@
       </nav>
     </footer>
 
-  </div><!-- /wrap -->
+  </div>
 
-  <!-- STORY READER OVERLAY -->
   <div id="story-overlay" role="dialog" aria-modal="true" aria-label="Story reader">
     <div class="story-reader" id="story-reader-box">
       <button class="sr-close" onclick="closeStory()" aria-label="Close story"><i class="fa-solid fa-xmark"></i></button>
@@ -528,10 +440,8 @@
   </div>
 
   <script>
-    /* LOADER */
     window.addEventListener('load',()=>{ setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1000); });
 
-    /* THEME */
     const html=document.documentElement;
     if(localStorage.getItem('theme')==='light') html.classList.add('light');
     document.getElementById('theme-toggle').addEventListener('click',()=>{
@@ -539,13 +449,11 @@
       localStorage.setItem('theme',html.classList.contains('light')?'light':'dark');
     });
 
-    /* SCROLL PROGRESS */
     window.addEventListener('scroll',()=>{
       const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
       document.getElementById('scroll-progress').style.width=(pct*100)+'%';
     },{passive:true});
 
-    /* CURSOR */
     const dot=document.getElementById('cursor-dot'),ring=document.getElementById('cursor-ring');
     let mx=0,my=0,rx=0,ry=0;
     document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
@@ -556,7 +464,6 @@
     (function animC(){ rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13; dot.style.left=mx+'px'; dot.style.top=my+'px'; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animC); })();
     if('ontouchstart' in window){dot.style.display='none';ring.style.display='none';}
 
-    /* BG CANVAS */
     const cv=document.getElementById('bg-canvas'),cx=cv.getContext('2d');
     let W,H,nodes;
     const PAL=['#d4a017','#c47a2a','#9b59b6','#1fb98e'];
@@ -586,18 +493,15 @@
     initCv();drawCv();
     window.addEventListener('resize',initCv);
 
-    /* SCROLL REVEAL */
     const revObs=new IntersectionObserver(es=>{
       es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
     },{threshold:0.07});
     document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
 
-    /* KEYBOARD OPEN */
     document.querySelectorAll('[role=button]').forEach(el=>{
       el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
     });
 
-    /* FILTER CHIPS */
     const chips=document.querySelectorAll('.chip');
     const cards=document.querySelectorAll('#stories-list .story-card');
     chips.forEach(chip=>{
@@ -835,101 +739,90 @@
             ]
           },
         ]
+      },
+
+      /* FIX: s3 properly added inside STORIES with correct syntax */
+      s3: {
+        title: 'The Adventure of the Echoing Guest',
+        genres: [
+          { text: 'Mystery', cls: 'badge-mystery' },
+          { text: 'Psychological', cls: 'badge-noir' },
+          { text: 'Original', cls: 'badge-original' },
+        ],
+        meta: { words: '~4,500 words', read: '20 min read', universe: 'Sherlock Holmes Universe' },
+        sections: [
+          {
+            heading: null,
+            paras: [
+              `London in the winter of 1896 was not a city of stone and mortar, but a city of breath and shadow. A persistent, bone-chilling sleet had turned the streets into a dark mirror, reflecting the flickering gaslights and the desperate faces of the millions who scurried beneath the soot-stained sky. Inside 221B Baker Street, the silence was so heavy it felt tangible, broken only by the rhythmic scratching of my pen and the occasional hiss of a coal settling in the grate.`,
+              `Sherlock Holmes was in one of his most unreachable humors. He had spent the morning staring at the pattern of the wallpaper, his long, pallid fingers interlaced, his eyes vacant and terrifyingly still. He had not eaten since Sunday, and the gauntness of his cheeks gave him the appearance of a medieval ascetic waiting for a vision that refused to come.`,
+              `"The terrifying thing about the human mind, Watson," he said, his voice a low, melodic thrum that seemed to emerge from the walls themselves, "is its desperate need for causality. We see a shadow and we invent a ghost. We see a bloodstain and we invent a monster. But the true horror lies in the vacuum—the crime that has no motive, the presence that leaves no trace, the life that is lived in the margins of another man's existence."`,
+              `"You are speaking in riddles again, Holmes," I said, setting aside my medical journals. "The world is quite solid enough for most of us. A man eats, he works, he sleeps, and eventually, he ceases. There is no vacuum in that."`,
+              `"Is there not?" Holmes turned his head, his grey eyes suddenly igniting with a cold, predatory light. "Consider the man who lives in a crowd but is never seen. Consider the life that is a perfect reflection of another, yet possesses no light of its own. I find the 'simple' life to be the most profound deception of all. We are all just echoes, Watson. Some of us just happen to sound louder than the original."`,
+              `Our philosophical drift was interrupted by the arrival of a client who looked as though he had been pursued through the fog by a nightmare. Mr. Arthur Penhaligon was a man of fastidious habits, his frock coat brushed to a shine, yet his hands shook with a palsy that suggested a total collapse of the nervous system. He did not sit; he hovered near the door, as if afraid that the furniture might move if he took his eyes off it.`,
+              `"I am not a madman, Mr. Holmes," he began, his voice a thin, reedy whistle. "But I am a man who has lost his shadow. I live alone in a house in Chelsea—a quiet house, a dead house. But for the last month, I have been sharing it with a guest who does not exist. There are no footsteps. There are no voices. But every morning, the world is... subtly rearranged."`,
+              `Holmes leaned forward, the lethargy of his mood replaced by a sharp, needle-like focus. "Rearranged? Give me the specifics, Mr. Penhaligon. Details are the only currency I accept."`,
+              `"My books, sir," Penhaligon whispered. "I am a collector of rare Latin treatises. I keep them in a specific, chronological order. But every night, they are moved. Not stolen—moved. They are rearranged not by date, but by <em>theme</em>. Passages are marked with a fingernail, indentations in the paper that form sentences I never wrote. My clothes are worn and then returned to the wardrobe, still warm with the heat of a body that is not mine. And last night... last night I found a cup of tea on my bedside table. It was still steaming. I live alone, Mr. Holmes. I lock my doors. I bolt my windows. Yet someone is living my life alongside me, and they are doing a better job of it than I am."`,
+            ]
+          },
+          {
+            heading: 'The Geometry of a Ghost',
+            paras: [
+              `"A parasite of identity," Holmes murmured, rising and reaching for his heavy Ulster coat. "A most refreshing change from the vulgarity of the street-thief. Come, Watson. We must see this house. I wish to see the tea that was brewed by a ghost."`,
+              `The house in Chelsea was a tall, narrow structure of blackened brick, standing between two larger estates like an afterthought. Inside, the atmosphere was one of stifling, airless precision. Every ornament was placed with mathematical exactitude; every rug was aligned with the floorboards. It was the home of a man who used order as a fortress against the chaos of his own mind.`,
+              `Holmes did not begin by looking for hidden doors or broken locks. Instead, he walked to the library and began to run his fingers over the spines of the Latin volumes. "The Art of Memory, The Divine Proportion, The Architecture of Silence... your guest has a predilection for the abstract, Mr. Penhaligon. They are not interested in your wealth; they are interested in your intellect."`,
+              `I watched as Holmes examined the bedside table where the mysterious tea had appeared. He did not look at the cup. He looked at the dust on the base of the lamp. "Tell me, Mr. Penhaligon, do you ever find yourself waking up with a headache? A feeling of profound, leaden exhaustion?"`,
+              `"Every morning, sir. I assumed it was the stress of the haunting."`,
+              `"Or the cause of it," Holmes muttered. He turned to me, his face a mask of inscrutable thought. "Watson, look at the patient. Observe the pallor of the skin, the slight tremor in the right eyelid, the scent of bitter almonds clinging to the hair. What do you see?"`,
+              `"Exhaustion, certainly," I replied. "Perhaps a slow-acting poison? Arsenic?"`,
+              `"No, not poison. A displacement. Mr. Penhaligon, your guest is not coming from the outside. The house is perfectly sealed. The locks are unpicked. The windows are undisturbed. The rearrangement of your life is being conducted by a master of the house, and there is only one master here."`,
+              `"You mean... I am doing this to myself?" Penhaligon cried, his face contorting with horror. "I am moving my own books? I am wearing my own clothes in my sleep?"`,
+              `"In a sense," Holmes said, his voice dropping to a somber, hollow tone. "But the hand that moves the books is not the hand that signs your checks. There is a second occupant in that brain of yours, a 'shadow-self' that has grown tired of your mediocrity. It is waking up when you sleep, seeking the intellectual stimulation you deny it during the day. You are not being haunted by a ghost, sir. You are being haunted by the man you were meant to be."`,
+            ]
+          },
+          {
+            heading: 'The Silent Dialogue',
+            paras: [
+              `The mind-twist of the case lay not in a secret passageway, but in the terrifying realization of the human psyche's capacity for fracture. Holmes sat in the dark library of the Chelsea house, the only light coming from the glowing tip of his cigarette. He had sent Penhaligon to bed, under the strict instruction that he was not to resist the 'sleep' when it came.`,
+              `"We are waiting for the shadow, Watson," Holmes whispered. "The human mind is like a house with many rooms. Most of us live in the parlor, unaware of the entities residing in the cellar. But occasionally, the cellar door is left unbolted. Mr. Penhaligon has spent forty years being a dull, uninspired clerk. His subconscious, however, is a genius. It is a polymath that has been starved for decades. It is now feeding itself."`,
+              `Hours passed in a silence so deep I could hear the pulse in my own temples. Then, at precisely two in the morning, the door to the bedroom creaked open.`,
+              `Arthur Penhaligon walked into the room. But he was no longer the trembling, broken man we had met that morning. His posture was regal; his eyes, though glazed, burned with a terrifying, cold intelligence. He moved to the library shelf and began to pull down books with a fluid, practiced grace. He opened a notebook and began to write, his pen flying across the page in a complex, elegant script that bore no resemblance to his usual cramped hand.`,
+              `"Observe," Holmes breathed. "The muscle memory is different. The breathing is deeper. This is not a man walking in his sleep; this is a different man inhabiting the same meat."`,
+              `I watched in fascinated horror as the 'Shadow-Penhaligon' brewed a pot of tea, his movements precise and effortless. He sat in the armchair and began to read, his face a mask of profound, tragic beauty. He looked like a man who had finally found his home, only to realize he was a trespasser in his own body.`,
+              `Suddenly, the figure stopped. He turned his head and looked directly at the corner where we sat in shadow. He didn't scream. He didn't run. He simply smiled—a sad, knowing smile that made my heart go cold.`,
+              `"He knows we are here, Watson," Holmes said, stepping into the light. "And he knows his time is short."`,
+            ]
+          },
+          {
+            heading: 'The Final Erasure',
+            paras: [
+              `The confrontation was not one of violence, but of a devastating, psychological surrender. The Shadow-Penhaligon spoke, and his voice was not the reedy whistle of the client, but a rich, resonant baritone that filled the room.`,
+              `"You have found me out, Mr. Holmes," the shadow said. "I suppose it was inevitable. You are the only other man in London who understands the loneliness of an unused mind. I am the 'might-have-been.' I am the architect who never built, the poet who never wrote. I have lived in the cracks of Arthur's dullness for forty years, waiting for a chance to breathe."`,
+              `"You are killing him," I said, stepping forward. "The strain on his heart, the metabolic cost of your 'sessions'... he cannot sustain two lives."`,
+              `"He is already dead!" the shadow snapped, his eyes flashing with a terrible fire. "He is a walking corpse of routine and habit! I am the only thing in this body that is truly alive! I am the one who understands the Latin, the one who sees the patterns in the stars! If I go back into the cellar, Arthur becomes a vegetable. If I stay, he becomes a memory. Which is the greater crime, Mr. Holmes?"`,
+              `Holmes stood silent for a long moment, his features carved in an expression of such profound melancholy that it rivaled the shadow's own. "The tragedy of existence, sir, is that the world only has room for one version of us. To be 'whole' is often to be mediocre. To be 'brilliant' is often to be broken."`,
+              `Holmes reached into his pocket and produced a small, silver snuff-box. "This is a concentrated sedative of my own design. If Arthur takes it, the 'cellar door' will be bolted forever. The genius will die, and the clerk will live. It is a murder of the soul to save the body."`,
+              `The shadow looked at the box, then at the books he had so carefully rearranged. He looked at the tea, the small comfort of a life he could never truly own. "Give it to him," he whispered. "A man cannot live as an echo. The silence is preferable to a stolen voice."`,
+              `The figure collapsed. When Arthur Penhaligon woke an hour later, he was the trembling, dull man he had always been. He remembered nothing. He looked at the books on the floor and apologized for the mess. He was safe. He was whole. And he was utterly, devastatingly uninteresting.`,
+            ]
+          },
+          {
+            heading: 'The Reflection in the Shard',
+            paras: [
+              `The return to Baker Street was a journey through a London that felt thinner, more ephemeral than before. Holmes sat by the fire, his violin across his knees, but he did not play. He stared at the flame, his eyes mirrors of a cold, internal winter.`,
+              `"You did the right thing, Holmes," I said, though the words felt hollow in my mouth. "Penhaligon is himself again."`,
+              `"Is he, Watson? Or did we just execute the only part of him that was worth knowing?" Holmes plucked a single string, a low, dissonant note that seemed to vibrate in the very air. "The world is full of Penhaligons—men who have buried their genius beneath the weight of their own fear. We call them 'sane' because they are predictable. We call them 'healthy' because they do not bother us with their brilliance."`,
+              `"You are being too hard on yourself. You solved the mystery."`,
+              `"There was no mystery, Watson. Only a mirror. I saw myself in that shadow—the man who would rather burn out in a night of madness than flicker for a century in a parlor of routine. We are all haunted, my friend. Some of us are just better at hiding the guests."`,
+              `He turned to the window, watching the fog swallow the street below. "The public will never hear of the 'Echoing Guest.' They want their villains to be tangible—men with knives and greed. They are not ready for a villain that is simply the best version of themselves. No, Watson. Let the record show that Mr. Penhaligon was suffering from a 'nervous affliction' caused by a faulty chimney. It is the kind of truth the world can digest."`,
+              `And so, the master of the mind returned to his silence, a man who had won the case but lost a piece of his own light. I watched him, and for a moment, I saw a shadow behind him—a taller, darker Holmes that did not move when he moved, a ghost of the man who knew too much to ever truly be at peace. We are all echoes, I realized. And tonight, the silence was the only sound left.`,
+            ]
+          },
+        ]
       }
 
+    }; /* end STORIES */
 
-
- s3 = {
-  title: 'The Adventure of the Echoing Guest',
-  genres: [
-    { text: 'Mystery', cls: 'badge-mystery' },
-    { text: 'Psychological', cls: 'badge-noir' },
-    { text: 'Original', cls: 'badge-original' },
-  ],
-  meta: { words: '3,000+ words', read: '25 min read', universe: 'Sherlock Holmes Universe' },
-  sections: [
-    {
-      heading: null,
-      paras: [
-        "London in the winter of 1896 was not a city of stone and mortar, but a city of breath and shadow. A persistent, bone-chilling sleet had turned the streets into a dark mirror, reflecting the flickering gaslights and the desperate faces of the millions who scurried beneath the soot-stained sky. Inside 221B Baker Street, the silence was so heavy it felt tangible, broken only by the rhythmic scratching of my pen and the occasional hiss of a coal settling in the grate.",
-        "Sherlock Holmes was in one of his most unreachable humors. He had spent the morning staring at the pattern of the wallpaper, his long, pallid fingers interlaced, his eyes vacant and terrifyingly still. He had not eaten since Sunday, and the gauntness of his cheeks gave him the appearance of a medieval ascetic waiting for a vision that refused to come.",
-        "\"The terrifying thing about the human mind, Watson,\" he said, his voice a low, melodic thrum that seemed to emerge from the walls themselves, \"is its desperate need for causality. We see a shadow and we invent a ghost. We see a bloodstain and we invent a monster. But the true horror lies in the vacuum—the crime that has no motive, the presence that leaves no trace, the life that is lived in the margins of another man’s existence.\"",
-        "\"You are speaking in riddles again, Holmes,\" I said, setting aside my medical journals. \"The world is quite solid enough for most of us. A man eats, he works, he sleeps, and eventually, he ceases. There is no vacuum in that.\"",
-        "\"Is there not?\" Holmes turned his head, his grey eyes suddenly igniting with a cold, predatory light. \"Consider the man who lives in a crowd but is never seen. Consider the life that is a perfect reflection of another, yet possesses no light of its own. I find the 'simple' life to be the most profound deception of all. We are all just echoes, Watson. Some of us just happen to sound louder than the original.\"",
-        "Our philosophical drift was interrupted by the arrival of a client who looked as though he had been pursued through the fog by a nightmare. **Mr. Arthur Penhaligon** was a man of fastidious habits, his frock coat brushed to a shine, yet his hands shook with a palsy that suggested a total collapse of the nervous system. He did not sit; he hovered near the door, as if afraid that the furniture might move if he took his eyes off it.",
-        "\"I am not a madman, Mr. Holmes,\" he began, his voice a thin, reedy whistle. \"But I am a man who has lost his shadow. I live alone in a house in Chelsea—a quiet house, a dead house. But for the last month, I have been sharing it with a guest who does not exist. There are no footsteps. There are no voices. But every morning, the world is... subtly rearranged.\"",
-        "Holmes leaned forward, the lethargy of his mood replaced by a sharp, needle-like focus. \"Rearranged? Give me the specifics, Mr. Penhaligon. Details are the only currency I accept.\"",
-        "\"My books, sir,\" Penhaligon whispered. \"I am a collector of rare Latin treatises. I keep them in a specific, chronological order. But every night, they are moved. Not stolen—moved. They are rearranged not by date, but by *theme*. Passages are marked with a fingernail, indentations in the paper that form sentences I never wrote. My clothes are worn and then returned to the wardrobe, still warm with the heat of a body that is not mine. And last night... last night I found a cup of tea on my bedside table. It was still steaming. I live alone, Mr. Holmes. I lock my doors. I bolt my windows. Yet someone is living my life alongside me, and they are doing a better job of it than I am.\""
-      ]
-    },
-    {
-      heading: 'The Geometry of a Ghost',
-      paras: [
-        "\"A parasite of identity,\" Holmes murmured, rising and reaching for his heavy Ulster coat. \"A most refreshing change from the vulgarity of the street-thief. Come, Watson. We must see this house. I wish to see the tea that was brewed by a ghost.\"",
-        "The house in Chelsea was a tall, narrow structure of blackened brick, standing between two larger estates like an afterthought. Inside, the atmosphere was one of stifling, airless precision. Every ornament was placed with mathematical exactitude; every rug was aligned with the floorboards. It was the home of a man who used order as a fortress against the chaos of his own mind.",
-        "Holmes did not begin by looking for hidden doors or broken locks. Instead, he walked to the library and began to run his fingers over the spines of the Latin volumes. \"The Art of Memory, The Divine Proportion, The Architecture of Silence... your guest has a predilection for the abstract, Mr. Penhaligon. They are not interested in your wealth; they are interested in your intellect.\"",
-        "I watched as Holmes examined the bedside table where the mysterious tea had appeared. He did not look at the cup. He looked at the dust on the base of the lamp. \"Tell me, Mr. Penhaligon, do you ever find yourself waking up with a headache? A feeling of profound, leaden exhaustion?\"",
-        "\"Every morning, sir. I assumed it was the stress of the haunting.\"",
-        "\"Or the cause of it,\" Holmes muttered. He turned to me, his face a mask of inscrutable thought. \"Watson, look at the patient. Observe the pallor of the skin, the slight tremor in the right eyelid, the scent of bitter almonds clinging to the hair. What do you see?\"",
-        "\"Exhaustion, certainly,\" I replied. \"Perhaps a slow-acting poison? Arsenic?\"",
-        "\"No, not poison. A displacement. Mr. Penhaligon, your guest is not coming from the outside. The house is perfectly sealed. The locks are unpicked. The windows are undisturbed. The rearrange-ment of your life is being conducted by a master of the house, and there is only one master here.\"",
-        "\"You mean... I am doing this to myself?\" Penhaligon cried, his face contorting with horror. \"I am moving my own books? I am wearing my own clothes in my sleep?\"",
-        "\"In a sense,\" Holmes said, his voice dropping to a somber, hollow tone. \"But the hand that moves the books is not the hand that signs your checks. There is a second occupant in that brain of yours, a 'shadow-self' that has grown tired of your mediocrity. It is waking up when you sleep, seeking the intellectual stimulation you deny it during the day. You are not being haunted by a ghost, sir. You are being haunted by the man you were meant to be.\""
-      ]
-    },
-    {
-      heading: 'The Silent Dialogue',
-      paras: [
-        "The mind-twist of the case lay not in a secret passageway, but in the terrifying realization of the human psyche's capacity for fracture. Holmes sat in the dark library of the Chelsea house, the only light coming from the glowing tip of his cigarette. He had sent Penhaligon to bed, under the strict instruction that he was not to resist the 'sleep' when it came.",
-        "\"We are waiting for the shadow, Watson,\" Holmes whispered. \"The human mind is like a house with many rooms. Most of us live in the parlor, unaware of the entities residing in the cellar. But occasionally, the cellar door is left unbolted. Mr. Penhaligon has spent forty years being a dull, uninspired clerk. His subconscious, however, is a genius. It is a polymath that has been starved for decades. It is now feeding itself.\"",
-        "Hours passed in a silence so deep I could hear the pulse in my own temples. Then, at precisely two in the morning, the door to the bedroom creaked open.",
-        "Arthur Penhaligon walked into the room. But he was no longer the trembling, broken man we had met that morning. His posture was regal; his eyes, though glazed, burned with a terrifying, cold intelligence. He moved to the library shelf and began to pull down books with a fluid, practiced grace. He opened a notebook and began to write, his pen flying across the page in a complex, elegant script that bore no resemblance to his usual cramped hand.",
-        "\"Observe,\" Holmes breathed. \"The muscle memory is different. The breathing is deeper. This is not a man walking in his sleep; this is a different man inhabiting the same meat.\"",
-        "I watched in fascinated horror as the 'Shadow-Penhaligon' brewed a pot of tea, his movements precise and effortless. He sat in the armchair and began to read, his face a mask of profound, tragic beauty. He looked like a man who had finally found his home, only to realize he was a trespasser in his own body.",
-        "Suddenly, the figure stopped. He turned his head and looked directly at the corner where we sat in shadow. He didn't scream. He didn't run. He simply smiled—a sad, knowing smile that made my heart go cold.",
-        "\"He knows we are here, Watson,\" Holmes said, stepping into the light. \"And he knows his time is short.\""
-      ]
-    },
-    {
-      heading: 'The Final Erasure',
-      paras: [
-        "The confrontation was not one of violence, but of a devastating, psychological surrender. The Shadow-Penhaligon spoke, and his voice was not the reedy whistle of the client, but a rich, resonant baritone that filled the room.",
-        "\"You have found me out, Mr. Holmes,\" the shadow said. \"I suppose it was inevitable. You are the only other man in London who understands the loneliness of an unused mind. I am the 'might-have-been.' I am the architect who never built, the poet who never wrote. I have lived in the cracks of Arthur’s dullness for forty years, waiting for a chance to breathe.\"",
-        "\"You are killing him,\" I said, stepping forward. \"The strain on his heart, the metabolic cost of your 'sessions'... he cannot sustain two lives.\"",
-        "\"He is already dead!\" the shadow snapped, his eyes flashing with a terrible fire. \"He is a walking corpse of routine and habit! I am the only thing in this body that is truly alive! I am the one who understands the Latin, the one who sees the patterns in the stars! If I go back into the cellar, Arthur becomes a vegetable. If I stay, he becomes a memory. Which is the greater crime, Mr. Holmes?\"",
-        "Holmes stood silent for a long moment, his features carved in an expression of such profound melancholy that it rivaled the shadow’s own. \"The tragedy of existence, sir, is that the world only has room for one version of us. To be 'whole' is often to be mediocre. To be 'brilliant' is often to be broken.\"",
-        "Holmes reached into his pocket and produced a small, silver snuff-box. \"This is a concentrated sedative of my own design. If Arthur takes it, the 'cellar door' will be bolted forever. The genius will die, and the clerk will live. It is a murder of the soul to save the body.\"",
-        "The shadow looked at the box, then at the books he had so carefully rearranged. He looked at the tea, the small comfort of a life he could never truly own. \"Give it to him,\" he whispered. \"A man cannot live as an echo. The silence is preferable to a stolen voice.\"",
-        "The figure collapsed. When Arthur Penhaligon woke an hour later, he was the trembling, dull man he had always been. He remembered nothing. He looked at the books on the floor and apologized for the mess. He was safe. He was whole. And he was utterly, devastatingly uninteresting."
-      ]
-    },
-    {
-      heading: 'The Reflection in the Shard',
-      paras: [
-        "The return to Baker Street was a journey through a London that felt thinner, more ephemeral than before. Holmes sat by the fire, his violin across his knees, but he did not play. He stared at the flame, his eyes mirrors of a cold, internal winter.",
-        "\"You did the right thing, Holmes,\" I said, though the words felt hollow in my mouth. \"Penhaligon is himself again.\"",
-        "\"Is he, Watson? Or did we just execute the only part of him that was worth knowing?\" Holmes plucked a single string, a low, dissonant note that seemed to vibrate in the very air. \"The world is full of Penhaligons—men who have buried their genius beneath the weight of their own fear. We call them 'sane' because they are predictable. We call them 'healthy' because they do not bother us with their brilliance.\"",
-        "\"You are being too hard on yourself. You solved the mystery.\"",
-        "\"There was no mystery, Watson. Only a mirror. I saw myself in that shadow—the man who would rather burn out in a night of madness than flicker for a century in a parlor of routine. We are all haunted, my friend. Some of us are just better at hiding the guests.\"",
-        "He turned to the window, watching the fog swallow the street below. \"The public will never hear of the 'Echoing Guest.' They want their villains to be tangible—men with knives and greed. They are not ready for a villain that is simply the best version of themselves. No, Watson. Let the record show that Mr. Penhaligon was suffering from a 'nervous affliction' caused by a faulty chimney. It is the kind of truth the world can digest.\"",
-        "And so, the master of the mind returned to his silence, a man who had won the case but lost a piece of his own light. I watched him, and for a moment, I saw a shadow behind him—a taller, darker Holmes that did not move when he moved, a ghost of the man who knew too much to ever truly be at peace. We are all echoes, I realized. And tonight, the silence was the only sound left."
-      ]
-    }
-  ]
-          }
-};
-
-
-
-
-
-
-
-
-
-
-
-    
     /* ══════════════════════════════════════════════
        READER LOGIC
     ══════════════════════════════════════════════ */
@@ -943,20 +836,15 @@
     function openStory(id) {
       const s = STORIES[id];
       if (!s) return;
-
       srTitle.textContent = s.title;
       srGenres.innerHTML  = s.genres.map(g=>`<span class="story-badge ${g.cls}">${g.text}</span>`).join('');
       srMeta.innerHTML    = `<span><i class="fa-regular fa-clock"></i> ${s.meta.read}</span><span><i class="fa-solid fa-pen-nib"></i> ${s.meta.words}</span><span><i class="fa-solid fa-flask"></i> ${s.meta.universe}</span>`;
-
       srBody.innerHTML = s.sections.map(sec => {
         let html = '';
-        if (sec.heading) {
-          html += `<h2>${sec.heading}</h2>`;
-        }
+        if (sec.heading) html += `<h2>${sec.heading}</h2>`;
         html += sec.paras.map(p => `<p>${p}</p>`).join('');
         return html;
       }).join('');
-
       readerBox.scrollTop = 0;
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
