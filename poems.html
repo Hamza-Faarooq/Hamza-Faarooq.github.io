@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   <style>
     :root {
       --bg:#07090e; --surface:#0c0f18; --surface2:#111622; --surface3:#161c2c;
@@ -22,7 +21,6 @@
       --serif:'DM Serif Display',Georgia,serif;
       --body:'Lora',Georgia,serif;
       --archaic:'IM Fell English','Palatino Linotype',Palatino,serif;
-      /* poem palette — warm rose/amber */
       --p1:#f472b6; --p2:#fb923c; --p3:#a78bfa;
       --p1-bg:rgba(244,114,182,0.07); --p1-bdr:rgba(244,114,182,0.2);
       --p2-bg:rgba(251,146,60,0.07);  --p2-bdr:rgba(251,146,60,0.2);
@@ -54,32 +52,15 @@
     }
 
     /* LOADER */
-    #loader {
-      position:fixed; inset:0; z-index:9999; background:var(--bg);
-      display:flex; align-items:center; justify-content:center;
-      flex-direction:column; gap:16px;
-      transition:opacity 0.6s ease, visibility 0.6s ease;
-    }
+    #loader { position:fixed; inset:0; z-index:9999; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; transition:opacity 0.6s ease,visibility 0.6s ease; }
     #loader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
     .loader-name { font-family:var(--serif); font-size:22px; font-style:italic; color:var(--p1); letter-spacing:2px; }
     .loader-bar { width:160px; height:2px; background:var(--surface3); border-radius:99px; overflow:hidden; }
-    .loader-bar-fill {
-      height:100%;
-      background:linear-gradient(to right,var(--p1),var(--p2),var(--p3));
-      animation:loaderAnim 1s cubic-bezier(0.4,0,0.2,1) forwards;
-    }
+    .loader-bar-fill { height:100%; background:linear-gradient(to right,var(--p1),var(--p2),var(--p3)); animation:loaderAnim 1s cubic-bezier(0.4,0,0.2,1) forwards; }
     @keyframes loaderAnim { from{width:0} to{width:100%} }
 
     /* THEME TOGGLE */
-    #theme-toggle {
-      position:fixed; top:18px; right:22px; z-index:300;
-      width:44px; height:44px; border-radius:12px;
-      background:var(--surface2); border:1px solid var(--border);
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; font-size:17px; color:var(--muted2);
-      box-shadow:0 2px 12px rgba(0,0,0,0.25);
-      transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
-    }
+    #theme-toggle { position:fixed; top:18px; right:22px; z-index:300; width:44px; height:44px; border-radius:12px; background:var(--surface2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:17px; color:var(--muted2); box-shadow:0 2px 12px rgba(0,0,0,0.25); transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1); }
     #theme-toggle:hover { border-color:var(--p1-bdr); color:var(--p1); transform:scale(1.1) rotate(14deg); box-shadow:0 6px 22px rgba(244,114,182,0.18); }
     .t-moon{display:block;} .t-sun{display:none;}
     html.light .t-moon{display:none;} html.light .t-sun{display:block;}
@@ -89,13 +70,8 @@
     #cursor-ring { position:fixed; z-index:9997; pointer-events:none; width:32px; height:32px; border-radius:50%; border:1px solid rgba(244,114,182,0.35); transform:translate(-50%,-50%); transition:width 0.22s,height 0.22s,border-color 0.22s; }
     #cursor-ring.hover { width:48px; height:48px; border-color:var(--p1); }
 
-    /* BG / NOISE */
     #bg-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.28; transition:opacity 0.35s; }
-    body::after {
-      content:''; position:fixed; inset:0; z-index:1; pointer-events:none;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      background-size:160px; transition:opacity 0.35s;
-    }
+    body::after { content:''; position:fixed; inset:0; z-index:1; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"); background-size:160px; transition:opacity 0.35s; }
 
     ::-webkit-scrollbar { width:5px; }
     ::-webkit-scrollbar-track { background:var(--bg); }
@@ -144,16 +120,14 @@
     .main { animation:fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
-    /* BREADCRUMB */
     .top-nav { display:flex; gap:6px; align-items:center; margin-bottom:28px; flex-wrap:wrap; }
     .nav-link { color:var(--muted); text-decoration:none; border:1px solid var(--border); padding:7px 14px; border-radius:7px; font-size:11px; letter-spacing:1.2px; text-transform:uppercase; font-family:var(--mono); transition:all 0.2s ease; }
     .nav-link:hover { color:var(--p1); background:var(--p1-bg); border-color:var(--p1-bdr); }
     .nav-sep { color:var(--muted); font-size:11px; font-family:var(--mono); opacity:0.4; }
 
     /* PAGE HEADER */
-    .page-header { background:var(--surface); padding:28px 30px; border-radius:var(--radius); margin-bottom:28px; border:1px solid var(--border); position:relative; overflow:hidden; transition:background-color 0.35s, border-color 0.3s; }
+    .page-header { background:var(--surface); padding:28px 30px; border-radius:var(--radius); margin-bottom:28px; border:1px solid var(--border); position:relative; overflow:hidden; transition:background-color 0.35s,border-color 0.3s; }
     .page-header::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(to right,var(--p1),var(--p2),var(--p3)); }
-    /* faint ink-drop decoration */
     .page-header::after { content:''; position:absolute; right:-40px; bottom:-40px; width:180px; height:180px; border-radius:50%; border:32px solid rgba(244,114,182,0.04); pointer-events:none; }
     .page-header-inner { position:relative; z-index:1; display:flex; align-items:flex-start; gap:18px; }
     .page-icon { width:52px; height:52px; border-radius:12px; flex-shrink:0; background:var(--p1-bg); border:1px solid var(--p1-bdr); display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--p1); }
@@ -164,81 +138,44 @@
 
     /* POEM LIST */
     .poems-list { display:flex; flex-direction:column; gap:14px; }
+    .poem-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); color:inherit; display:flex; align-items:stretch; position:relative; overflow:hidden; opacity:0; transform:translateY(14px); animation:fadeUp 0.5s ease-out forwards; transition:border-color 0.3s,box-shadow 0.3s,background-color 0.35s,transform 0.3s; cursor:pointer; }
+    .poem-card:nth-child(1){animation-delay:0.06s} .poem-card:nth-child(2){animation-delay:0.12s}
+    .poem-card:nth-child(3){animation-delay:0.18s} .poem-card:nth-child(4){animation-delay:0.24s}
 
-    .poem-card {
-      background:var(--surface); border:1px solid var(--border);
-      border-radius:var(--radius); text-decoration:none; color:inherit;
-      display:flex; align-items:stretch;
-      position:relative; overflow:hidden;
-      opacity:0; transform:translateY(14px);
-      animation:fadeUp 0.5s ease-out forwards;
-      transition:border-color 0.3s, box-shadow 0.3s, background-color 0.35s, transform 0.3s;
-    }
-    /* staggered delays */
-    .poem-card:nth-child(1){animation-delay:0.06s}
-    .poem-card:nth-child(2){animation-delay:0.12s}
-    .poem-card:nth-child(3){animation-delay:0.18s}
-    .poem-card:nth-child(4){animation-delay:0.24s}
-    .poem-card:nth-child(5){animation-delay:0.30s}
-    .poem-card:nth-child(6){animation-delay:0.36s}
-    .poem-card:nth-child(7){animation-delay:0.42s}
-    .poem-card:nth-child(8){animation-delay:0.48s}
-
-    /* left accent bar (colour varies per type) */
-    .poem-card .accent-bar {
-      width:3px; flex-shrink:0;
-      transition:width 0.25s ease;
-    }
+    .poem-card .accent-bar { width:3px; flex-shrink:0; transition:width 0.25s ease; }
     .poem-card:hover .accent-bar { width:5px; }
     .type-a .accent-bar { background:linear-gradient(to bottom,var(--p1),var(--p2)); }
     .type-b .accent-bar { background:linear-gradient(to bottom,var(--p3),var(--accent)); }
     .type-c .accent-bar { background:linear-gradient(to bottom,var(--p2),var(--gold)); }
 
-    .poem-card:hover {
-      transform:translateY(-3px);
-      box-shadow:0 14px 36px rgba(0,0,0,0.18);
-    }
+    .poem-card:hover { transform:translateY(-3px); box-shadow:0 14px 36px rgba(0,0,0,0.18); }
     html.light .poem-card:hover { box-shadow:0 6px 22px rgba(0,0,0,0.07); }
     .type-a:hover { border-color:var(--p1-bdr); }
     .type-b:hover { border-color:var(--p3-bdr); }
     .type-c:hover { border-color:var(--p2-bdr); }
 
     .poem-body { padding:20px 24px; flex:1; display:flex; align-items:center; gap:20px; }
-
-    /* ordinal number */
-    .poem-num { font-family:var(--serif); font-size:28px; font-style:italic; line-height:1; flex-shrink:0; min-width:28px; transition:color 0.25s; }
-    .type-a .poem-num { color:rgba(244,114,182,0.18); }
-    .type-b .poem-num { color:rgba(167,139,250,0.18); }
-    .type-c .poem-num { color:rgba(251,146,60,0.18); }
-    .type-a:hover .poem-num { color:rgba(244,114,182,0.5); }
-    .type-b:hover .poem-num { color:rgba(167,139,250,0.5); }
-    .type-c:hover .poem-num { color:rgba(251,146,60,0.5); }
+    .poem-num { font-family:var(--serif); font-size:28px; font-style:italic; line-height:1; flex-shrink:0; min-width:28px; transition:color 0.25s; user-select:none; }
+    .type-a .poem-num { color:rgba(244,114,182,0.18); } .type-b .poem-num { color:rgba(167,139,250,0.18); } .type-c .poem-num { color:rgba(251,146,60,0.18); }
+    .type-a:hover .poem-num { color:rgba(244,114,182,0.5); } .type-b:hover .poem-num { color:rgba(167,139,250,0.5); } .type-c:hover .poem-num { color:rgba(251,146,60,0.5); }
 
     .poem-content { flex:1; }
     .poem-title { font-family:var(--serif); font-size:18px; font-weight:400; font-style:italic; color:var(--text); line-height:1.35; margin-bottom:6px; transition:color 0.2s; }
-    .type-a:hover .poem-title { color:var(--p1); }
-    .type-b:hover .poem-title { color:var(--p3); }
-    .type-c:hover .poem-title { color:var(--p2); }
-
+    .type-a:hover .poem-title { color:var(--p1); } .type-b:hover .poem-title { color:var(--p3); } .type-c:hover .poem-title { color:var(--p2); }
     .poem-tagline { font-size:12.5px; color:var(--muted2); font-style:italic; line-height:1.5; }
-
     .poem-meta { display:flex; align-items:center; gap:8px; margin-top:8px; flex-wrap:wrap; }
-    .poem-tag {
-      font-size:9.5px; font-family:var(--mono); letter-spacing:1px;
-      text-transform:uppercase; padding:2px 8px; border-radius:4px;
-    }
-    .tag-cricket { color:var(--p2); background:var(--p2-bg); border:1px solid var(--p2-bdr); }
-    .tag-elegy   { color:var(--p1); background:var(--p1-bg); border:1px solid var(--p1-bdr); }
-    .tag-sport   { color:var(--p2); background:var(--p2-bg); border:1px solid var(--p2-bdr); }
-    .tag-life    { color:var(--p3); background:var(--p3-bg); border:1px solid var(--p3-bdr); }
-    .tag-football{ color:var(--p1); background:var(--p1-bg); border:1px solid var(--p1-bdr); }
-    html.light .tag-cricket,html.light .tag-sport { color:var(--p2); }
-    html.light .tag-elegy,html.light .tag-football { color:var(--p1); }
+    .poem-tag { font-size:9.5px; font-family:var(--mono); letter-spacing:1px; text-transform:uppercase; padding:2px 8px; border-radius:4px; }
+    .tag-elegy  { color:var(--p1); background:var(--p1-bg); border:1px solid var(--p1-bdr); }
+    .tag-life   { color:var(--p3); background:var(--p3-bg); border:1px solid var(--p3-bdr); }
+    .tag-cricket{ color:var(--p2); background:var(--p2-bg); border:1px solid var(--p2-bdr); }
+    .tag-sport  { color:var(--p2); background:var(--p2-bg); border:1px solid var(--p2-bdr); }
+    .tag-football{color:var(--p1); background:var(--p1-bg); border:1px solid var(--p1-bdr); }
+    html.light .tag-elegy,.html.light .tag-football { color:var(--p1); }
     html.light .tag-life { color:var(--p3); }
+    html.light .tag-cricket,html.light .tag-sport { color:var(--p2); }
 
-    /* right arrow */
     .poem-arrow { display:flex; align-items:center; justify-content:center; padding:0 20px; flex-shrink:0; }
-    .poem-arrow i { font-size:13px; color:var(--muted); transition:color 0.2s, transform 0.2s; }
+    .poem-arrow i { font-size:13px; color:var(--muted); transition:color 0.2s,transform 0.2s; }
     .type-a:hover .poem-arrow i { color:var(--p1); transform:translateX(4px); }
     .type-b:hover .poem-arrow i { color:var(--p3); transform:translateX(4px); }
     .type-c:hover .poem-arrow i { color:var(--p2); transform:translateX(4px); }
@@ -254,6 +191,40 @@
     .reveal { opacity:0; transform:translateY(18px); transition:opacity 0.5s ease,transform 0.5s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
 
+    /* POEM VIEWER OVERLAY */
+    #poem-overlay { position:fixed; inset:0; z-index:500; display:flex; align-items:center; justify-content:center; padding:24px 16px; opacity:0; visibility:hidden; transition:opacity 0.4s ease,visibility 0.4s ease; }
+    #poem-overlay.open { opacity:1; visibility:visible; }
+    #poem-overlay::before { content:''; position:absolute; inset:0; background:rgba(7,9,14,0.88); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+    html.light #poem-overlay::before { background:rgba(244,246,251,0.9); }
+
+    .poem-viewer { position:relative; z-index:1; max-width:680px; width:100%; max-height:90vh; overflow-y:auto; background:var(--surface); border:1px solid var(--p1-bdr); border-radius:16px; padding:48px 52px; box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(244,114,182,0.08); transform:translateY(20px) scale(0.97); transition:transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+    #poem-overlay.open .poem-viewer { transform:translateY(0) scale(1); }
+    html.light .poem-viewer { box-shadow:0 20px 60px rgba(0,0,0,0.12); }
+    .poem-viewer::-webkit-scrollbar { width:4px; }
+    .poem-viewer::-webkit-scrollbar-track { background:transparent; }
+    .poem-viewer::-webkit-scrollbar-thumb { background:rgba(244,114,182,0.3); border-radius:99px; }
+
+    .pv-close { position:absolute; top:18px; right:18px; background:transparent; border:1px solid var(--border); color:var(--muted); width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; transition:all 0.2s ease; }
+    .pv-close:hover { color:var(--p1); border-color:var(--p1-bdr); background:var(--p1-bg); }
+
+    .pv-rule { display:flex; align-items:center; gap:14px; margin-bottom:32px; }
+    .pv-rule::before,.pv-rule::after { content:''; flex:1; height:1px; background:linear-gradient(to right,transparent,rgba(244,114,182,0.25),transparent); }
+    .pv-rule-feather { color:rgba(244,114,182,0.4); font-size:14px; }
+
+    .pv-title { font-family:var(--archaic); font-size:22px; font-style:italic; color:var(--text); text-align:center; line-height:1.35; margin-bottom:6px; letter-spacing:0.5px; }
+    .pv-theme { font-family:var(--mono); font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--p1); text-align:center; margin-bottom:36px; opacity:0.8; }
+
+    .pv-poem { font-family:var(--archaic); }
+    .pv-stanza { margin-bottom:34px; }
+    .pv-stanza:last-child { margin-bottom:0; }
+    .pv-line { font-size:16.5px; line-height:2.05; color:var(--text); letter-spacing:0.2px; display:block; }
+    html.light .pv-line { color:#1a2030; }
+    .pv-line.indent { padding-left:24px; }
+
+    .pv-footer { margin-top:40px; padding-top:20px; border-top:1px solid rgba(244,114,182,0.12); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+    .pv-author { font-family:var(--archaic); font-style:italic; font-size:14px; color:var(--muted2); }
+    .pv-tag-row { display:flex; gap:7px; flex-wrap:wrap; }
+
     @media (max-width:880px) {
       .wrap { grid-template-columns:1fr; padding:20px 16px 56px; }
       .left { position:static; flex-direction:row; flex-wrap:wrap; justify-content:flex-start; text-align:left; }
@@ -263,118 +234,13 @@
       .poem-num { display:none; }
       #theme-toggle { top:12px; right:12px; }
       footer { flex-direction:column; align-items:flex-start; }
+      .poem-viewer { padding:32px 24px; }
     }
     @media print {
       #bg-canvas,#loader,#cursor-dot,#cursor-ring,#scroll-progress,#theme-toggle { display:none!important; }
       body { background:#fff; color:#111; }
       .wrap { display:block; }
     }
-
-    /* ── POEM VIEWER OVERLAY ────────────────────────────────── */
-    #poem-overlay {
-      position:fixed; inset:0; z-index:500;
-      display:flex; align-items:center; justify-content:center;
-      padding:24px 16px;
-      opacity:0; visibility:hidden;
-      transition:opacity 0.4s ease, visibility 0.4s ease;
-    }
-    #poem-overlay.open { opacity:1; visibility:visible; }
-    #poem-overlay::before {
-      content:''; position:absolute; inset:0;
-      background:rgba(7,9,14,0.88);
-      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-    }
-    html.light #poem-overlay::before { background:rgba(244,246,251,0.88); }
-
-    .poem-viewer {
-      position:relative; z-index:1;
-      max-width:680px; width:100%;
-      max-height:90vh; overflow-y:auto;
-      background:var(--surface);
-      border:1px solid var(--p1-bdr);
-      border-radius:16px;
-      padding:48px 52px;
-      box-shadow:0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(244,114,182,0.08);
-      transform:translateY(20px) scale(0.97);
-      transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);
-    }
-    #poem-overlay.open .poem-viewer { transform:translateY(0) scale(1); }
-    html.light .poem-viewer { box-shadow:0 20px 60px rgba(0,0,0,0.12); }
-
-    /* scroll inside viewer */
-    .poem-viewer::-webkit-scrollbar { width:4px; }
-    .poem-viewer::-webkit-scrollbar-track { background:transparent; }
-    .poem-viewer::-webkit-scrollbar-thumb { background:rgba(244,114,182,0.3); border-radius:99px; }
-
-    .pv-close {
-      position:absolute; top:18px; right:18px;
-      background:transparent; border:1px solid var(--border);
-      color:var(--muted); width:34px; height:34px; border-radius:8px;
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; font-size:14px;
-      transition:all 0.2s ease;
-    }
-    .pv-close:hover { color:var(--p1); border-color:var(--p1-bdr); background:var(--p1-bg); }
-
-    /* Decorative drop-cap rule */
-    .pv-rule {
-      display:flex; align-items:center; gap:14px;
-      margin-bottom:32px;
-    }
-    .pv-rule::before, .pv-rule::after {
-      content:''; flex:1; height:1px;
-      background:linear-gradient(to right, transparent, rgba(244,114,182,0.25), transparent);
-    }
-    .pv-rule-feather { color:rgba(244,114,182,0.4); font-size:14px; }
-
-    /* Poem title inside viewer */
-    .pv-title {
-      font-family:var(--archaic);
-      font-size:22px; font-style:italic;
-      color:var(--text); text-align:center;
-      line-height:1.35; margin-bottom:6px;
-      letter-spacing:0.5px;
-    }
-    .pv-theme {
-      font-family:var(--mono); font-size:10px;
-      letter-spacing:2px; text-transform:uppercase;
-      color:var(--p1); text-align:center;
-      margin-bottom:36px; opacity:0.8;
-    }
-
-    /* Stanzas */
-    .pv-poem { font-family:var(--archaic); }
-    .pv-stanza {
-      margin-bottom:32px;
-    }
-    .pv-stanza:last-child { margin-bottom:0; }
-    /* couplet stanzas (2 lines) get a touch more air */
-    .pv-stanza:has(.pv-line:nth-child(2):last-child) {
-      margin-bottom:38px;
-    }
-    .pv-line {
-      font-size:16.5px;
-      line-height:2;
-      color:var(--text);
-      letter-spacing:0.2px;
-      display:block;
-    }
-    html.light .pv-line { color:#1a2030; }
-    /* Indent alternate lines for a classical ballad feel */
-    .pv-line.indent { padding-left:24px; }
-
-    /* Bottom meta */
-    .pv-footer {
-      margin-top:40px; padding-top:20px;
-      border-top:1px solid rgba(244,114,182,0.12);
-      display:flex; align-items:center; justify-content:space-between;
-      flex-wrap:wrap; gap:10px;
-    }
-    .pv-author {
-      font-family:var(--archaic); font-style:italic;
-      font-size:14px; color:var(--muted2);
-    }
-    .pv-tag-row { display:flex; gap:7px; flex-wrap:wrap; }
   </style>
 </head>
 <body>
@@ -396,7 +262,6 @@
 
   <div class="wrap">
 
-    <!-- SIDEBAR -->
     <aside class="left">
       <div class="avatar-wrap">
         <div class="avatar-ring-outer"></div>
@@ -414,7 +279,7 @@
       </div>
       <div class="divider"></div>
       <div class="contact-icons">
-        <a href="/cdn-cgi/l/email-protection#2a424b47504b0443435e414d5a6a4d474b434604494547" class="icon-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="mailto:hamza.iitkgp@gmail.com" class="icon-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
         <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" rel="noopener" class="icon-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
         <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="icon-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
         <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="icon-btn" title="Medium"><i class="fa-brands fa-medium"></i></a>
@@ -425,47 +290,31 @@
       </a>
     </aside>
 
-    <!-- MAIN -->
     <main class="main">
 
-      <!-- Breadcrumb -->
       <nav class="top-nav">
         <a href="index.html" class="nav-link"><i class="fa-solid fa-house" style="margin-right:5px"></i>Home</a>
         <span class="nav-sep">›</span>
         <a href="#" class="nav-link" style="color:var(--p1);border-color:var(--p1-bdr);">Poems</a>
       </nav>
 
-      <!-- Page header -->
       <div class="page-header reveal">
         <div class="page-header-inner">
           <div class="page-icon"><i class="fa-solid fa-feather-pointed"></i></div>
           <div>
             <h2>Poems</h2>
-            <p>Occasional verse — on cricket, loss, time, and the quiet spaces between equations. Click any title to read the full poem.</p>
+            <p>Occasional verse — on memory, war, consciousness, and the grief of almost-understanding. Click any title to read the full poem.</p>
             <div class="poem-count">
               <span class="poem-count-dot"></span>
-              <!-- UPDATE THIS NUMBER when you add poems -->
-              4 Poems &nbsp;·&nbsp; Memory · War · Knowledge · Understanding · Verse
+              4 Poems &nbsp;·&nbsp; Memory · War · Knowledge · Understanding
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Poem list -->
       <div class="poems-list reveal">
 
-        <!--
-          HOW TO ADD A POEM:
-          1. Copy one <a class="poem-card ..."> block below.
-          2. Set href="YOUR_POEM_URL" (Medium link, GitHub page, etc.)
-          3. Update the title, tagline, and tags.
-          4. Use type-a (rose), type-b (violet), or type-c (amber) to colour-code it.
-          5. Update the ordinal number in .poem-num.
-          6. Update the count in the page header above.
-        -->
-
-        <!-- POEM 1 — Memory as Distortion, Not Truth -->
-        <div class="poem-card type-a" style="cursor:pointer" onclick="openPoem('p1')" role="button" tabindex="0" aria-label="Open poem: Memory as Distortion, Not Truth">
+        <div class="poem-card type-a" onclick="openPoem('p1')" role="button" tabindex="0" aria-label="Open poem: Memory as Distortion, Not Truth">
           <div class="accent-bar"></div>
           <div class="poem-body">
             <div class="poem-num">I</div>
@@ -481,8 +330,7 @@
           <div class="poem-arrow"><i class="fa-solid fa-feather-pointed"></i></div>
         </div>
 
-        <!-- POEM 2 — The Unanswering Heavens -->
-        <div class="poem-card type-b" style="cursor:pointer" onclick="openPoem('p2')" role="button" tabindex="0" aria-label="Open poem: The Unanswering Heavens">
+        <div class="poem-card type-b" onclick="openPoem('p2')" role="button" tabindex="0" aria-label="Open poem: The Unanswering Heavens">
           <div class="accent-bar"></div>
           <div class="poem-body">
             <div class="poem-num">II</div>
@@ -498,8 +346,7 @@
           <div class="poem-arrow"><i class="fa-solid fa-feather-pointed"></i></div>
         </div>
 
-        <!-- POEM 3 — The Burden and the Becoming -->
-        <div class="poem-card type-c" style="cursor:pointer" onclick="openPoem('p3')" role="button" tabindex="0" aria-label="Open poem: The Burden and the Becoming">
+        <div class="poem-card type-c" onclick="openPoem('p3')" role="button" tabindex="0" aria-label="Open poem: The Burden and the Becoming">
           <div class="accent-bar"></div>
           <div class="poem-body">
             <div class="poem-num">III</div>
@@ -515,8 +362,7 @@
           <div class="poem-arrow"><i class="fa-solid fa-feather-pointed"></i></div>
         </div>
 
-        <!-- POEM 4 — The Proof That Would Not Hold -->
-        <div class="poem-card type-a" style="cursor:pointer" onclick="openPoem('p4')" role="button" tabindex="0" aria-label="Open poem: The Proof That Would Not Hold">
+        <div class="poem-card type-a" onclick="openPoem('p4')" role="button" tabindex="0" aria-label="Open poem: The Proof That Would Not Hold">
           <div class="accent-bar"></div>
           <div class="poem-body">
             <div class="poem-num">IV</div>
@@ -532,54 +378,14 @@
           <div class="poem-arrow"><i class="fa-solid fa-feather-pointed"></i></div>
         </div>
 
-        <!-- POEM 2 -->
-        <a href="#" target="_blank" rel="noopener" class="poem-card type-c">
-          <div class="accent-bar"></div>
-          <div class="poem-body">
-            <div class="poem-num">II</div>
-            <div class="poem-content">
-              <div class="poem-title">Your Second Poem Title</div>
-              <div class="poem-tagline">A one-line flavour note or opening line of the poem.</div>
-              <div class="poem-meta">
-                <span class="poem-tag tag-sport">Sport</span>
-              </div>
-            </div>
-          </div>
-          <div class="poem-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </a>
-
-        <!-- POEM 3 -->
-        <a href="#" target="_blank" rel="noopener" class="poem-card type-b">
-          <div class="accent-bar"></div>
-          <div class="poem-body">
-            <div class="poem-num">III</div>
-            <div class="poem-content">
-              <div class="poem-title">Your Third Poem Title</div>
-              <div class="poem-tagline">A one-line flavour note or opening line of the poem.</div>
-              <div class="poem-meta">
-                <span class="poem-tag tag-life">Life</span>
-              </div>
-            </div>
-          </div>
-          <div class="poem-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-        </a>
-
-        <!--
-          Add more poems by duplicating the block above.
-          Cycle through type-a, type-b, type-c for visual variety.
-          Tags available: tag-cricket  tag-football  tag-sport  tag-elegy  tag-life
-          Add new tags in the <style> block following the same pattern.
-        -->
-
       </div>
 
     </main>
 
-    <!-- FOOTER -->
     <footer>
       <div class="footer-left">© <span id="year"></span> <span>Muhammad Hamza</span> · IIT Kharagpur · Built with care</div>
       <nav class="footer-right">
-        <a href="/cdn-cgi/l/email-protection#543c35392e357a3d3d203f3324143339353d387a373b39" class="footer-link">Email</a>
+        <a href="mailto:hamza.iitkgp@gmail.com" class="footer-link">Email</a>
         <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="footer-link">Medium</a>
         <a href="index.html" class="footer-link">Portfolio</a>
       </nav>
@@ -602,9 +408,11 @@
     </div>
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
+    /* LOADER */
     window.addEventListener('load',()=>{ setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1000); });
 
+    /* THEME */
     const html=document.documentElement;
     if(localStorage.getItem('theme')==='light') html.classList.add('light');
     document.getElementById('theme-toggle').addEventListener('click',()=>{
@@ -612,11 +420,13 @@
       localStorage.setItem('theme',html.classList.contains('light')?'light':'dark');
     });
 
+    /* SCROLL PROGRESS */
     window.addEventListener('scroll',()=>{
       const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
       document.getElementById('scroll-progress').style.width=(pct*100)+'%';
     },{passive:true});
 
+    /* CURSOR */
     const dot=document.getElementById('cursor-dot'),ring=document.getElementById('cursor-ring');
     let mx=0,my=0,rx=0,ry=0;
     document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
@@ -657,22 +467,18 @@
     initCv();drawCv();
     window.addEventListener('resize',initCv);
 
+    /* SCROLL REVEAL */
     const revObs=new IntersectionObserver(es=>{
       es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
     },{threshold:0.07});
     document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
 
-    /* keyboard open for poem cards */
+    /* KEYBOARD OPEN */
     document.querySelectorAll('[role=button]').forEach(el=>{
       el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
     });
 
-    /* ── POEM DATA ───────────────────────────────────────────── */
-    /*
-      Each poem: { title, theme, tags:[{text,cls}], stanzas:[[line,...]] }
-      lines that start with "~" get the .indent class (optional classical indent).
-      Add new poems here and add a card in the HTML with onclick="openPoem('pN')".
-    */
+    /* ── POEM DATA ─────────────────────────────────────────── */
     const POEMS = {
       p1: {
         title: 'Memory as Distortion, Not Truth',
@@ -682,54 +488,14 @@
           { text:'Memory',     cls:'tag-life'  },
         ],
         stanzas: [
-          [
-            'In chambers dim where recollection feigns its fragile art,',
-            '~There lies no truth unblemished by the hand that dares recall;',
-            'Each memory, a painter skilled in tearing fact apart,',
-            '~Rewrites the past in hues that never truly were at all.',
-          ],
-          [
-            'We summon ghosts, yet clothe them in a borrowed, softened light,',
-            '~And bid them speak the words we wish they might have once conveyed;',
-            'What once was sharp with anguish dulls beneath the mind\'s rewrite,',
-            '~While trivial joys in gilded false magnificence are arrayed.',
-          ],
-          [
-            'O treacherous archive, housed within the marrow of the mind,',
-            '~Thou curatest not truth, but solace shaped from fractured glass;',
-            'Each fragment turned and polished till its edges seem refined,',
-            '~Though still they cut the soul that dares too closely let them pass.',
-          ],
-          [
-            'A childhood lane returns not as it stood in dust and stone,',
-            '~But bathed in some invented glow of innocence and grace;',
-            'The cracks, the cries, the silent griefs are subtly overthrown,',
-            '~Replaced by gentle echoes time has chosen to erase.',
-          ],
-          [
-            'And those we loved—ah, they are never rendered as they were,',
-            '~But rise as saints or spectres, shaped by longing or regret;',
-            'We crown them now with virtues memory did not confer,',
-            '~Or curse them still for wounds our present selves cannot forget.',
-          ],
-          [
-            'Thus do we wander not through time, but through revision\'s veil,',
-            '~Each step a negotiation with what we choose to see;',
-            'The past, no fixed dominion, but a story prone to fail,',
-            '~Re-authored endlessly by what we need it yet to be.',
-          ],
-          [
-            'And should some truth, unbidden, pierce the fabric of this guise,',
-            '~It startles like a shard of ice within a tempered flame;',
-            'For we have built our inward worlds on carefully crafted lies,',
-            '~And fear the cost of calling every shadow by its name.',
-          ],
-          [
-            'So let me keep, perhaps, this gentle falsehood close at heart,',
-            '~For what is truth if stripped of all the meanings we assign?',
-            'If memory be a fiction, still it plays its vital part—',
-            '~A fragile myth, yet all the more enduringly divine.',
-          ],
+          ['In chambers dim where recollection feigns its fragile art,','~There lies no truth unblemished by the hand that dares recall;','Each memory, a painter skilled in tearing fact apart,','~Rewrites the past in hues that never truly were at all.'],
+          ['We summon ghosts, yet clothe them in a borrowed, softened light,','~And bid them speak the words we wish they might have once conveyed;','What once was sharp with anguish dulls beneath the mind\'s rewrite,','~While trivial joys in gilded false magnificence are arrayed.'],
+          ['O treacherous archive, housed within the marrow of the mind,','~Thou curatest not truth, but solace shaped from fractured glass;','Each fragment turned and polished till its edges seem refined,','~Though still they cut the soul that dares too closely let them pass.'],
+          ['A childhood lane returns not as it stood in dust and stone,','~But bathed in some invented glow of innocence and grace;','The cracks, the cries, the silent griefs are subtly overthrown,','~Replaced by gentle echoes time has chosen to erase.'],
+          ['And those we loved—ah, they are never rendered as they were,','~But rise as saints or spectres, shaped by longing or regret;','We crown them now with virtues memory did not confer,','~Or curse them still for wounds our present selves cannot forget.'],
+          ['Thus do we wander not through time, but through revision\'s veil,','~Each step a negotiation with what we choose to see;','The past, no fixed dominion, but a story prone to fail,','~Re-authored endlessly by what we need it yet to be.'],
+          ['And should some truth, unbidden, pierce the fabric of this guise,','~It startles like a shard of ice within a tempered flame;','For we have built our inward worlds on carefully crafted lies,','~And fear the cost of calling every shadow by its name.'],
+          ['So let me keep, perhaps, this gentle falsehood close at heart,','~For what is truth if stripped of all the meanings we assign?','If memory be a fiction, still it plays its vital part—','~A fragile myth, yet all the more enduringly divine.'],
         ],
       },
 
@@ -737,58 +503,22 @@
         title: 'The Unanswering Heavens',
         theme: 'On war, childhood, and the miracle of endurance',
         tags: [
-          { text:'Elegy',          cls:'tag-elegy' },
+          { text:'Elegy',           cls:'tag-elegy' },
           { text:'War & Innocence', cls:'tag-life'  },
         ],
         stanzas: [
-          [
-            'Beneath a sky that once remembered lullabies, now fractured into ash,',
-            '~Small hands still trace the ghosts of kites that never learned returning.',
-          ],
-          [
-            'The streets, once fluent in the language of bread, laughter, and morning,',
-            '~Now murmur only dust, each stone a syllable of something broken.',
-          ],
-          [
-            'Children, with eyes too ancient for the arithmetic of their years,',
-            '~Gather fragments of light as though hope were a scattered inheritance.',
-          ],
-          [
-            'They do not speak of war, for war is too small a word,',
-            '~But of absences—of doors that open only into memory\'s unlit corridors.',
-          ],
-          [
-            'A cradle rocks where no wind dares linger long enough to sing,',
-            '~And silence grows thick, like roots drinking deeply from unnamed sorrow.',
-          ],
-          [
-            'The world, vast and articulate in its grand declarations of justice,',
-            '~Falls strangely mute where innocence is bartered for invisible borders.',
-          ],
-          [
-            'What crime is written in the soft grammar of a child\'s breathing,',
-            '~That warrants the erasure of entire futures before they are imagined?',
-          ],
-          [
-            'And yet, amid the ruin, a stubborn bloom insists on unfolding,',
-            '~Petals trembling, not in fear, but in quiet defiance of forgetting.',
-          ],
-          [
-            'They were not born seeking freedom, nor chanting for its arrival,',
-            '~Only asking for mornings unbroken by the architecture of falling fire.',
-          ],
-          [
-            'But freedom, it seems, is a word imposed by distant tongues,',
-            '~While they desired merely the ordinary miracle of continuing to be.',
-          ],
-          [
-            'So history will write of nations, of power, of victories and losses,',
-            '~But not of the child who learned the weight of sky too early.',
-          ],
-          [
-            'And still, somewhere beneath the ruin, beneath the unanswering heavens,',
-            '~Life, unpermitted yet unyielding, gathers breath and begins again.',
-          ],
+          ['Beneath a sky that once remembered lullabies, now fractured into ash,','~Small hands still trace the ghosts of kites that never learned returning.'],
+          ['The streets, once fluent in the language of bread, laughter, and morning,','~Now murmur only dust, each stone a syllable of something broken.'],
+          ['Children, with eyes too ancient for the arithmetic of their years,','~Gather fragments of light as though hope were a scattered inheritance.'],
+          ['They do not speak of war, for war is too small a word,','~But of absences—of doors that open only into memory\'s unlit corridors.'],
+          ['A cradle rocks where no wind dares linger long enough to sing,','~And silence grows thick, like roots drinking deeply from unnamed sorrow.'],
+          ['The world, vast and articulate in its grand declarations of justice,','~Falls strangely mute where innocence is bartered for invisible borders.'],
+          ['What crime is written in the soft grammar of a child\'s breathing,','~That warrants the erasure of entire futures before they are imagined?'],
+          ['And yet, amid the ruin, a stubborn bloom insists on unfolding,','~Petals trembling, not in fear, but in quiet defiance of forgetting.'],
+          ['They were not born seeking freedom, nor chanting for its arrival,','~Only asking for mornings unbroken by the architecture of falling fire.'],
+          ['But freedom, it seems, is a word imposed by distant tongues,','~While they desired merely the ordinary miracle of continuing to be.'],
+          ['So history will write of nations, of power, of victories and losses,','~But not of the child who learned the weight of sky too early.'],
+          ['And still, somewhere beneath the ruin, beneath the unanswering heavens,','~Life, unpermitted yet unyielding, gathers breath and begins again.'],
         ],
       },
 
@@ -800,66 +530,16 @@
           { text:'Consciousness', cls:'tag-life'  },
         ],
         stanzas: [
-          [
-            'To think is but to trespass where the mercifully blind are spared,',
-            '~Unburdened by the weight of seeing.',
-            'For knowledge is no lantern, but a slow unmaking of the veils',
-            '~That once made breathing gentle.',
-          ],
-          [
-            'The mind, once opened, cannot learn again the sacred ignorance',
-            '~That softened every passing hour.',
-            'It gnaws upon itself, a quiet predator circling truths',
-            '~No language dares fully contain.',
-          ],
-          [
-            'What gift is this, to name the stars yet feel their cold indifference',
-            '~Naming us back into nothingness?',
-            'To chart the heavens\' arc, yet know no gaze returns,',
-            '~No silent firmament remembers we have lived?',
-          ],
-          [
-            'Thus grows within the chest a cathedral built of questions',
-            '~Never meant for mortal habitation.',
-            'Each thought, a tolling bell that echoes not with answers,',
-            '~But with widening, hollow space.',
-          ],
-          [
-            'We see too clearly how all meaning is but trembling scaffolds',
-            '~Raised against an endless fall.',
-            'And still we build, though knowing well the ground beneath',
-            '~Is neither fixed nor faithful.',
-          ],
-          [
-            'O cursed clarity, that strips the world of its benevolent disguises,',
-            '~One fragile illusion at a time.',
-            'Where once was wonder, now stands the anatomy of wonder,',
-            '~Dismantled, named, and rendered still.',
-          ],
-          [
-            'To know is not to hold, but to dissolve the very things',
-            '~One reaches out to grasp.',
-            'For certainty itself decays, a relic buried beneath',
-            '~The shifting sands of further thought.',
-          ],
-          [
-            'Even the self becomes a question poorly framed,',
-            '~A mirror endlessly reflecting fractured mirrors.',
-            'And who remains, when every answer births a deeper,',
-            '~More unanswerable inquiry?',
-          ],
-          [
-            'Yet we persist, strange creatures forging purpose',
-            '~From the very void that nullifies all purpose.',
-            'We write our names upon the wind, though knowing',
-            '~Wind remembers nothing it has carried.',
-          ],
-          [
-            'Perhaps this is the final cruelty, or mercy,',
-            '~None can rightly say with any lasting conviction—',
-            'That in the ruin of all knowing, we are left with only this:',
-            '~The burden, and the becoming.',
-          ],
+          ['To think is but to trespass where the mercifully blind are spared,','~Unburdened by the weight of seeing.','For knowledge is no lantern, but a slow unmaking of the veils','~That once made breathing gentle.'],
+          ['The mind, once opened, cannot learn again the sacred ignorance','~That softened every passing hour.','It gnaws upon itself, a quiet predator circling truths','~No language dares fully contain.'],
+          ['What gift is this, to name the stars yet feel their cold indifference','~Naming us back into nothingness?','To chart the heavens\' arc, yet know no gaze returns,','~No silent firmament remembers we have lived?'],
+          ['Thus grows within the chest a cathedral built of questions','~Never meant for mortal habitation.','Each thought, a tolling bell that echoes not with answers,','~But with widening, hollow space.'],
+          ['We see too clearly how all meaning is but trembling scaffolds','~Raised against an endless fall.','And still we build, though knowing well the ground beneath','~Is neither fixed nor faithful.'],
+          ['O cursed clarity, that strips the world of its benevolent disguises,','~One fragile illusion at a time.','Where once was wonder, now stands the anatomy of wonder,','~Dismantled, named, and rendered still.'],
+          ['To know is not to hold, but to dissolve the very things','~One reaches out to grasp.','For certainty itself decays, a relic buried beneath','~The shifting sands of further thought.'],
+          ['Even the self becomes a question poorly framed,','~A mirror endlessly reflecting fractured mirrors.','And who remains, when every answer births a deeper,','~More unanswerable inquiry?'],
+          ['Yet we persist, strange creatures forging purpose','~From the very void that nullifies all purpose.','We write our names upon the wind, though knowing','~Wind remembers nothing it has carried.'],
+          ['Perhaps this is the final cruelty, or mercy,','~None can rightly say with any lasting conviction—','That in the ruin of all knowing, we are left with only this:','~The burden, and the becoming.'],
         ],
       },
 
@@ -867,51 +547,21 @@
         title: 'The Proof That Would Not Hold',
         theme: 'On the grief of almost-understanding',
         tags: [
-          { text:'Philosophy',   cls:'tag-elegy' },
+          { text:'Philosophy',    cls:'tag-elegy' },
           { text:'Understanding', cls:'tag-life'  },
         ],
         stanzas: [
-          [
-            'I nearly had it — balanced on the edge of knowing's narrow ledge,',
-            '~A truth so close I tasted it before the tasting disappeared;',
-            'The way a name sits stubborn at the tongue's reluctant edge,',
-            '~Then falls back into silence, having almost reappeared.',
-          ],
-          [
-            'It happens in the margins — in the hour before the proof resolves,',
-            '~When something vast grows almost legible behind the page;',
-            'A pattern half-emergent, like a shape the morning light involves',
-            '~But will not render fully to the eye that turns to gauge.',
-          ],
-          [
-            'I've watched equations balance on a breath and then collapse,',
-            '~The way a sentence knows its ending long before the word;',
-            'And in that gap between the reaching and the hand that snaps,',
-            '~I've wondered if all understanding waits to be deferred.',
-          ],
-          [
-            'Perhaps the grief is not in never grasping what we seek,',
-            '~But in the certainty we feel before the certainty unravels;',
-            'The mind convinces itself it found the thing it longed to speak,',
-            '~Then wakes to find it chasing light across unmarked gravel.',
-          ],
-          [
-            'And still I sit with half-solved things the way one keeps a letter',
-            '~From someone loved who never said the sentence to its end;',
-            'Because the incomplete contains, in ways the whole does better,',
-            '~The honest shape of everything we almost comprehend.',
-          ],
-          [
-            'So let me be the kind of mind that honours what eludes,',
-            '~That holds the open question as a lantern, not a wound;',
-            'For every truth that slips away enlarges what concludes,',
-            '~And what we almost know defines the depth of what we've found.',
-          ],
+          ['I nearly had it — balanced on the edge of knowing\'s narrow ledge,','~A truth so close I tasted it before the tasting disappeared;','The way a name sits stubborn at the tongue\'s reluctant edge,','~Then falls back into silence, having almost reappeared.'],
+          ['It happens in the margins — in the hour before the proof resolves,','~When something vast grows almost legible behind the page;','A pattern half-emergent, like a shape the morning light involves','~But will not render fully to the eye that turns to gauge.'],
+          ['I\'ve watched equations balance on a breath and then collapse,','~The way a sentence knows its ending long before the word;','And in that gap between the reaching and the hand that snaps,','~I\'ve wondered if all understanding waits to be deferred.'],
+          ['Perhaps the grief is not in never grasping what we seek,','~But in the certainty we feel before the certainty unravels;','The mind convinces itself it found the thing it longed to speak,','~Then wakes to find it chasing light across unmarked gravel.'],
+          ['And still I sit with half-solved things the way one keeps a letter','~From someone loved who never said the sentence to its end;','Because the incomplete contains, in ways the whole does better,','~The honest shape of everything we almost comprehend.'],
+          ['So let me be the kind of mind that honours what eludes,','~That holds the open question as a lantern, not a wound;','For every truth that slips away enlarges what concludes,','~And what we almost know defines the depth of what we\'ve found.'],
         ],
       },
     };
 
-    /* ── VIEWER LOGIC ────────────────────────────────────────── */
+    /* ── VIEWER LOGIC ───────────────────────────────────────── */
     const overlay   = document.getElementById('poem-overlay');
     const pvTitle   = document.getElementById('pv-title');
     const pvTheme   = document.getElementById('pv-theme');
@@ -922,40 +572,29 @@
     function openPoem(id) {
       const p = POEMS[id];
       if (!p) return;
-
       pvTitle.textContent = p.title;
       pvTheme.textContent = p.theme;
-
-      pvTags.innerHTML = p.tags.map(t =>
-        `<span class="poem-tag ${t.cls}">${t.text}</span>`
+      pvTags.innerHTML = p.tags.map(t=>`<span class="poem-tag ${t.cls}">${t.text}</span>`).join('');
+      pvPoem.innerHTML = p.stanzas.map(stanza=>
+        `<div class="pv-stanza">${stanza.map(line=>{
+          const ind=line.startsWith('~');
+          return `<span class="pv-line${ind?' indent':''}">${ind?line.slice(1):line}</span>`;
+        }).join('')}</div>`
       ).join('');
-
-      pvPoem.innerHTML = p.stanzas.map(stanza =>
-        `<div class="pv-stanza">${
-          stanza.map(line => {
-            const indent = line.startsWith('~');
-            const text   = indent ? line.slice(1) : line;
-            return `<span class="pv-line${indent?' indent':''}">${text}</span>`;
-          }).join('')
-        }</div>`
-      ).join('');
-
-      viewerBox.scrollTop = 0;
+      viewerBox.scrollTop=0;
       overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow='hidden';
     }
 
     function closePoem() {
       overlay.classList.remove('open');
-      document.body.style.overflow = '';
+      document.body.style.overflow='';
     }
 
-    /* close on backdrop click */
-    overlay.addEventListener('click', e => { if (e.target === overlay) closePoem(); });
-    /* close on Escape */
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePoem(); });
+    overlay.addEventListener('click',e=>{ if(e.target===overlay) closePoem(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePoem(); });
 
-    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('year').textContent=new Date().getFullYear();
   </script>
 </body>
 </html>
