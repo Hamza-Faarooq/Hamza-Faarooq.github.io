@@ -762,6 +762,41 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     <h2 class="section-title"><span class="tnum">04</span>Projects</h2>
     <div class="projects-grid">
 
+
+    <div class="proj">
+        <div class="proj-header">
+          <div class="proj-title-wrap">
+            <h3>Synthesia: Visuo-Lingual Affective Recommender System</h3>
+          </div>
+          <span class="proj-year">2026</span>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag tag-torch">Transformers</span>
+          <span class="proj-tag tag-green">FAISS</span>
+          <span class="proj-tag tag-purple">Multimodal ML</span>
+          <span class="proj-tag tag-blue">Late-Fusion</span>
+        </div>
+        <div class="proj-metrics">
+          <span class="proj-metric">ResNet & DistilRoBERTa</span>
+          <span class="proj-metric">Dense Vector Search</span>
+          <span class="proj-metric">Ablation Study</span>
+        </div>
+        <p class="proj-short">Engineered a multimodal machine learning pipeline fusing facial expression recognition and textual sentiment analysis to power a dynamic, emotion-driven movie recommendation engine.</p>
+        <div class="proj-full" id="pf2">
+          <ul>
+            <li>Architected a Late-Fusion architecture leveraging ResNet (via DeepFace) for visual emotion extraction and DistilRoBERTa for textual sentiment analysis, mathematically blending the distributions[cite: 533, 562].</li>
+            <li>Implemented a high-dimensional dense vector search engine using FAISS and MiniLM embeddings to efficiently retrieve and rank recommendations[cite: 531, 532].</li>
+            <li>Conducted a quantitative ablation study to mathematically prove the superiority of the Late-Fusion architecture over unimodal baselines[cite: 536, 567].</li>
+            <li>Deployed the system to a live cloud server, navigating real-world MLOps hurdles like Linux graphics driver dependencies and Python versioning conflicts[cite: 539, 569].</li>
+          </ul>
+        </div>
+        <div class="proj-footer">
+          <a href="https://github.com/Hamza-Faarooq/Visuo-Lingual-Affective-Recommender-System-VLARS-" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <button class="proj-expand-btn" onclick="toggleProj('pf2',this)">Read more ↓</button>
+        </div>
+      </div>
+
+      
       <!-- PROJECT 1: CFD Solver -->
       <div class="proj">
         <div class="proj-header">
