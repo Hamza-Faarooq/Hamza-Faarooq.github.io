@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Mathematical Pivot: Conquering the 50% Sparsity Wall in Spiking Neural Networks</title>
+
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #fdfdfd;
+      --text-color: #2c2e33;
+      --heading-color: #111111;
+      --accent-color: #f59e0b; /* Amber for SNN theme */
+      --code-bg: #f6f8fa;
+      --code-border: #e1e4e8;
+      --border-color: #eaecef;
+    }
+
+    body {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      font-family: 'Lora', serif;
+      line-height: 1.8;
+      font-size: 18px;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header { text-align: center; margin-bottom: 70px; font-family: 'Inter', sans-serif; }
+    h1 { font-size: 2.8em; font-weight: 800; color: var(--heading-color); line-height: 1.15; margin-bottom: 20px; letter-spacing: -0.04em; }
+    .subtitle { font-size: 1.2em; color: #555; margin-bottom: 25px; font-weight: 500; }
+    .author-info { font-size: 0.9em; color: #666; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    h2 { font-family: 'Inter', sans-serif; font-size: 1.8em; font-weight: 700; color: var(--heading-color); margin-top: 60px; margin-bottom: 25px; }
+    h3 { font-family: 'Inter', sans-serif; font-size: 1.3em; font-weight: 600; color: var(--heading-color); margin-top: 40px; margin-bottom: 15px; }
+    p { margin-bottom: 24px; }
+
+    code { font-family: 'Fira Code', monospace; background-color: rgba(175, 184, 193, 0.2); padding: 0.2em 0.4em; border-radius: 4px; font-size: 85%; }
+    pre { background-color: var(--code-bg); border: 1px solid var(--code-border); border-radius: 8px; padding: 24px; overflow-x: auto; font-size: 14px; line-height: 1.6; box-shadow: inset 0 1px 4px rgba(0,0,0,0.02); margin: 30px 0; }
+    pre code { background-color: transparent; padding: 0; border-radius: 0; font-size: 100%; }
+    
+    .c { color: #6a737d; font-style: italic; }
+    .k { color: #d73a49; font-weight: bold; }
+    .n { color: #24292e; }
+    .s { color: #032f62; }
+
+    ul, ol { margin-bottom: 24px; padding-left: 20px; }
+    li { margin-bottom: 10px; }
+
+    .highlight-box { background-color: #fffbeb; border-left: 4px solid var(--accent-color); padding: 20px 25px; margin: 40px 0; border-radius: 0 8px 8px 0; font-family: 'Inter', sans-serif; font-size: 0.95em; }
+    .error-box { background-color: #fff0f0; border-left: 4px solid #d73a49; padding: 20px 25px; margin: 40px 0; border-radius: 0 8px 8px 0; font-family: 'Inter', sans-serif; font-size: 0.95em; }
+    
+    hr { height: 1px; background-color: var(--border-color); border: none; margin: 60px 0; }
+    .math-block { padding: 10px 0; text-align: center; margin: 30px 0; overflow-x: auto; }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>The Mathematical Pivot: Conquering the 50% Sparsity Wall in Spiking Neural Networks</h1>
+    <div class="subtitle">From catastrophic solver failures to state-of-the-art iterative pruning on real-world neuromorphic datasets.</div>
+    <div class="author-info">
+      Research Internship under Shuai Lee & Ameer Hamza Khan | University of Oulu [cite: 102]<br>
+      By: <a href="https://hamza-faarooq.github.io/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: none; font-weight: 500;">MUHAMMAD HAMZA</a> <br> INDIAN INSTITUTE OF TECHNOLOGY, KHARAGPUR
+    </div>
+  </header>
+  <hr>
+
+  <p>
+    Spiking Neural Networks (SNNs) offer a tantalizing promise for the future of AI: brain-like, asynchronous computation that draws orders of magnitude less power than standard artificial neural networks (ANNs). However, deploying SNNs onto severely energy-constrained neuromorphic hardware requires rigorous network sparsity. In this research log, I document the journey of developing a novel <strong>Criticality-Constrained Quadratic Pruning (CQP)</strong> method, the brutal mathematical realities of convex optimization bugs, and how we finally conquered the 50% sparsity wall.
+  </p>
+
+  <div class="highlight-box">
+    <strong>🔬 Phase 1 & 2: The Baseline Architectures</strong><br>
+    Due to initial environment restrictions, we began our sanity checks using a complex synthetic dataset (`sklearn.make_classification`) with 784 features[cite: 4, 5, 122]. We established a 3-layer fully-connected baseline (784 &rarr; 256 &rarr; 128 &rarr; 10)[cite: 11]. Utilizing a direct current injection encoding scheme, our baseline SNN achieved an impressive 92.25% test accuracy, outperforming its ANN (ReLU) counterpart (90.45%)[cite: 12, 14]. 
+  </div>
+
+  <hr>
+
+  <h2>1. Quantifying Importance: Criticality and Time</h2>
+  
+  <p>
+    In standard Deep Learning, we compress networks using simple Magnitude (L1) Pruning—discarding weights closest to zero. But in an SNN, is raw weight magnitude the true indicator of a synapse's importance?
+  </p>
+  <p>
+    To answer this, we calculated surrogate gradients of the loss with respect to incoming weights to determine neuron "criticality"[cite: 18]. When evaluating our baseline, we found that the minimum criticality score for an input neuron was a staggering 0.649[cite: 23]. This empirically proved that the SNN was highly distributed, utilizing almost all input dimensions effectively[cite: 24, 26].
+  </p>
+  <p>
+    Simultaneously, we tackled <strong>temporal redundancy</strong>. By calculating the KL-divergence between output spike distributions of consecutive timesteps, we identified that the network reached 95% of its cumulative divergence by step 9 (out of 10)[cite: 30, 32]. Truncating this redundant step immediately yielded a free 10% theoretical energy saving on neuromorphic hardware without altering a single weight[cite: 32, 131].
+  </p>
+
+  <hr>
+
+  <h2>2. The Crisis: The CVXPY Solver and the 50% Wall</h2>
+
+  <p>
+    To prune the network while protecting these highly critical neurons, we initially formulated the problem as a <strong>Convex Quadratic Program</strong> solved via CVXPY. The objective was to minimize the squared magnitude of pruned weights, subject to a hard constraint: if a neuron's score crossed a threshold ($\tau = 0.9$), its mask must remain $m_i \ge 0.5$[cite: 61].
+  </p>
+
+  <div class="error-box">
+    <strong>⚠️ The 50% Sparsity Collapse:</strong><br>
+    At 20% sparsity, CQP outperformed Magnitude pruning by +0.5%[cite: 40]. But at 50% target sparsity, disaster struck. Magnitude pruning held strong at 91.7%, but our CQP method violently collapsed to <strong>48.0% accuracy</strong>[cite: 41, 142, 143].
+  </div>
+
+  <h3>Autopsy of a Mathematical Failure</h3>
+  <p>
+    We attempted to fix this by replacing the hard constraints with a soft penalty term ($\lambda \sum c_i (1 - m_i)$)[cite: 184]. We ran a $\lambda$ sweep at a fixed 50% sparsity to find the perfect balance[cite: 240]. However, looking at the results where $\lambda = 0.0$ (which mathematically should have equaled exactly 50% sparsity and 91.7% accuracy), the solver outputted <strong>62.0% sparsity and 47.1% accuracy</strong>[cite: 251, 252, 253].
+  </p>
+  <p>
+    This exposed a fatal flaw in our methodology: <strong>The Continuous Relaxation Trap</strong>. Network pruning is a Mixed-Integer Programming (MIP) problem, which is NP-hard[cite: 256]. The solver bypassed this by allowing fractional masks (e.g., $m_i = 0.49$)[cite: 258, 259]. When we brutally rounded these fractions to binary floats in Python, we destroyed the optimal solution and accidentally deleted massive portions of the network[cite: 260, 261].
+  </p>
+
+  <hr>
+
+  <h2>3. The Pivot: Combined Scoring and Iterative Healing</h2>
+
+  <p>
+    We completely abandoned the external CVXPY solver[cite: 263]. Instead, we implemented a mathematically sound <strong>Combined Importance Scoring</strong> metric directly in PyTorch[cite: 264]. We multiplied a neuron's weight magnitude by its criticality score, regulated by a hyperparameter $\alpha$:
+  </p>
+  
+  <div class="math-block">
+    $$ \text{Importance}_i = (W\_norm_i) \times (C\_score_i)^\alpha $$
+  </div>
+
+  <p>
+    By exactly sorting these scores, we mathematically guaranteed hitting our exact sparsity targets with zero rounding errors[cite: 267, 268]. However, a one-shot 50% cut using this new metric still only yielded 57.5% accuracy[cite: 320]. The culprit? <strong>Gradient Staleness</strong>. The criticality scores calculated at 0% sparsity become completely invalid the moment you delete 10% of the network, as the flow of information radically shifts[cite: 322, 323].
+  </p>
+
+  <h3>Crushing the "Zombie Weights" Bug</h3>
+  <p>
+    To solve this, we wrapped the metric in an <strong>Iterative Pruning Loop</strong>—slicing small chunks, fine-tuning the network to heal, recalculating fresh gradients, and repeating[cite: 279, 348]. During implementation, we encountered the "zombie weights" bug: the Adam optimizer's momentum was resurrecting weights we had set to zero[cite: 398, 399]. We fixed this by actively multiplying gradients by our pruning mask before `optimizer.step()` to ensure dead weights stayed dead[cite: 400, 401].
+  </p>
+
+<pre><code class="language-python"><span class="k">def</span> <span class="n">iterative_cqp_prune</span><span class="p">(</span><span class="n">baseline_model</span><span class="p">,</span> <span class="n">target_sparsity</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="c"># Gradually prunes the model to the target sparsity, fine-tuning in between [cite: 382]</span>
+    <span class="n">current_model</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">baseline_model</span><span class="p">)</span>
+    <span class="n">sparsities</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">target_sparsity</span><span class="p">,</span> <span class="n">steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="c"># [cite: 383]</span>
+    
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sparsities</span><span class="p">:</span>
+        <span class="n">fresh_scores</span> <span class="o">=</span> <span class="n">get_fresh_criticality_scores</span><span class="p">(</span><span class="n">current_model</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">)</span> <span class="c"># [cite: 383]</span>
+        <span class="n">current_w_norms</span> <span class="o">=</span> <span class="n">current_model</span><span class="p">.</span><span class="n">fc1</span><span class="p">.</span><span class="n">weight</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">abs</span><span class="p">().</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">).</span><span class="n">cpu</span><span class="p">().</span><span class="n">numpy</span><span class="p">()</span>
+        
+        <span class="n">current_model</span><span class="p">,</span> <span class="n">actual_s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cqp_prune</span><span class="p">(</span>
+            <span class="n">current_model</span><span class="p">,</span> <span class="n">current_w_norms</span><span class="p">,</span> <span class="n">fresh_scores</span><span class="p">,</span> <span class="n">sparsity</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span> <span class="c"># [cite: 383]</span>
+        <span class="p">)</span>
+        
+        <span class="c"># Fine-tune to heal, masking gradients to prevent zombie weights [cite: 384, 401]</span>
+        <span class="n">fine_tune_with_masked_gradients</span><span class="p">(</span><span class="n">current_model</span><span class="p">,</span> <span class="n">trainloader</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">current_model</span><span class="p">,</span> <span class="n">actual_s</span>
+</code></pre>
+
+  <hr>
+
+  <h2>4. Victory and the Transition to Real Data</h2>
+
+  <p>
+    The results of the new mathematical engine were staggering. At 60% sparsity, CQP achieved <strong>91.6%</strong>, officially outperforming the Magnitude baseline (89.9%) by +1.7%[cite: 413, 414]. At 70% sparsity, while the Gradient-only baseline collapsed to random guessing (11.1%), CQP maintained an incredible 87.2% (+76.2% advantage)[cite: 415, 416].
+  </p>
+
+  <p>
+    With the algorithm mathematically sound, the final step was proving generalizability. We abandoned the synthetic data and rebuilt our pipeline to ingest the real <strong>MNIST</strong> and <strong>Fashion-MNIST</strong> datasets[cite: 440, 481, 482]. 
+  </p>
+  <p>
+    Because MNIST digits are centered with black borders, the network dynamically adapted—the surrogate gradients correctly assigned 0.0 criticality to the border pixels, allowing the pruning mask to instantly safely delete those weights[cite: 463, 464, 465]. As predicted, baseline accuracies shot up to the 96%-98% range [cite: 459], and our iterative CQP method seamlessly transferred its dominance over Magnitude pruning to the real-world benchmarks[cite: 448, 473].
+  </p>
+  <p>
+    From failing solvers to state-of-the-art sparse networks, the math now holds strong. We are ready to write the paper.
+  </p>
+
+</body>
+</html>
