@@ -705,31 +705,33 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
       </div>
     </div>
 
-    <div class="research-entry">
-      <div class="r-thumb">
-        <img src="oulu_teaser.png" alt="SNN Pruning"
-             onerror="this.parentElement.innerHTML='<div class=\'r-thumb-ph\'><i class=\'fa-solid fa-brain\'></i></div>'">
-      </div>
-      <div>
-        <div class="r-header">
-          <div class="r-title">Sparsity-Aware Optimization for Spiking Neural Networks</div>
-          <span class="venue-badge venue-intern">Research Intern</span>
-        </div>
-        <div class="r-meta">University of Oulu · Prof. Shuai Lee</div>
-        <div class="r-date">Mar 2025 – Jun 2025</div>
-        <div class="r-metrics">
-          <span class="metric-chip">87.5% spatial sparsity</span>
-          <span class="metric-chip">CVXPY · CQP</span>
-          <span class="metric-chip">MNIST · CIFAR-10</span>
-        </div>
-        <div class="r-desc" id="rd2">Formulated a constrained quadratic optimization approach to prune Spiking Neural Networks (SNNs), achieving 87.5% spatial sparsity. Integrated criticality-based neuron selection and KL-divergence temporal regularization to jointly reduce spatial and temporal redundancy, benchmarking against standard ANN baselines.</div>
-        <button class="r-expand" onclick="toggleRd('rd2',this)">Read more ↓</button>
-        <div class="r-links">
-          <a href="https://github.com/Hamza-Faarooq/Research-UoF   " class="r-link"><i class="fa-brands fa-github"></i> Code</a>
-          <a href="#" class="r-link"><i class="fa-solid fa-file-pdf"></i> Paper</a>
-        </div>
-      </div>
+<div class="research-entry">
+  <div class="r-thumb">
+    <img src="oulu_teaser.png" alt="SNN Pruning"
+         onerror="this.parentElement.innerHTML='<div class=\'r-thumb-ph\'><i class=\'fa-solid fa-brain\'></i></div>'">
+  </div>
+  <div>
+    <div class="r-header">
+      <div class="r-title">Criticality-Constrained Pruning for Energy-Efficient Spiking Neural Networks</div>
+      <span class="venue-badge venue-intern">Research Intern</span>
     </div>
+    <div class="r-meta">University of Oulu · Prof. Shuai Lee</div>
+    <div class="r-date">Mar 2025 – Jun 2025</div>
+    <div class="r-metrics">
+      <span class="metric-chip">90% sparsity</span>
+      <span class="metric-chip">95.6% MNIST accuracy</span>
+      <span class="metric-chip">73% energy reduction</span>
+      <span class="metric-chip">CQP · CVXPY · snnTorch</span>
+      <span class="metric-chip">MNIST · Fashion-MNIST</span>
+    </div>
+    <div class="r-desc" id="rd2">Designed Criticality-Constrained Quadratic Pruning (CQP), a native PyTorch pipeline fusing surrogate-gradient criticality with weight magnitude to prune SNNs without convex solvers. Formally characterised a continuous-relaxation trap in QP-based pruning causing 44 pp accuracy collapse, and identified a zombie-weight failure mode in Adam fine-tuning. Combined weight sparsification with KL-divergence temporal analysis yields a compound 73% energy reduction at 70% sparsity, retaining 95.6% MNIST accuracy at 90% sparsity. Submitted to Neurocomputing (Elsevier).</div>
+    <button class="r-expand" onclick="toggleRd('rd2',this)">Read more ↓</button>
+    <div class="r-links">
+      <a href="https://github.com/Hamza-Faarooq/Pruning-with-SNNs" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
+      <a href="#" class="r-link"><i class="fa-solid fa-file-pdf"></i> Paper (under review)</a>
+    </div>
+  </div>
+</div>
 
     <div class="research-entry">
       <div class="r-thumb">
@@ -759,6 +761,56 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     </div>
   </section>
 
+
+<!-- PUBLICATIONS -->
+  <section class="section reveal" id="publications">
+    <h2 class="section-title"><span class="tnum">05</span>Publications</h2>
+    <div class="pub-list">
+
+      <div class="pub-entry">
+        <div class="pub-idx">[1]</div>
+        <div class="pub-body">
+          <div class="pub-badges">
+            <span class="pub-badge badge-conf">iSAI-NLP 2025</span>
+            <span class="pub-badge badge-ieee">IEEE ICEEE 2026</span>
+            <span class="pub-badge badge-nlp">NLP · Vision</span>
+          </div>
+          <div class="pub-title">Movie Review Helpfulness Prediction using Semantic Alignment and Evidential Fusion-based Multimodal Approach</div>
+          <div class="pub-authors"><span class="me">Muhammad Hamza</span>, et al.</div>
+          <div class="pub-venue-line">iSAI-NLP 2025 &amp; also accepted at <strong style="color:var(--accent)">ICEEE–IEEE Conference 2026</strong></div>
+          <div class="pub-links">
+            <a href="https://ieeexplore.ieee.org/abstract/document/11492803/metrics#metrics" class="pub-link" target="_blank" rel="noopener">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> IEEE Xplore
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-idx">[2]</div>
+        <div class="pub-body">
+          <div class="pub-badges">
+            <span class="pub-badge badge-preprint">Under Review</span>
+            <span class="pub-badge badge-neuro">Neurocomputing</span>
+            <span class="pub-badge badge-nlp">SNNs · Neuromorphic</span>
+          </div>
+          <div class="pub-title">Criticality-Constrained Iterative Pruning for Energy-Efficient Spiking Neural Networks via Combined Importance Scoring</div>
+          <div class="pub-authors"><span class="me">Muhammad Hamza</span></div>
+          <div class="pub-venue-line">Submitted to <strong style="color:var(--accent)">Neurocomputing — Elsevier</strong> (ISSN 0925-2312)</div>
+          <div class="pub-links">
+            <a href="https://github.com/Hamza-Faarooq/Pruning-with-SNNs" class="pub-link" target="_blank" rel="noopener">
+              <i class="fa-brands fa-github"></i> Code
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+
+  
   <!-- PROJECTS -->
   <section class="section reveal" id="projects">
     <h2 class="section-title"><span class="tnum">04</span>Projects</h2>
@@ -980,25 +1032,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     </div><!-- /comp-list -->
   </section>
 
-  <!-- PUBLICATIONS -->
-  <section class="section reveal" id="publications">
-    <h2 class="section-title"><span class="tnum">05</span>Publications</h2>
-    <div class="pub-list">
-      <div class="pub-entry">
-        <div class="pub-idx">[1]</div>
-        <div class="pub-body">
-          <div class="pub-badges">
-            <span class="pub-badge badge-conf">iSAI-NLP 2025</span>
-            <span class="pub-badge badge-ieee">IEEE ICEEE 2026</span>
-            <span class="pub-badge badge-nlp">NLP · Vision</span>
-          </div>
-          <div class="pub-title">Movie Review Helpfulness Prediction using Semantic Alignment and Evidential Fusion-based Multimodal Approach</div>
-          <div class="pub-authors"><span class="me">Muhammad Hamza</span>, et al.</div>
-          <div class="pub-venue-line">iSAI-NLP 2025 &amp; also accepted at <strong style="color:var(--accent)">ICEEE–IEEE Conference 2026</strong></div>
-        </div>
-      </div>
-    </div>
-  </section>
+
 
   <!-- SCHOLASTIC ACHIEVEMENTS -->
   <section class="section reveal" id="achievements">
