@@ -1453,7 +1453,7 @@ per_sample_grads = torch.stack(per_sample_grads)  <span class="tok-c"># [B, n]</
       <cite>— A lesson that keeps getting rediscovered, from Amari (1998) through Shampoo (2022)</cite>
     </blockquote>
 
-    <p class="footnote">The experiments in this post were run on a single RTX 3090 (24GB). PyTorch 2.2 with vmap for per-sample gradient computation. The SNA implementation above is functional but not optimized — a production version would batch the Woodbury solves across layers and use half-precision for the sketch factors. Code available at <a href="https://hamza-faarooq.github.io/" target="_blank" rel="noopener">hamza-faarooq.github.io</a>.</p>
+    <!-- <p class="footnote">The experiments in this post were run on a single RTX 3090 (24GB). PyTorch 2.2 with vmap for per-sample gradient computation. The SNA implementation above is functional but not optimized — a production version would batch the Woodbury solves across layers and use half-precision for the sketch factors. Code available at <a href="https://hamza-faarooq.github.io/" target="_blank" rel="noopener">hamza-faarooq.github.io</a>.</p> -->
 
   </section>
 
