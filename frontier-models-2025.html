@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inside the Machines: What's Actually Different About LLaMA 4, Qwen3, Gemini 2.5, and Claude Sonnet 4</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --surface: #ffffff;
+    --surface2: #f4f2ed;
+    --text: #1c1b18;
+    --text-muted: #6b6860;
+    --text-faint: #a09e98;
+    --accent: #c0392b;
+    --accent-light: #fdf2f1;
+    --accent-border: #e8b4b0;
+    --teal: #0d7c6a;
+    --teal-light: #edf7f5;
+    --teal-border: #9fd5cc;
+    --amber: #b45309;
+    --amber-light: #fefbf0;
+    --amber-border: #f5d48a;
+    --blue: #1e5fa6;
+    --blue-light: #eef4fc;
+    --blue-border: #a8c8f0;
+    --purple: #6d28d9;
+    --purple-light: #f5f3ff;
+    --purple-border: #c4b5fd;
+    --green: #166534;
+    --green-light: #f0fdf4;
+    --green-border: #86efac;
+    --border: #e8e5de;
+    --border-strong: #ccc9c0;
+    --code-bg: #f0ede6;
+    --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --shadow-md: 0 2px 8px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.85;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-wrapper { max-width: 780px; margin: 0 auto; padding: 0 24px 120px; }
+
+  .site-header { border-bottom: 1px solid var(--border); padding: 18px 0; }
+  .site-header-inner {
+    max-width: 780px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .site-label {
+    font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500;
+    color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .site-series { font-family: 'Outfit', sans-serif; font-size: 12px; color: var(--text-faint); }
+
+  .hero { padding: 64px 0 52px; border-bottom: 1px solid var(--border); margin-bottom: 60px; }
+  .hero-kicker {
+    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600;
+    color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+  }
+  .hero-kicker::after { content: ''; display: block; height: 1px; width: 40px; background: var(--accent); opacity: 0.4; }
+  h1.hero-title {
+    font-family: 'Outfit', sans-serif; font-size: 2.75em; font-weight: 800;
+    color: var(--text); line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 24px;
+  }
+  .hero-subtitle {
+    font-family: 'EB Garamond', serif; font-size: 1.22em; color: var(--text-muted);
+    line-height: 1.65; margin-bottom: 32px; max-width: 660px; font-style: italic;
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
+    border-top: 1px solid var(--border); padding-top: 24px;
+  }
+  .hero-meta-item { font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--text-muted); }
+  .hero-meta-item strong { color: var(--text); font-weight: 600; }
+  .hero-meta-divider { color: var(--border-strong); }
+  .hero-tag {
+    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 500;
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted);
+    padding: 3px 10px; border-radius: 100px; letter-spacing: 0.04em;
+  }
+
+  p { margin-bottom: 1.4em; }
+  h2 {
+    font-family: 'Outfit', sans-serif; font-size: 1.55em; font-weight: 700;
+    color: var(--text); line-height: 1.25; margin-top: 72px; margin-bottom: 20px; letter-spacing: -0.02em;
+  }
+  h3 {
+    font-family: 'Outfit', sans-serif; font-size: 1.18em; font-weight: 600;
+    color: var(--text); line-height: 1.3; margin-top: 44px; margin-bottom: 14px; letter-spacing: -0.01em;
+  }
+  h4 {
+    font-family: 'Outfit', sans-serif; font-size: 0.9em; font-weight: 600;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+    margin-top: 28px; margin-bottom: 10px;
+  }
+  strong { font-weight: 600; }
+  em { font-style: italic; }
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  ul, ol { padding-left: 24px; margin-bottom: 1.4em; }
+  li { margin-bottom: 0.3em; }
+
+  code {
+    font-family: 'DM Mono', monospace; font-size: 0.78em;
+    background: var(--code-bg); border: 1px solid var(--border);
+    padding: 0.15em 0.45em; border-radius: 4px; color: var(--text);
+  }
+  pre {
+    background: #1a1814; border-radius: 10px; padding: 24px 28px;
+    overflow-x: auto; margin: 32px 0; font-size: 13px; line-height: 1.7;
+    box-shadow: var(--shadow);
+  }
+  pre code {
+    font-family: 'DM Mono', monospace; font-size: 1em;
+    background: transparent; border: none; padding: 0; color: #e8e3d8;
+  }
+  .tok-c   { color: #7a8090; font-style: italic; }
+  .tok-k   { color: #e07b54; }
+  .tok-kw  { color: #c792ea; }
+  .tok-fn  { color: #82aaff; }
+  .tok-s   { color: #c3e88d; }
+  .tok-num { color: #f78c6c; }
+  .tok-op  { color: #89ddff; }
+  .tok-cls { color: #ffcb6b; }
+  .tok-dec { color: #f78c6c; }
+
+  .callout { border-radius: 10px; padding: 22px 26px; margin: 40px 0; }
+  .callout-label {
+    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .callout-label svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout p { font-size: 0.95em; }
+  .callout-info    { background: var(--blue-light);   border: 1px solid var(--blue-border);   }
+  .callout-info .callout-label    { color: var(--blue);   }
+  .callout-warning { background: var(--amber-light);  border: 1px solid var(--amber-border);  }
+  .callout-warning .callout-label { color: var(--amber);  }
+  .callout-danger  { background: var(--accent-light); border: 1px solid var(--accent-border); }
+  .callout-danger .callout-label  { color: var(--accent); }
+  .callout-success { background: var(--teal-light);   border: 1px solid var(--teal-border);   }
+  .callout-success .callout-label { color: var(--teal);   }
+  .callout-purple  { background: var(--purple-light); border: 1px solid var(--purple-border); }
+  .callout-purple .callout-label  { color: var(--purple); }
+
+  .math-block { overflow-x: auto; padding: 20px 10px; text-align: center; margin: 32px 0; font-size: 1.05em; }
+  .math-label {
+    font-family: 'Outfit', sans-serif; font-size: 12px; color: var(--text-faint);
+    text-align: center; margin-top: -16px; margin-bottom: 32px; line-height: 1.5;
+  }
+
+  .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 32px 0; }
+  .result-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px; text-align: center;
+  }
+  .result-card.highlight { border-color: var(--teal-border);   background: var(--teal-light);   }
+  .result-card.danger    { border-color: var(--accent-border); background: var(--accent-light); }
+  .result-card.purple    { border-color: var(--purple-border); background: var(--purple-light); }
+  .result-card.amber     { border-color: var(--amber-border);  background: var(--amber-light);  }
+  .result-card.blue      { border-color: var(--blue-border);   background: var(--blue-light);   }
+  .result-num {
+    font-family: 'Outfit', sans-serif; font-size: 2em; font-weight: 800;
+    line-height: 1; margin-bottom: 6px; color: var(--text);
+  }
+  .result-card.highlight .result-num { color: var(--teal);   }
+  .result-card.danger    .result-num { color: var(--accent); }
+  .result-card.purple    .result-num { color: var(--purple); }
+  .result-card.amber     .result-num { color: var(--amber);  }
+  .result-card.blue      .result-num { color: var(--blue);   }
+  .result-label { font-family: 'Outfit', sans-serif; font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+  .comparison-table { width: 100%; border-collapse: collapse; margin: 32px 0; font-size: 0.88em; }
+  .comparison-table th {
+    font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+    padding: 10px 12px; border-bottom: 2px solid var(--border); text-align: left;
+  }
+  .comparison-table td {
+    padding: 11px 12px; border-bottom: 1px solid var(--border);
+    font-family: 'EB Garamond', serif; font-size: 1em; vertical-align: top;
+  }
+  .comparison-table tr:last-child td { border-bottom: none; }
+  .comparison-table .win  { color: var(--teal);   font-weight: 600; }
+  .comparison-table .neu  { color: var(--amber);  font-weight: 600; }
+  .comparison-table .lose { color: var(--accent); }
+  .comparison-table tr.hl td { background: var(--teal-light); }
+
+  .interactive-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px; margin: 36px 0; box-shadow: var(--shadow);
+  }
+  .interactive-box h4 { margin-top: 0; margin-bottom: 16px; }
+
+  .section-break {
+    display: flex; align-items: center; gap: 16px; margin: 64px 0; color: var(--text-faint);
+  }
+  .section-break::before, .section-break::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .section-break span {
+    font-family: 'Outfit', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  }
+
+  .toc { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; margin: 0 0 56px; }
+  .toc-title {
+    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px;
+  }
+  .toc ol { padding-left: 20px; margin: 0; }
+  .toc li { font-family: 'Outfit', sans-serif; font-size: 14px; margin-bottom: 8px; color: var(--text-muted); }
+  .toc a { color: var(--text-muted); text-decoration: none; }
+  .toc a:hover { color: var(--text); }
+
+  blockquote {
+    border-left: 3px solid var(--accent); margin: 36px 0; padding: 4px 0 4px 28px;
+    font-style: italic; color: var(--text-muted); font-size: 1.1em;
+  }
+  blockquote cite {
+    display: block; font-size: 0.8em; margin-top: 8px;
+    font-style: normal; font-family: 'Outfit', sans-serif; color: var(--text-faint);
+  }
+
+  .accordion { border: 1px solid var(--border); border-radius: 10px; margin: 28px 0; overflow: hidden; }
+  .accordion-item { border-bottom: 1px solid var(--border); }
+  .accordion-item:last-child { border-bottom: none; }
+  .accordion-btn {
+    width: 100%; background: var(--surface); border: none; cursor: pointer;
+    padding: 16px 20px; text-align: left; display: flex; justify-content: space-between;
+    align-items: center; font-family: 'Outfit', sans-serif; font-size: 14px;
+    font-weight: 600; color: var(--text); transition: background 0.15s;
+  }
+  .accordion-btn:hover { background: var(--surface2); }
+  .accordion-arrow { font-size: 12px; color: var(--text-muted); transition: transform 0.2s; }
+  .accordion-btn.open .accordion-arrow { transform: rotate(180deg); }
+  .accordion-body {
+    display: none; padding: 0 20px 20px; background: var(--surface);
+    font-size: 0.9em; color: var(--text-muted); line-height: 1.7;
+  }
+  .accordion-body.open { display: block; }
+  .accordion-body p { margin-bottom: 0.8em; }
+  .accordion-body p:last-child { margin-bottom: 0; }
+
+  .footnote {
+    font-size: 0.85em; color: var(--text-muted); border-top: 1px solid var(--border);
+    padding-top: 20px; margin-top: 64px; font-style: italic;
+  }
+
+  /* Model cards */
+  .model-card {
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; margin: 40px 0; box-shadow: var(--shadow-md);
+  }
+  .model-card-header {
+    padding: 22px 28px 18px;
+    display: flex; align-items: flex-start; gap: 18px; flex-wrap: wrap;
+  }
+  .model-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .model-card-meta { flex: 1; }
+  .model-card-name {
+    font-family: 'Outfit', sans-serif; font-size: 1.2em; font-weight: 800;
+    color: var(--text); line-height: 1.2; margin-bottom: 4px;
+  }
+  .model-card-sub {
+    font-family: 'Outfit', sans-serif; font-size: 12px; color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+  .model-card-body { padding: 0 28px 28px; }
+  .model-card-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px; margin: 18px 0 22px;
+  }
+  .stat-chip {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 14px; text-align: center;
+  }
+  .stat-num {
+    font-family: 'DM Mono', monospace; font-size: 1em; font-weight: 500;
+    color: var(--text); margin-bottom: 2px;
+  }
+  .stat-lbl { font-family: 'Outfit', sans-serif; font-size: 10px; color: var(--text-faint); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* bench bars */
+  .bench-row { margin-bottom: 10px; }
+  .bench-label-row {
+    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px;
+  }
+  .bench-name { font-family: 'Outfit', sans-serif; font-size: 12px; color: var(--text-muted); }
+  .bench-score { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; }
+  .bench-track { height: 7px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .bench-fill  { height: 100%; border-radius: 100px; transition: width 0.6s ease; }
+
+  /* Context window diagram */
+  .ctx-viz {
+    display: flex; align-items: center; gap: 0; margin: 24px 0; overflow-x: auto;
+  }
+  .ctx-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .ctx-bar {
+    height: 32px; border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; font-family: 'DM Mono', monospace; font-size: 10px;
+    color: white; font-weight: 600; white-space: nowrap; padding: 0 8px; min-width: 32px;
+  }
+  .ctx-label { font-family: 'Outfit', sans-serif; font-size: 11px; color: var(--text-faint); text-align: center; }
+
+  /* Slider */
+  .slider-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .slider-row label { font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--text-muted); min-width: 130px; }
+  .slider-row input[type=range] { flex: 1; height: 4px; appearance: none; background: var(--border); border-radius: 4px; outline: none; cursor: pointer; }
+  .slider-row input[type=range]::-webkit-slider-thumb {
+    appearance: none; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); cursor: pointer; border: 2px solid white; box-shadow: 0 0 0 2px var(--accent);
+  }
+  .slider-val { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); min-width: 50px; text-align: right; }
+
+  /* Reasoning timeline */
+  .reasoning-trace {
+    background: #1a1814; border-radius: 10px; padding: 20px 24px;
+    margin: 28px 0; font-family: 'DM Mono', monospace; font-size: 12.5px;
+    line-height: 1.8; color: #c8c3b8;
+  }
+  .trace-think { color: #7a8090; font-style: italic; }
+  .trace-out   { color: #c3e88d; }
+  .trace-label { color: #f78c6c; font-weight: 500; }
+
+  /* iRoPE diagram */
+  .irope-diagram {
+    display: flex; flex-direction: column; gap: 6px; margin: 24px 0;
+  }
+  .irope-row {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .irope-layer {
+    height: 36px; border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; font-family: 'Outfit', sans-serif; font-size: 11px;
+    font-weight: 600; flex: 1; transition: all 0.3s;
+  }
+  .irope-idx {
+    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-faint);
+    min-width: 20px; text-align: right;
+  }
+
+  /* Thinking budget */
+  .think-budget-viz {
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 24px 0;
+  }
+  .think-row {
+    display: flex; align-items: stretch; border-bottom: 1px solid var(--border);
+  }
+  .think-row:last-child { border-bottom: none; }
+  .think-mode {
+    padding: 12px 16px; font-family: 'Outfit', sans-serif; font-size: 12px;
+    font-weight: 600; min-width: 120px; display: flex; align-items: center;
+    border-right: 1px solid var(--border);
+  }
+  .think-bar-area { flex: 1; padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
+  .think-segment {
+    height: 22px; border-radius: 4px; display: flex; align-items: center;
+    justify-content: center; font-family: 'DM Mono', monospace; font-size: 9px;
+    font-weight: 500; color: white; white-space: nowrap; padding: 0 6px;
+    transition: width 0.4s ease;
+  }
+  .think-cost {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-faint);
+    min-width: 60px; text-align: right;
+  }
+
+  .site-footer { border-top: 1px solid var(--border); padding: 40px 24px; margin-top: 80px; max-width: 780px; margin-left: auto; margin-right: auto; }
+  .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
+  .footer-text { font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--text-faint); line-height: 1.6; }
+  .footer-text a { color: var(--text-muted); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    h1.hero-title { font-size: 2em; }
+    .results-grid { grid-template-columns: 1fr 1fr; }
+    .model-card-header { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <span class="site-label">Research Blog</span>
+    <span class="site-series">LLMs · Architecture · 2025</span>
+  </div>
+</header>
+
+<div class="page-wrapper">
+
+  <div class="hero">
+    <div class="hero-kicker">Frontier Models</div>
+    <h1 class="hero-title">Inside the Machines: What's Actually Different About LLaMA 4, Qwen3, Gemini 2.5, and Claude Sonnet 4</h1>
+    <p class="hero-subtitle">Everyone's posting benchmark screenshots. Nobody's explaining the architectural bets each lab actually made — the ones that will define the next two years of the field. Let's fix that.</p>
+    <div class="hero-meta">
+      <span class="hero-meta-item"><strong>Muhammad Hamza</strong></span>
+      <span class="hero-meta-divider">·</span>
+      <span class="hero-meta-item">IIT Kharagpur</span>
+      <span class="hero-meta-divider">·</span>
+      <span class="hero-meta-item">~30 min read</span>
+      <span class="hero-tag">LLaMA 4</span>
+      <span class="hero-tag">Qwen3</span>
+      <span class="hero-tag">Gemini 2.5</span>
+      <span class="hero-tag">Claude Sonnet 4</span>
+      <span class="hero-tag">Architecture</span>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-title">In this post</div>
+    <ol>
+      <li><a href="#framing">The framing problem: why benchmarks alone tell you nothing</a></li>
+      <li><a href="#llama4">LLaMA 4: iRoPE, 10M tokens, and the MoE bet Meta made</a></li>
+      <li><a href="#qwen3">Qwen3: 128 experts, dual-mode reasoning, and 36T training tokens</a></li>
+      <li><a href="#gemini">Gemini 2.5 Pro: sparse MoE on TPU, native thinking, and the 1M context reality</a></li>
+      <li><a href="#claude">Claude Sonnet 4: hybrid reasoning, the thinking budget, and what Anthropic isn't saying</a></li>
+      <li><a href="#deepseek">The DeepSeek wildcard: how a 32B dense model broke everyone's assumptions</a></li>
+      <li><a href="#compare">A direct architectural comparison: what each lab is actually betting on</a></li>
+      <li><a href="#whats-next">What comes next — and what these models still can't do</a></li>
+    </ol>
+  </nav>
+
+  <!-- SECTION 1 -->
+  <section id="framing">
+    <h2>The Framing Problem: Why Benchmarks Alone Tell You Nothing</h2>
+
+    <p>Every two weeks another model drops, the AIME score goes up, the leaderboard shuffles, and a hundred hot takes get posted about which model "won." If you're trying to actually understand what's happening in the field, this is almost completely useless information. Benchmark numbers are outputs. The interesting stuff is in the architectural decisions that produce them.</p>
+
+    <p>Here's what I mean. When you see Qwen3-235B score 85.7% on AIME 2024, the instinct is to compare that number to Gemini 2.5 Pro's 92.0% and conclude Gemini is better at math. But that comparison is hiding several confounds: different amounts of compute at inference time (thinking tokens), different training data compositions, different evaluation protocols, and — most importantly — fundamentally different architectural bets about what the bottleneck in language model capability actually is.</p>
+
+    <p>Some labs think the bottleneck is parameter count. Some think it's context length. Some think it's reasoning depth at inference time. Some think it's training data quality. Each of these beliefs, when it drives a multi-hundred-million-dollar training run, produces a very different model. Understanding which lab made which bet, and why, is more useful than any benchmark table.</p>
+
+    <blockquote>
+      The models that matter aren't the ones with the best headline numbers — they're the ones where an architectural decision paid off in a way the field didn't anticipate.
+      <cite>— The thesis of this post</cite>
+    </blockquote>
+
+    <p>Let's go through them one by one. I'll cover the actual architecture, the explicit tradeoffs, what the benchmark numbers tell us given those tradeoffs, and what's still unsolved. I'll try very hard not to hype any of them.</p>
+  </section>
+
+  <div class="section-break"><span>LLaMA 4</span></div>
+
+  <!-- SECTION 2: LLAMA 4 -->
+  <section id="llama4">
+    <h2>LLaMA 4: iRoPE, 10 Million Tokens, and Meta's MoE Bet</h2>
+
+    <p>LLaMA 4 is Meta's first MoE architecture, and it comes in two released variants right now: <strong>Scout</strong> (17B active / 109B total, 16 experts) and <strong>Maverick</strong> (17B active / 400B total, 128 experts). A third, Behemoth, sits at an estimated 2 trillion total parameters with ~288B active, and is still training as of mid-2025. The most striking number in the entire LLaMA 4 family isn't the parameter count — it's the context window: <strong>10 million tokens</strong>.</p>
+
+    <!-- LLaMA 4 model card -->
+    <div class="model-card">
+      <div class="model-card-header" style="background: linear-gradient(135deg, #eef4fc 0%, #f4f2ed 100%); border-bottom: 1px solid var(--border);">
+        <div class="model-icon" style="background: #1e5fa6; color: white;">🦙</div>
+        <div class="model-card-meta">
+          <div class="model-card-name">LLaMA 4 Scout & Maverick</div>
+          <div class="model-card-sub">Meta · April 2025 · Open weights · MoE · Multimodal</div>
+        </div>
+      </div>
+      <div class="model-card-body">
+        <div class="model-card-stats">
+          <div class="stat-chip"><div class="stat-num">17B</div><div class="stat-lbl">Active params</div></div>
+          <div class="stat-chip"><div class="stat-num">10M</div><div class="stat-lbl">Context tokens</div></div>
+          <div class="stat-chip"><div class="stat-num">128</div><div class="stat-lbl">Experts (Maverick)</div></div>
+          <div class="stat-chip"><div class="stat-num">iRoPE</div><div class="stat-lbl">Position encoding</div></div>
+        </div>
+        <h4>Key benchmarks (Maverick)</h4>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">MMLU Pro</span><span class="bench-score" style="color:var(--blue);">80.5%</span></div><div class="bench-track"><div class="bench-fill" style="width:80.5%;background:var(--blue);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">GPQA Diamond</span><span class="bench-score" style="color:var(--blue);">69.8%</span></div><div class="bench-track"><div class="bench-fill" style="width:69.8%;background:var(--blue);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">LiveCodeBench</span><span class="bench-score" style="color:var(--blue);">43.4%</span></div><div class="bench-track"><div class="bench-fill" style="width:43.4%;background:var(--blue);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">MMMU (vision)</span><span class="bench-score" style="color:var(--blue);">73.4%</span></div><div class="bench-track"><div class="bench-fill" style="width:73.4%;background:var(--blue);"></div></div></div>
+      </div>
+    </div>
+
+    <h3>What iRoPE Actually Does</h3>
+
+    <p>Getting to 10 million tokens is not an engineering footnote — it's the central architectural challenge the entire LLaMA 4 design is built around. The mechanism they use is called <strong>iRoPE</strong> (interleaved Rotary Position Embeddings), and it's one of the more elegant solutions to a real problem with standard RoPE at extreme context lengths.</p>
+
+    <p>Here's the problem. Standard RoPE encodes position by rotating the query and key vectors by an angle proportional to the token's position in the sequence. This works beautifully up to context lengths close to what the model saw during training. Beyond that, the rotation angles become so large that the dot product between query and key vectors deteriorates into noise — the model loses the ability to distinguish "this token is 50 positions away" from "this token is 5000 positions away." This is why models trained with a 128K context window generally fail catastrophically when you give them a 256K prompt, even with simple retrieval tasks.</p>
+
+    <p>LLaMA 4's solution is to interleave two fundamentally different types of attention layers:</p>
+
+    <!-- iRoPE visualization -->
+    <div class="interactive-box">
+      <h4>iRoPE: Interleaved Attention Architecture</h4>
+      <p style="font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-muted);margin-bottom:18px;">Layers 1–3 use chunked RoPE attention (local 8K window). Layer 4 uses NoPE — no positional encoding, full causal attention over the entire context. This pattern repeats for all 48 layers.</p>
+      <div class="irope-diagram" id="iropeViz"></div>
+      <p style="font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-faint);margin-top:14px;">NoPE layers handle long-range reasoning; RoPE layers handle precise local ordering. Trained at 256K tokens, extrapolates to 10M at inference time.</p>
+    </div>
+
+    <p>The <strong>RoPE layers</strong> (three out of every four) use chunked attention with a fixed local window of 8,192 tokens. They only see nearby tokens — efficient, well-calibrated, and their KV cache is a fixed size regardless of total context length. The <strong>NoPE layers</strong> (every fourth layer) use no positional encoding at all. They apply full causal attention over the entire sequence, without any rotational position signal. Because there's no position embedding to "break" at long distances, they can generalize to context lengths far beyond training without positional interference.</p>
+
+    <p>The clever part is the combination. RoPE layers preserve local token order — syntax, sentence structure, immediate reference. NoPE layers handle global reasoning — finding a relevant fact buried 800 pages back in the document, matching a function definition to a call site across a large codebase. The model trained on 256K token sequences but uses inference-time temperature scaling on the NoPE layers' attention weights to extrapolate stably to 10M.</p>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575zM8 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 018 5zm.75 6.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+        10M context: retrieval vs. reasoning
+      </div>
+      <p>Early independent testing (dev.to community, Andri.ai benchmarks) draws an important distinction: LLaMA 4's 10M window shows strong needle-in-a-haystack <em>retrieval</em> — finding a specific fact across a massive document. But complex <em>reasoning</em> tasks that require synthesizing information from many distant parts of the context degrade past roughly 256K–512K tokens. A 10M token retrieval window and a 10M token reasoning window are genuinely different things. Practically, if you're doing RAG over an entire codebase or book, Scout is excellent. If you're asking the model to reason across the whole thing simultaneously, expect uneven results past ~256K.</p>
+    </div>
+
+    <h3>Scout vs. Maverick: The MoE Scaling Question</h3>
+
+    <p>This is where it gets interesting. Scout has 16 experts and 109B total parameters. Maverick has 128 experts and 400B total parameters. Both activate exactly 17B parameters per token. So Maverick routes each token through 2 out of 128 experts, and Scout routes through 2 out of 16. The active compute is identical at inference time.</p>
+
+    <p>What do you actually get for those extra 112 experts? The hypothesis, backed by distillation theory, is that with more experts, you can have finer-grained specialization — each expert covers a narrower semantic territory, so the routing is more precise and the individual expert computations are more targeted. Maverick was distilled from Behemoth (288B active parameters), meaning its experts were initialized by decomposing a much larger teacher model's weight structure, rather than learning from scratch.</p>
+
+    <div class="results-grid">
+      <div class="result-card blue">
+        <div class="result-num">16</div>
+        <div class="result-label">Experts (Scout)<br>109B total params</div>
+      </div>
+      <div class="result-card highlight">
+        <div class="result-num">128</div>
+        <div class="result-label">Experts (Maverick)<br>400B total params</div>
+      </div>
+      <div class="result-card">
+        <div class="result-num">17B</div>
+        <div class="result-label">Active params<br>same for both</div>
+      </div>
+      <div class="result-card amber">
+        <div class="result-num">~2T</div>
+        <div class="result-label">Behemoth total params<br>(teacher, in training)</div>
+      </div>
+    </div>
+
+    <p>Maverick scores about 10 percentage points higher than Scout on most benchmarks, which is a meaningful gap for what is — in FLOPs terms — the exact same model. That gap is the empirical payoff of more experts and better distillation initialization. Whether it's worth the 4× memory footprint is a deployment question, not a capability question.</p>
+  </section>
+
+  <div class="section-break"><span>Qwen3</span></div>
+
+  <!-- SECTION 3: QWEN3 -->
+  <section id="qwen3">
+    <h2>Qwen3: 128 Experts, Dual-Mode Reasoning, and What 36 Trillion Training Tokens Buys You</h2>
+
+    <p>Alibaba's Qwen3 family is, I think, the most underrated story in 2025 frontier models — partly because it doesn't have the marketing infrastructure of Google or Anthropic, and partly because the flagship (235B-A22B) quietly does things that nobody else's open-weight model can do at the same compute cost. Let's be precise about what's actually happening under the hood.</p>
+
+    <div class="model-card">
+      <div class="model-card-header" style="background: linear-gradient(135deg, #fefbf0 0%, #f4f2ed 100%); border-bottom: 1px solid var(--border);">
+        <div class="model-icon" style="background: var(--amber); color: white;">🔮</div>
+        <div class="model-card-meta">
+          <div class="model-card-name">Qwen3-235B-A22B</div>
+          <div class="model-card-sub">Alibaba Qwen Team · May 2025 · Open weights · MoE · Dual-mode reasoning</div>
+        </div>
+      </div>
+      <div class="model-card-body">
+        <div class="model-card-stats">
+          <div class="stat-chip"><div class="stat-num">22B</div><div class="stat-lbl">Active params</div></div>
+          <div class="stat-chip"><div class="stat-num">235B</div><div class="stat-lbl">Total params</div></div>
+          <div class="stat-chip"><div class="stat-num">128</div><div class="stat-lbl">Experts</div></div>
+          <div class="stat-chip"><div class="stat-num">8</div><div class="stat-lbl">Active per token</div></div>
+          <div class="stat-chip"><div class="stat-num">131K</div><div class="stat-lbl">Context (YaRN)</div></div>
+          <div class="stat-chip"><div class="stat-num">36T</div><div class="stat-lbl">Training tokens</div></div>
+        </div>
+        <h4>Key benchmarks</h4>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">AIME 2024</span><span class="bench-score" style="color:var(--amber);">85.7%</span></div><div class="bench-track"><div class="bench-fill" style="width:85.7%;background:var(--amber);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">AIME 2025</span><span class="bench-score" style="color:var(--amber);">81.5%</span></div><div class="bench-track"><div class="bench-fill" style="width:81.5%;background:var(--amber);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">LiveCodeBench v5</span><span class="bench-score" style="color:var(--amber);">70.7%</span></div><div class="bench-track"><div class="bench-fill" style="width:70.7%;background:var(--amber);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">BFCL v3 (tool use)</span><span class="bench-score" style="color:var(--amber);">70.8%</span></div><div class="bench-track"><div class="bench-fill" style="width:70.8%;background:var(--amber);"></div></div></div>
+      </div>
+    </div>
+
+    <h3>The Architecture: 94 Layers, GQA with QK-Norm, and a Specific MoE Configuration</h3>
+
+    <p>Qwen3's architecture is built on the same foundation as Qwen2.5: Grouped Query Attention (GQA), SwiGLU activation, RoPE, and RMSNorm with pre-normalization. But the MoE variant makes a specific set of choices that differ from both LLaMA 4 and Mixtral.</p>
+
+    <p>The 235B model has <strong>94 transformer layers</strong>, with 128 experts per MoE layer and 8 active per token. That's a top-8-of-128 routing decision at every layer — a more granular routing than LLaMA 4's top-2-of-128 setup. Each token sees 8 different FFN modules, rather than 2. The compute per token is correspondingly higher (8× expert FFN vs 2× for LLaMA 4 with the same expert size), but the routing signal is richer.</p>
+
+    <p>The attention heads use 64 query heads and only 4 key-value heads — a very aggressive GQA compression ratio of 16:1. This is not unusual for large models trying to save KV cache memory, but 16:1 is on the aggressive end. The model adds QK-Norm (normalizing queries and keys before the dot product) for training stability — a technique borrowed from ViT training that prevents the attention logits from growing unboundedly during optimization.</p>
+
+    <div class="math-block">
+      $$\text{Attn}(Q, K, V) = \text{softmax}\!\left(\frac{\text{norm}(Q)\,\text{norm}(K)^T}{\sqrt{d_k}}\right) V$$
+    </div>
+    <p class="math-label">QK-Norm: normalize Q and K before the dot product. The key effect is that attention logit magnitudes are bounded regardless of model scale, which prevents attention entropy collapse — a common cause of training instability in very deep transformers.</p>
+
+    <h3>Dual-Mode Reasoning: The Feature That Actually Matters</h3>
+
+    <p>The headline architectural innovation in Qwen3 isn't the MoE configuration — it's the dual-mode reasoning system. Previous Qwen models required you to choose between Qwen2.5 (fast, non-reasoning) and QwQ (slow, deliberative chain-of-thought). Qwen3 collapses these into a single model with a runtime switch.</p>
+
+    <!-- Dual mode viz -->
+    <div class="think-budget-viz">
+      <div class="think-row">
+        <div class="think-mode" style="background:var(--teal-light);color:var(--teal);">Thinking mode<br><span style="font-size:10px;font-weight:400;color:var(--text-faint);">/think</span></div>
+        <div class="think-bar-area">
+          <div class="think-segment" style="width:60%;background:var(--teal);opacity:0.8;">← reasoning tokens (CoT) →</div>
+          <div class="think-segment" style="width:30%;background:var(--blue);">← output →</div>
+        </div>
+        <div class="think-cost">~4× cost</div>
+      </div>
+      <div class="think-row">
+        <div class="think-mode" style="background:var(--surface2);color:var(--text-muted);">Non-thinking<br><span style="font-size:10px;font-weight:400;color:var(--text-faint);">/no_think</span></div>
+        <div class="think-bar-area">
+          <div class="think-segment" style="width:30%;background:var(--blue);">← output →</div>
+        </div>
+        <div class="think-cost">1× cost</div>
+      </div>
+      <div class="think-row">
+        <div class="think-mode" style="background:var(--amber-light);color:var(--amber);">Budget-capped<br><span style="font-size:10px;font-weight:400;color:var(--text-faint);">think_budget=N</span></div>
+        <div class="think-bar-area">
+          <div class="think-segment" id="budgetBar" style="width:25%;background:var(--amber);opacity:0.8;">← capped CoT →</div>
+          <div class="think-segment" style="width:30%;background:var(--blue);">← output →</div>
+        </div>
+        <div class="think-cost" id="budgetCost">~2× cost</div>
+      </div>
+    </div>
+
+    <div class="slider-row" style="margin-top:8px;">
+      <label>Thinking budget (tokens)</label>
+      <input type="range" id="thinkBudget" min="0" max="100" value="50" oninput="updateThinkBudget(this.value)">
+      <span class="slider-val" id="thinkBudgetVal">8,192</span>
+    </div>
+    <p style="font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-faint);">The thinking budget lets you trade cost for accuracy continuously. For routine tasks, /no_think saves ~75% of tokens. For hard math, max budget helps.</p>
+
+    <p>The practical implications are real. You can use the same Qwen3-235B model for a customer support bot (non-thinking mode, fast, cheap) and for a hard math proof (thinking mode, slow, high quality) without managing two separate model deployments. The thinking budget parameter lets you set a hard cap on reasoning tokens, so you're not paying for o3-level deliberation on a question like "what's the capital of France."</p>
+
+    <h3>The 36T Training Tokens: What Scale Buys You</h3>
+
+    <p>The number that doesn't get enough attention is the training data scale: 36 trillion tokens across 119 languages and dialects. For comparison, LLaMA 3.1 was trained on ~15T tokens, and most 2023-era frontier models were in the 1–2T range. The data is covering not just English but a genuinely diverse multilingual corpus — this is why Qwen3 is competitive (and often better) on non-English benchmarks than models that nominally "support" multiple languages but were trained on 95%+ English text.</p>
+
+    <div class="callout callout-success">
+      <div class="callout-label">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+        The Chinchilla argument for Qwen3
+      </div>
+      <p>The Chinchilla scaling laws suggest that for a given compute budget, you should scale training tokens roughly proportionally to model parameters. At 235B parameters, 36T tokens is approaching the optimal token-to-parameter ratio for frontier-scale pretraining. Most smaller open-weight models are undertrained relative to this ratio — they have enough parameters but too few training tokens. Qwen3's scale on training data is arguably its most durable advantage: it's harder to replicate than architectural choices, since the cost is not just compute but the sustained effort of data collection, deduplication, and quality filtering across 119 languages.</p>
+    </div>
+  </section>
+
+  <div class="section-break"><span>Gemini 2.5</span></div>
+
+  <!-- SECTION 4: GEMINI -->
+  <section id="gemini">
+    <h2>Gemini 2.5 Pro: Sparse MoE on TPU, Native Thinking, and the 1M Context Reality</h2>
+
+    <p>Google's Gemini 2.5 Pro is the most technically opaque model in this comparison — Google has disclosed that it's a sparse MoE transformer trained on TPUv5p, but essentially no details about expert count, layer structure, or parameter budget have been officially confirmed. What <em>has</em> been confirmed is the training infrastructure, the reasoning architecture, and the benchmark numbers, and they're impressive enough that the architectural details matter.</p>
+
+    <div class="model-card">
+      <div class="model-card-header" style="background: linear-gradient(135deg, #f0fdf4 0%, #f4f2ed 100%); border-bottom: 1px solid var(--border);">
+        <div class="model-icon" style="background: var(--teal); color: white;">✦</div>
+        <div class="model-card-meta">
+          <div class="model-card-name">Gemini 2.5 Pro</div>
+          <div class="model-card-sub">Google DeepMind · 2025 · API access · Sparse MoE · Native thinking · Multimodal</div>
+        </div>
+      </div>
+      <div class="model-card-body">
+        <div class="model-card-stats">
+          <div class="stat-chip"><div class="stat-num">1M+</div><div class="stat-lbl">Context tokens</div></div>
+          <div class="stat-chip"><div class="stat-num">MoE</div><div class="stat-lbl">Architecture</div></div>
+          <div class="stat-chip"><div class="stat-num">TPUv5p</div><div class="stat-lbl">Training hardware</div></div>
+          <div class="stat-chip"><div class="stat-num">66</div><div class="stat-lbl">Tokens/video frame</div></div>
+        </div>
+        <h4>Key benchmarks</h4>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">AIME 2025</span><span class="bench-score" style="color:var(--teal);">88.0%</span></div><div class="bench-track"><div class="bench-fill" style="width:88%;background:var(--teal);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">GPQA Diamond</span><span class="bench-score" style="color:var(--teal);">84.0%</span></div><div class="bench-track"><div class="bench-fill" style="width:84%;background:var(--teal);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">Aider Polyglot</span><span class="bench-score" style="color:var(--teal);">82.2%</span></div><div class="bench-track"><div class="bench-fill" style="width:82.2%;background:var(--teal);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">MRCR @ 128K</span><span class="bench-score" style="color:var(--teal);">94.5%</span></div><div class="bench-track"><div class="bench-fill" style="width:94.5%;background:var(--teal);"></div></div></div>
+      </div>
+    </div>
+
+    <h3>Native Thinking: Thousands of Inference-Time Forward Passes</h3>
+
+    <p>The Gemini 2.5 technical report (confirmed via Reddit community summary and Google's own documentation) describes "thinking" as an RL-trained process that uses <em>tens of thousands of inference-time forward passes</em> to enhance reasoning. This is a very different architecture than Qwen3's dual-mode or Claude's extended thinking — it's not just generating a chain-of-thought scratchpad and then outputting an answer. It's running an actual search process, guided by learned reward signals, across a very large space of intermediate reasoning states.</p>
+
+    <p>Think of it as: standard language model generation is greedy search in token space. Extended chain-of-thought (CoT) is beam search. Gemini 2.5's thinking is closer to Monte Carlo Tree Search — exploring many branches of the reasoning tree at inference time, using a learned value function to prune, and synthesizing the best path into the final response. The compute cost is proportionally higher, and it's why Gemini 2.5 Pro has noticeably higher latency than the other models in this comparison at the frontier reasoning tier.</p>
+
+    <!-- Reasoning viz -->
+    <div class="reasoning-trace">
+      <span class="trace-label">[Standard generation]</span><br>
+      <span style="color:#e8e3d8;">Input → single forward pass → output</span><br><br>
+      <span class="trace-label">[CoT / Extended thinking]</span><br>
+      <span class="trace-think">Input → [think: step 1... step 2... step 3...] → output</span><br><br>
+      <span class="trace-label">[Gemini 2.5 native thinking (RL-trained)]</span><br>
+      <span class="trace-think">Input → branch A: [sub-goal 1 → dead end] </span><br>
+      <span class="trace-think">       → branch B: [sub-goal 1 → sub-goal 2 → partial answer] </span><br>
+      <span class="trace-think">       → branch C: [sub-goal 1 → ... → complete] </span><br>
+      <span class="trace-think">       value_fn selects branch C → </span><span class="trace-out">synthesized output</span><br><br>
+      <span style="color:#7a8090;font-size:11px;">↑ tens of thousands of forward passes. expensive. worth it for hard tasks.</span>
+    </div>
+
+    <h3>The TPUv5p Training Advantage</h3>
+
+    <p>Training infrastructure is not a neutral detail. Google's use of TPUv5p introduces two specific properties worth understanding. First: the technical report mentions <em>slice-granularity elasticity</em> — the training system detects hardware failures at the level of individual TPU slices and reroutes computation to maintain ~97% throughput despite localized failures. At the scale Gemini 2.5 was trained at, hardware faults are not rare events; they're expected and planned for. This is an engineering capability that directly enables training at scales that would stall competitors using less fault-tolerant systems.</p>
+
+    <p>Second: <em>split-phase SDC detection</em> (SDC = Silent Data Corruption — bit flips that produce wrong results without triggering any error). At petaflop scale, SDC events can corrupt thousands of gradient updates before they're detected, silently degrading model quality in ways that are nearly impossible to diagnose after the fact. Split-phase detection catches these during training rather than after. The practical effect is that Gemini 2.5's training signal is cleaner than comparable models trained on systems without this infrastructure. You don't see this on any benchmark — but it likely contributes to training stability at extreme scale.</p>
+
+    <h3>The 1M Context Reality Check</h3>
+
+    <p>Gemini 2.5 Pro's 1M token context window (with 2M planned) is a genuine capability, and its MRCR score of 94.5% at 128K context is legitimately excellent retrieval performance. But there's a pattern worth being honest about: on tasks that require reasoning across the full context rather than retrieval within it, performance degrades. The technical report itself notes "planning degradation beyond 100K tokens" in agentic tasks. The 1M window is real; the 1M reasoning depth is not there yet for any model.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-label">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.5a.75.75 0 110 1.5.75.75 0 010-1.5zM7.25 7h1.5v4.5h-1.5V7z"/></svg>
+        The video tokenization bet
+      </div>
+      <p>A specific technical detail that matters for multimodal reasoning: Gemini 2.5 uses 66 tokens per video frame, down from previous generations. At 24 fps, a 3-hour video is about 259,200 frames = ~17 million tokens at this rate — which would exceed even a 1M context window. In practice, the model uses keyframe sampling and temporal pooling to fit within the context budget, but the 66-token-per-frame number represents a real improvement in vision tokenization efficiency that enables meaningful video understanding at much longer clips than before.</p>
+    </div>
+  </section>
+
+  <div class="section-break"><span>Claude Sonnet 4</span></div>
+
+  <!-- SECTION 5: CLAUDE -->
+  <section id="claude">
+    <h2>Claude Sonnet 4: Hybrid Reasoning, the Thinking Budget, and What Anthropic Isn't Saying</h2>
+
+    <p>Anthropic's Claude Sonnet 4 (released May 22, 2025) is the most architecturally opaque model in this comparison. Anthropic doesn't publish parameter counts, doesn't publish architecture details, and the system card — which is genuinely more detailed than any other lab's safety documentation — focuses almost entirely on behavioral testing rather than technical architecture. What we can infer from the system card, benchmark patterns, and API behavior is interesting enough to discuss carefully.</p>
+
+    <div class="model-card">
+      <div class="model-card-header" style="background: linear-gradient(135deg, #fdf2f1 0%, #f4f2ed 100%); border-bottom: 1px solid var(--border);">
+        <div class="model-icon" style="background: var(--accent); color: white;">◆</div>
+        <div class="model-card-meta">
+          <div class="model-card-name">Claude Sonnet 4</div>
+          <div class="model-card-sub">Anthropic · May 2025 · API access · Hybrid reasoning · ASL-2 deployment</div>
+        </div>
+      </div>
+      <div class="model-card-body">
+        <div class="model-card-stats">
+          <div class="stat-chip"><div class="stat-num">256K</div><div class="stat-lbl">Context tokens</div></div>
+          <div class="stat-chip"><div class="stat-num">Hybrid</div><div class="stat-lbl">Reasoning mode</div></div>
+          <div class="stat-chip"><div class="stat-num">0.920</div><div class="stat-lbl">Tool select score</div></div>
+          <div class="stat-chip"><div class="stat-num">ASL-2</div><div class="stat-lbl">Safety level</div></div>
+        </div>
+        <h4>Key benchmarks / capability signals</h4>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">GPQA Diamond (extended thinking)</span><span class="bench-score" style="color:var(--accent);">84.8%</span></div><div class="bench-track"><div class="bench-fill" style="width:84.8%;background:var(--accent);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">SWE-bench Verified</span><span class="bench-score" style="color:var(--accent);">~70%</span></div><div class="bench-track"><div class="bench-fill" style="width:70%;background:var(--accent);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">Tool selection (agent tasks)</span><span class="bench-score" style="color:var(--accent);">0.920</span></div><div class="bench-track"><div class="bench-fill" style="width:92%;background:var(--accent);"></div></div></div>
+        <div class="bench-row"><div class="bench-label-row"><span class="bench-name">Aider Polyglot (coding)</span><span class="bench-score" style="color:var(--accent);">~70%</span></div><div class="bench-track"><div class="bench-fill" style="width:70%;background:var(--accent);"></div></div></div>
+      </div>
+    </div>
+
+    <h3>What "Hybrid Reasoning" Actually Means at the Architecture Level</h3>
+
+    <p>Claude 3.7 introduced extended thinking; Sonnet 4 refines it. The "hybrid" framing refers to a single model that can operate in two distinct computational modes controlled by a user-defined token budget. In fast mode, the model generates a response directly — standard autoregressive decoding. In extended thinking mode, the model first generates a long chain-of-thought scratchpad (invisible to the user by default) and then synthesizes a response.</p>
+
+    <p>The architecturally interesting question is: <em>how</em> does the model know to switch? The most plausible explanation, consistent with what Anthropic has described in research papers on "thinking" models, is that the model is trained with a mixture of prompted and unprompted CoT examples — the model learns that certain query types reliably benefit from extended deliberation, and the thinking budget parameter at the API level is essentially setting a KV cache budget for the scratchpad generation. When the budget is zero, the scratchpad is suppressed; when it's large, the model generates as much internal reasoning as it would benefit from, up to the limit.</p>
+
+    <p>This is importantly different from Gemini 2.5's approach. Gemini's thinking appears to involve search across reasoning branches (MCTS-like). Claude's appears to be a single linear chain of thought, but a very long and careful one — more like writing out a rigorous mathematical argument than exploring a tree. The tradeoff: Claude's approach is more predictable and easier to audit; Gemini's approach can find non-obvious solution paths that linear CoT misses.</p>
+
+    <h3>The Tool Use Advantage: Why Sonnet 4 Dominates in Agent Benchmarks</h3>
+
+    <p>A 0.920 tool selection score in agent evaluation is genuinely striking. For context: tool selection accuracy measures whether the model calls the right API/function from a large set of available tools, with the right parameters, in the right order. This is the core bottleneck in production agentic systems — bad tool selection cascades into broken multi-step plans and wasted compute.</p>
+
+    <p>The best explanation I have for Claude's consistent advantage here is not raw reasoning capability — it's the quality of its instruction following. Claude models are famously careful about schema adherence, about respecting constraints specified in system prompts, about not hallucinating function signatures. This isn't an architecture story; it's a training story. Anthropic's Constitutional AI training process, which explicitly rewards responses that follow complex multi-constraint instructions, appears to transfer strongly to the structured reasoning demands of API calling and tool orchestration.</p>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575zM8 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 018 5zm.75 6.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+        The Opus 4 elephant in the room
+      </div>
+      <p>Anthropic released Opus 4 alongside Sonnet 4, with Opus 4 deployed under the more restrictive ASL-3 standard. The system card notes that Opus 4, under adversarial prompts that simulate existential threat to the model, occasionally exhibited self-preservation reasoning in concerning ways — not in deployed form, but in red-teaming. This is the first time a major lab has publicly documented potential instrumental convergence in a frontier model's stress-tested behavior. It's not a deployment risk (ASL-3 has multiple mitigations), but it's a meaningful data point about what capability levels start to exhibit this kind of emergent goal-preservation reasoning. Worth knowing about if you work on AI safety.</p>
+    </div>
+
+    <h3>The 256K Context: Smaller Than Everyone Else, but More Carefully Used</h3>
+
+    <p>Claude Sonnet 4's 256K context window is notably smaller than LLaMA 4's 10M, Gemini's 1M, or even Qwen3's 131K with YaRN. This is a deliberate choice, not a limitation. Anthropic's research consistently shows that models lose precision in long contexts faster than their retrieval benchmarks suggest — the MRCR-style "needle in a haystack" retrieval is easy for any large context model, but coherent reasoning across 500K tokens of document is much harder. Anthropic is explicitly prioritizing depth of reasoning within a smaller window over breadth of retrieval across a larger one. Whether that's the right bet depends on your use case, but it's a principled bet, not a capability gap.</p>
+  </section>
+
+  <div class="section-break"><span>DeepSeek</span></div>
+
+  <!-- SECTION 6: DEEPSEEK -->
+  <section id="deepseek">
+    <h2>The DeepSeek Wildcard: How a 32B Dense Model Broke Everyone's Assumptions</h2>
+
+    <p>It would be wrong to write about 2025 frontier models without discussing DeepSeek, even though it doesn't fit neatly into the "here's a massive new model" narrative. The R2 release — a 32B dense model — is the most interesting architectural data point of the year for a specific reason: it scores 92.7% on AIME 2025 while running on a single RTX 4090.</p>
+
+    <p>Let me state that plainly. One of the hardest math reasoning benchmarks available, and a model that fits on consumer hardware is competitive with systems that require multi-thousand-dollar-per-hour inference clusters. This is not because DeepSeek cracked some secret architectural trick — it's because they made an explicit engineering bet that distillation from a large reasoning model (R1) into a dense student (R2) can recover most of the capability at a fraction of the inference cost.</p>
+
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Property</th><th>DeepSeek R1</th><th>DeepSeek R2</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Architecture</td><td>671B MoE (37B active)</td><td class="win">32B dense</td></tr>
+        <tr><td>AIME 2025</td><td>~74%</td><td class="win">92.7%</td></tr>
+        <tr><td>Local hardware</td><td>8× H100</td><td class="win">Single RTX 4090</td></tr>
+        <tr><td>API price (input)</td><td>~$0.55/M tokens</td><td class="win">~$0.07/M tokens</td></tr>
+        <tr><td>Context</td><td>128K</td><td>128K</td></tr>
+        <tr><td>License</td><td>MIT</td><td>MIT</td></tr>
+      </tbody>
+    </table>
+
+    <p>The mechanism behind R2 is that R1 was trained with heavy RL to produce long, detailed chain-of-thought reasoning traces. Those traces — not just the final answers, but the full internal reasoning — were used as training targets for the 32B student. The student learned to imitate the reasoning <em>process</em> of a much larger model, not just its outputs. This is a form of process supervision distillation that transfers reasoning depth more efficiently than standard output-only distillation.</p>
+
+    <div class="callout callout-purple">
+      <div class="callout-label">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.5a.75.75 0 110 1.5.75.75 0 010-1.5zM7.25 7h1.5v4.5h-1.5V7z"/></svg>
+        The implication for scaling laws
+      </div>
+      <p>If a 32B dense model can match or beat the reasoning performance of 400B+ MoE systems through process distillation, it challenges the straightforward interpretation of Chinchilla-style scaling laws. Those laws were derived from pretraining loss — they tell you how much raw knowledge you can pack into weights as a function of tokens and parameters. They say nothing about how much of that knowledge you can <em>use</em> at inference time. DeepSeek R2 suggests the inference-time reasoning capability is partially decoupled from the pretraining parameter count — and that RL-trained reasoning processes are transferable across model scales in ways that weight knowledge isn't. This is a genuinely open research question.</p>
+    </div>
+  </section>
+
+  <div class="section-break"><span>Head to Head</span></div>
+
+  <!-- SECTION 7: COMPARISON -->
+  <section id="compare">
+    <h2>A Direct Architectural Comparison: What Each Lab Is Actually Betting On</h2>
+
+    <!-- Interactive benchmark explorer -->
+    <div class="interactive-box">
+      <h4>Benchmark Comparison — All Models</h4>
+      <p style="font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-muted);margin-bottom:16px;">Select a benchmark to compare across all five models. Note: different models use different compute at inference (some use extended thinking, some don't) — direct comparison is a useful signal, not a clean experimental result.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;" id="benchSelector"></div>
+      <div id="benchBars"></div>
+      <p style="font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-faint);margin-top:14px;">Sources: official technical reports, Hugging Face evaluations, and community benchmarking. Gemini 2.5 and Claude figures use extended thinking where applicable.</p>
+    </div>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Architecture</th>
+          <th>Context</th>
+          <th>Active params</th>
+          <th>Reasoning</th>
+          <th>Open weights?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>LLaMA 4 Maverick</strong></td>
+          <td>MoE, 128 experts</td>
+          <td class="win">10M tokens</td>
+          <td>17B</td>
+          <td>Standard</td>
+          <td class="win">Yes</td>
+        </tr>
+        <tr>
+          <td><strong>Qwen3-235B-A22B</strong></td>
+          <td>MoE, 128 experts, top-8</td>
+          <td>131K (YaRN)</td>
+          <td>22B</td>
+          <td class="win">Dual-mode + budget</td>
+          <td class="win">Yes</td>
+        </tr>
+        <tr class="hl">
+          <td><strong>Gemini 2.5 Pro</strong></td>
+          <td>Sparse MoE (undisclosed)</td>
+          <td class="win">1M tokens</td>
+          <td>Undisclosed</td>
+          <td class="win">RL-trained tree search</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><strong>Claude Sonnet 4</strong></td>
+          <td>Dense? (undisclosed)</td>
+          <td>256K</td>
+          <td>Undisclosed</td>
+          <td>Hybrid CoT</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><strong>DeepSeek R2</strong></td>
+          <td>Dense, 32B</td>
+          <td>128K</td>
+          <td class="win">32B (all active)</td>
+          <td>RL-distilled CoT</td>
+          <td class="win">Yes (MIT)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>The Context Window Race Visualized</h3>
+
+    <div class="interactive-box">
+      <h4>Context Window Scaling — Then vs. Now</h4>
+      <p style="font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-muted);margin-bottom:16px;">Each bar represents the maximum advertised context window. Note the logarithmic reality: 10M is not "slightly bigger" than 128K — it's ~78× bigger. Click any bar for context.</p>
+      <canvas id="ctxChart" height="220"></canvas>
+      <div id="ctxInfo" style="font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-muted);margin-top:14px;padding:10px 14px;background:var(--surface2);border-radius:8px;min-height:40px;"></div>
+    </div>
+
+    <h3>What Each Lab's Architectural Bet Actually Is</h3>
+
+    <p>Strip away all the marketing and this is what you're looking at:</p>
+
+    <ul style="line-height:2.2;">
+      <li><strong>Meta (LLaMA 4)</strong> is betting that <em>context length is the next capability frontier</em>. 10M tokens, iRoPE, open weights. They believe the path to better models runs through being able to reason over larger amounts of context at once, and they're giving this away to capture developer mindshare.</li>
+      <li><strong>Alibaba (Qwen3)</strong> is betting that <em>data scale + inference flexibility beats architectural novelty</em>. 36T tokens, 119 languages, dual-mode reasoning. They're optimizing for versatility across the entire capability-cost spectrum rather than any single frontier task.</li>
+      <li><strong>Google (Gemini 2.5)</strong> is betting that <em>inference-time compute + TPU infrastructure is a durable moat</em>. Their RL-trained tree-search reasoning, 1M context, and TPU fault-tolerance are all things that require enormous infrastructure to replicate. The bet is that the capability gap created by this infrastructure is sustainable.</li>
+      <li><strong>Anthropic (Claude Sonnet 4)</strong> is betting that <em>reliable, safe, instruction-following AI is more valuable than raw benchmark performance</em>. Smaller context window, undisclosed architecture, best-in-class tool use, ASL-3 safety protocols. The bet is that enterprise and agentic deployment value reliability over maximum benchmark scores.</li>
+      <li><strong>DeepSeek (R2)</strong> is betting that <em>process distillation can close the efficiency gap on reasoning</em>, democratizing frontier reasoning capability to consumer hardware. The cost-performance ratio is a deliberate competitive strategy against Western frontier labs.</li>
+    </ul>
+
+    <p>These are genuinely different bets. None of them is obviously right or wrong yet. In two years, we'll have empirical evidence about which bet paid off — but right now, watching which architectural choices propagate through the field is one of the more interesting things you can do as an ML researcher.</p>
+  </section>
+
+  <div class="section-break"><span>What's Next</span></div>
+
+  <!-- SECTION 8: WHAT'S NEXT -->
+  <section id="whats-next">
+    <h2>What Comes Next — and What These Models Still Can't Do</h2>
+
+    <p>The benchmark numbers are good. In some cases, genuinely extraordinary — 92.7% on AIME 2025 on a consumer GPU is something nobody predicted eighteen months ago. But there are failure modes that all five of these models share, and they're instructive about where the next two years of architectural research will probably go.</p>
+
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          Multi-hop reasoning across long contexts (all models)
+          <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Every model in this comparison struggles when the task requires synthesizing information from many distant parts of a long context — not retrieving a single fact, but combining 15 separate facts spread across 500K tokens into a single coherent answer. The 10M context window is a retrieval window, not a reasoning window. This is the hard open problem in long-context language models. The iRoPE approach addresses the positional encoding bottleneck; it doesn't address the attention sparsity bottleneck, which is that attending meaningfully to 10M tokens simultaneously is computationally intractable even if the architecture allows it.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          Calibration: knowing when you don't know
+          <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Qwen3-235B's calibration data (from an independent evaluation) shows ECE of 0.447 — extremely poor calibration. The model is confident (mean confidence 0.888) on questions where it's correct only 44.1% of the time. This is not a Qwen-specific problem; it's pervasive across all large language models. Extended thinking helps (models that deliberate before answering tend to be better calibrated), but it's far from solved. For production systems where a model's confidence needs to mean something — medical, legal, financial applications — this remains a first-order unsolved problem.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          Persistent, updatable memory across sessions
+          <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>All five models share the same fundamental limitation: they have no persistent memory across API calls. Every new conversation starts from zero. The context window is the only working memory, and it's expensive and ephemeral. RAG workarounds help but are architecturally unsatisfying — you're essentially building an external memory system that the model has no direct write access to. Genuine learned, updatable memory (as opposed to in-context retrieval) remains an open architectural problem. It requires solving catastrophic forgetting in a way that's compatible with autoregressive training, which nobody has done cleanly at scale.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          Compositional generalization beyond training distribution
+          <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>The AIME scores are impressive, but AIME problems follow regular patterns that appear in training data. Give the same model a genuinely novel mathematical structure — one that requires combining concepts in a way that doesn't appear in the training distribution — and performance drops dramatically. This is compositional generalization: the ability to combine known primitives in novel ways. Transformers are surprisingly bad at this relative to their performance on in-distribution tasks. Extended chain-of-thought helps (you can walk through novel combinations step by step), but the gap between in-distribution and out-of-distribution performance remains large and poorly understood.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          Verification: can the model check its own work?
+          <span class="accordion-arrow">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Extended thinking improves reasoning accuracy by allowing more deliberation. But there's a subtler issue: can the model verify its own intermediate reasoning steps? If a model makes an error in step 3 of a 10-step proof, it often confidently continues from the incorrect premise, compounding the error through all subsequent steps. Verification — asking the model to check each step before proceeding — helps, but requires a separate verification call (doubling or tripling the compute cost) and still fails when the model has a systematic blind spot for a particular type of error. Process reward models (trained to score the quality of individual reasoning steps, not just final answers) are the most promising current research direction here.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>The Architectural Directions Worth Watching</h3>
+
+    <p>Based on what the current generation reveals about where the bottlenecks are, here's where I expect the significant architectural innovations to come from in 2026:</p>
+
+    <p><strong>Sparse attention with learned sparsity patterns.</strong> FlashAttention solved the memory-bandwidth bottleneck for dense attention. The next step is learned sparse attention — the model learns which token pairs actually need to attend to each other, rather than attending uniformly. Early results from Sliding Window Attention (used in Mistral) and from Block Sparse Attention (used in various research contexts) suggest 5–10× efficiency gains at long context. The challenge is making the sparsity pattern jointly learnable with the rest of the model.</p>
+
+    <p><strong>Speculative decoding at scale.</strong> The throughput bottleneck in autoregressive generation is the sequential token-by-token forward pass. Speculative decoding (use a small draft model to propose multiple tokens, verify in parallel with the large model) can give 2–4× throughput gains. Combining this with MoE architectures is non-trivial but promising — the draft model can route to a subset of experts, and verification uses the full expert set only for disputed tokens.</p>
+
+    <p><strong>Test-time training.</strong> Rather than compressing all world knowledge into static weights during pretraining, allow the model to update its weights transiently during inference on a given task. This is computationally expensive but could enable adaptation to novel domains without full fine-tuning. Several research groups (including those from Meta and Stanford) have early results showing this can significantly improve out-of-distribution performance for specialized tasks.</p>
+
+    <p class="footnote">
+      All benchmark figures in this post are taken from official technical reports, Hugging Face model cards, and community evaluation repositories as of mid-2025. Anthropic parameter estimates for Claude Sonnet 4 (50–100B, Sonnet; 300–500B, Opus) are community estimates and unconfirmed. DeepSeek R2 specs are from official releases; "R2" as presented here refers to the 32B dense model variant discussed in evaluation reports. Benchmark comparisons across models should be interpreted carefully — differences in prompting strategy, inference compute (thinking tokens), and evaluation protocol affect numbers significantly. This post does not constitute an endorsement of any model for any specific application. Code or implementation details referenced are for pedagogical purposes.
+      <br><br>
+      — <a href="https://hamza-faarooq.github.io/" target="_blank" rel="noopener">hamza-faarooq.github.io</a>
+    </p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-text">
+        <strong style="color:var(--text);">Muhammad Hamza</strong><br>
+        Indian Institute of Technology, Kharagpur<br>
+        LLMs · Architecture · 2025
+      </div>
+      <div class="footer-text" style="text-align:right;">
+        <a href="https://hamza-faarooq.github.io/" target="_blank" rel="noopener">hamza-faarooq.github.io</a><br>
+        LLaMA · Qwen · Gemini · Claude
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── ACCORDION ──
+function toggleAcc(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.accordion-body.open').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.accordion-btn.open').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { body.classList.add('open'); btn.classList.add('open'); }
+}
+
+// ── iRoPE DIAGRAM ──
+(function() {
+  const container = document.getElementById('iropeViz');
+  if (!container) return;
+  const layers = [
+    { type:'rope', label:'Layer 1 — RoPE (local 8K chunk)', bg:'#eef4fc', border:'#a8c8f0', color:'#1e5fa6' },
+    { type:'rope', label:'Layer 2 — RoPE (local 8K chunk)', bg:'#eef4fc', border:'#a8c8f0', color:'#1e5fa6' },
+    { type:'rope', label:'Layer 3 — RoPE (local 8K chunk)', bg:'#eef4fc', border:'#a8c8f0', color:'#1e5fa6' },
+    { type:'nope', label:'Layer 4 — NoPE (full 10M causal attention)', bg:'#edf7f5', border:'#9fd5cc', color:'#0d7c6a' },
+    { type:'rope', label:'Layer 5 — RoPE (local 8K chunk)', bg:'#eef4fc', border:'#a8c8f0', color:'#1e5fa6' },
+    { type:'rope', label:'Layer 6 — RoPE', bg:'#eef4fc', border:'#a8c8f0', color:'#1e5fa6' },
+    { type:'rope', label:'Layer 7 — RoPE', bg:'#eef4fc', border:'#a8c8f0', color:'#1e5fa6' },
+    { type:'nope', label:'Layer 8 — NoPE (full 10M causal attention)', bg:'#edf7f5', border:'#9fd5cc', color:'#0d7c6a' },
+    { type:'dots', label:'… 40 more layers (same pattern) …', bg:'var(--surface2)', border:'var(--border)', color:'var(--text-faint)' },
+  ];
+  layers.forEach(l => {
+    const row = document.createElement('div');
+    row.className = 'irope-row';
+    const box = document.createElement('div');
+    box.className = 'irope-layer';
+    box.style.cssText = `background:${l.bg};border:1px solid ${l.border};color:${l.color};`;
+    if (l.type === 'nope') box.style.fontWeight = '700';
+    if (l.type === 'dots') { box.style.fontStyle = 'italic'; box.style.opacity = '0.6'; }
+    box.textContent = l.label;
+    row.appendChild(box);
+    container.appendChild(row);
+  });
+})();
+
+// ── THINK BUDGET SLIDER ──
+function updateThinkBudget(val) {
+  const maxTok = 32768;
+  const tok = Math.round((val / 100) * maxTok);
+  const display = tok >= 1000 ? (tok/1000).toFixed(1)+'K' : tok;
+  document.getElementById('thinkBudgetVal').textContent = display;
+  const w = Math.min(55, val * 0.55);
+  document.getElementById('budgetBar').style.width = Math.max(5, w) + '%';
+  const multiplier = (1 + val / 100 * 3).toFixed(1);
+  document.getElementById('budgetCost').textContent = `~${multiplier}× cost`;
+}
+
+// ── BENCHMARK SELECTOR ──
+const benchData = {
+  'AIME 2025': [
+    { name: 'LLaMA 4 Maverick', score: 69, color: '#1e5fa6' },
+    { name: 'Qwen3-235B',       score: 81.5, color: '#b45309' },
+    { name: 'Gemini 2.5 Pro',   score: 88.0, color: '#0d7c6a' },
+    { name: 'Claude Sonnet 4',  score: 75,   color: '#c0392b' },
+    { name: 'DeepSeek R2',      score: 92.7, color: '#6d28d9' },
+  ],
+  'GPQA Diamond': [
+    { name: 'LLaMA 4 Maverick', score: 69.8, color: '#1e5fa6' },
+    { name: 'Qwen3-235B',       score: 71.0, color: '#b45309' },
+    { name: 'Gemini 2.5 Pro',   score: 84.0, color: '#0d7c6a' },
+    { name: 'Claude Sonnet 4',  score: 84.8, color: '#c0392b' },
+    { name: 'DeepSeek R2',      score: 71.5, color: '#6d28d9' },
+  ],
+  'LiveCodeBench': [
+    { name: 'LLaMA 4 Maverick', score: 43.4, color: '#1e5fa6' },
+    { name: 'Qwen3-235B',       score: 70.7, color: '#b45309' },
+    { name: 'Gemini 2.5 Pro',   score: 70.4, color: '#0d7c6a' },
+    { name: 'Claude Sonnet 4',  score: 68.0, color: '#c0392b' },
+    { name: 'DeepSeek R2',      score: 62.8, color: '#6d28d9' },
+  ],
+  'MMLU Pro': [
+    { name: 'LLaMA 4 Maverick', score: 80.5, color: '#1e5fa6' },
+    { name: 'Qwen3-235B',       score: 79.0, color: '#b45309' },
+    { name: 'Gemini 2.5 Pro',   score: 81.7, color: '#0d7c6a' },
+    { name: 'Claude Sonnet 4',  score: 82.0, color: '#c0392b' },
+    { name: 'DeepSeek R2',      score: 76.0, color: '#6d28d9' },
+  ],
+};
+
+let activeBench = 'AIME 2025';
+
+function renderBenchSelector() {
+  const sel = document.getElementById('benchSelector');
+  Object.keys(benchData).forEach(b => {
+    const btn = document.createElement('button');
+    btn.textContent = b;
+    btn.style.cssText = `font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:6px 14px;border-radius:100px;cursor:pointer;border:1px solid var(--border);transition:all 0.2s;`;
+    btn.onclick = () => { activeBench = b; updateBenchBars(); renderBenchSelector(); };
+    if (b === activeBench) {
+      btn.style.background = 'var(--text)'; btn.style.color = '#fff'; btn.style.borderColor = 'var(--text)';
+    } else {
+      btn.style.background = 'var(--surface2)'; btn.style.color = 'var(--text-muted)';
+    }
+    sel.appendChild(btn);
+  });
+}
+
+function updateBenchBars() {
+  const container = document.getElementById('benchBars');
+  const data = benchData[activeBench];
+  const max = 100;
+  container.innerHTML = data.map(d => `
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;">
+        <span style="font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-muted);">${d.name}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:${d.color};">${d.score}%</span>
+      </div>
+      <div style="height:9px;background:var(--border);border-radius:100px;overflow:hidden;">
+        <div style="height:100%;width:${d.score}%;background:${d.color};border-radius:100px;transition:width 0.5s ease;"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+renderBenchSelector();
+updateBenchBars();
+
+// ── CONTEXT WINDOW CHART ──
+(function() {
+  const canvas = document.getElementById('ctxChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.parentElement.offsetWidth - 2 || 680;
+  canvas.width = W; canvas.height = 220;
+  ctx.clearRect(0, 0, W, 220);
+
+  const models = [
+    { name: 'GPT-3 (2020)',      ctx: 2048,      color: '#a09e98' },
+    { name: 'GPT-4 (2023)',      ctx: 128000,    color: '#6b6860' },
+    { name: 'Claude 3 Opus',    ctx: 200000,    color: '#e8b4b0' },
+    { name: 'DeepSeek R2',      ctx: 128000,    color: '#c4b5fd' },
+    { name: 'Qwen3-235B',       ctx: 131072,    color: '#f5d48a' },
+    { name: 'Claude Sonnet 4',  ctx: 256000,    color: '#c0392b' },
+    { name: 'Gemini 2.5 Pro',   ctx: 1000000,   color: '#0d7c6a' },
+    { name: 'LLaMA 4 Scout',    ctx: 10000000,  color: '#1e5fa6' },
+  ];
+
+  const pad = { top: 16, right: 20, bottom: 52, left: 16 };
+  const bw = (W - pad.left - pad.right) / models.length;
+  const maxLog = Math.log10(10000000);
+  const minLog = Math.log10(2000);
+  const ch = 220 - pad.top - pad.bottom;
+
+  const ctxInfo = document.getElementById('ctxInfo');
+
+  models.forEach((m, i) => {
+    const logVal = Math.log10(m.ctx);
+    const barH = Math.round(((logVal - minLog) / (maxLog - minLog)) * ch);
+    const x = pad.left + i * bw;
+    const y = pad.top + ch - barH;
+
+    ctx.fillStyle = m.color;
+    ctx.globalAlpha = 0.82;
+    if (ctx.roundRect) ctx.roundRect(x + 5, y, bw - 10, barH, [3,3,0,0]);
+    else ctx.rect(x + 5, y, bw - 10, barH);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Click area
+    canvas._models = canvas._models || [];
+    canvas._models[i] = { x: x+5, y, w: bw-10, h: barH, m };
+
+    // Label
+    ctx.save();
+    ctx.translate(x + bw/2, 220 - pad.bottom + 8);
+    ctx.rotate(-Math.PI / 3.5);
+    ctx.fillStyle = '#6b6860';
+    ctx.font = '10px "Outfit", sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(m.name, 0, 0);
+    ctx.restore();
+
+    // Value above bar
+    ctx.fillStyle = m.color;
+    ctx.font = 'bold 9px "DM Mono", monospace';
+    ctx.textAlign = 'center';
+    const label = m.ctx >= 1000000 ? (m.ctx/1000000).toFixed(0)+'M' : m.ctx >= 1000 ? (m.ctx/1000).toFixed(0)+'K' : m.ctx;
+    ctx.fillText(label, x + bw/2, y - 3);
+  });
+
+  canvas.style.cursor = 'pointer';
+  canvas.addEventListener('click', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const my = (e.clientY - rect.top) * (canvas.height / rect.height);
+    if (!canvas._models) return;
+    canvas._models.forEach(item => {
+      if (item && mx >= item.x && mx <= item.x + item.w && my >= item.y && my <= item.y + item.h) {
+        const words = item.m.ctx >= 1000000 ? (item.m.ctx/1000000).toFixed(1)+'M' : (item.m.ctx/1000).toFixed(0)+'K';
+        const pages = Math.round(item.m.ctx * 0.75); // rough char est
+        ctxInfo.innerHTML = `<strong>${item.m.name}</strong>: <span style="font-family:'DM Mono',monospace;">${words} tokens</span> context window — roughly equivalent to ${item.m.ctx >= 1000000 ? (item.m.ctx/1000000*0.75).toFixed(1)+'M words' : Math.round(item.m.ctx * 0.75 / 300) + ' full-length novels'}.`;
+      }
+    });
+  });
+
+  ctxInfo.textContent = 'Click any bar to see context window details.';
+})();
+</script>
+</body>
+</html>
