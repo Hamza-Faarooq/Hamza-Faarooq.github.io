@@ -736,6 +736,37 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
       </div>
     </div>
 
+
+<div class="research-entry">
+  <div class="r-thumb">
+    <img src="cwgd_teaser.png" alt="CWGD"
+         onerror="this.parentElement.innerHTML='<div class=\'r-thumb-ph\'><i class=\'fa-solid fa-chart-line\'></i></div>'">
+  </div>
+  <div>
+    <div class="r-header">
+      <div class="r-title">Curvature-Weighted Gradient Diversity: A Noise Measure for Geometry-Adaptive SGD</div>
+      <span class="venue-badge venue-intern">Independent Research</span>
+    </div>
+    <div class="r-meta">Submission to TMLR · Under Review</div>
+    <div class="r-date">May 2026</div>
+    <div class="r-metrics">
+      <span class="metric-chip">Strongly-convex quadratics</span>
+      <span class="metric-chip">Hutchinson estimation</span>
+      <span class="metric-chip">20% lower suboptimality</span>
+      <span class="metric-chip">Noise-adaptive schedules</span>
+    </div>
+    <div class="r-desc" id="rd2">
+      Developed Curvature-Weighted Gradient Diversity (CWGD), a novel noise measure that adjusts for landscape geometry by down-weighting high-curvature parameter directions. Proved that CWGD-modulated cosine annealing reduces asymptotic suboptimality floors by a factor of 1/(1+α), validated by empirical improvements of ~20% over plain cosine annealing across various condition numbers and noise regimes. Identified and resolved estimator degeneracies, delivering a provably exact Hutchinson-based implementation for diagonal Hessian approximations.
+    </div>
+    <button class="r-expand" onclick="toggleRd('rd2',this)">Read more ↓</button>
+    <div class="r-links">
+      <a href="https://github.com/your-org/cwgd-paper" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
+      <a href="#" class="r-link"><i class="fa-solid fa-file-pdf"></i> Paper (Under Review)</a>
+    </div>
+  </div>
+</div>
+
+    
     <div class="research-entry">
       <div class="r-thumb">
         <img src="oulu_teaser.png" alt="SNN Pruning"
