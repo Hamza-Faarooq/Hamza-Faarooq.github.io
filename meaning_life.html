@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>On the Meaning of Life — Muhammad Hamza</title>
+  <link rel="icon" type="image/jpg" href="bh.jpg">
+  <meta name="description" content="A nihilist essay on the meaning of life — on beauty, loneliness, and the unbearable weight of consciousness. By Muhammad Hamza, IIT Kharagpur." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg:#05050a;
+      --surface:#0c0b12;
+      --surface2:#121019;
+      --border:rgba(120,110,170,0.1);
+      --border-hi:rgba(150,140,210,0.28);
+      --dim:#7a7090;
+      --dim2:#a099c0;
+      --cream:#ddd8ee;
+      --accent:#8878c8;
+      --accent2:#b0a4e0;
+      --serif:'IM Fell English',Georgia,serif;
+      --body:'Crimson Pro',Georgia,serif;
+      --mono:'DM Mono',monospace;
+    }
+
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background:var(--bg);
+      color:var(--cream);
+      font-family:var(--body);
+      font-size:18px;
+      line-height:2;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.80' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+      background-size:200px;
+    }
+    body::after {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 55% 45% at 10% 15%, rgba(60,40,120,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 55% at 90% 85%, rgba(40,30,90,0.1) 0%, transparent 65%);
+    }
+
+    #scroll-progress {
+      position:fixed; top:0; left:0; z-index:200; height:1px; width:0%;
+      background:linear-gradient(to right, transparent, var(--accent), transparent);
+      transition:width 0.08s linear;
+    }
+
+    .page-outer {
+      position:relative; z-index:2;
+      max-width:700px;
+      margin:0 auto;
+      padding:64px 28px 130px;
+    }
+
+    /* NAV */
+    .top-nav { display:flex; gap:6px; align-items:center; margin-bottom:56px; flex-wrap:wrap; }
+    .nav-link {
+      color:var(--dim); text-decoration:none;
+      border:1px solid var(--border); padding:6px 12px;
+      font-size:10px; letter-spacing:1.2px; text-transform:uppercase; font-family:var(--mono);
+      transition:all 0.2s ease;
+    }
+    .nav-link:hover { color:var(--accent2); border-color:var(--border-hi); }
+    .nav-sep { color:var(--dim); font-size:10px; opacity:0.35; font-family:var(--mono); }
+
+    /* MASTHEAD */
+    .masthead {
+      margin-bottom:72px;
+      opacity:0; transform:translateY(14px);
+      transition:opacity 0.7s ease, transform 0.7s ease;
+    }
+    .masthead.visible { opacity:1; transform:translateY(0); }
+    .masthead-label {
+      font-family:var(--mono); font-size:9px; letter-spacing:3px; text-transform:uppercase;
+      color:var(--dim); display:block; margin-bottom:16px;
+    }
+    .masthead h1 {
+      font-family:var(--serif);
+      font-size:clamp(28px,5.5vw,46px);
+      font-weight:400; font-style:italic;
+      color:var(--cream); line-height:1.2; margin-bottom:14px;
+    }
+    .masthead-sub {
+      font-family:var(--mono); font-size:9.5px; letter-spacing:2px; text-transform:uppercase;
+      color:var(--dim); margin-bottom:26px;
+    }
+    .masthead-rule {
+      width:60px; height:1px;
+      background:linear-gradient(to right, var(--accent), transparent);
+      margin-bottom:26px;
+    }
+    .masthead-note {
+      font-family:var(--serif); font-style:italic;
+      font-size:15px; color:var(--dim2);
+      max-width:48ch; line-height:1.85;
+    }
+
+    /* ESSAY BODY */
+    .essay {
+      opacity:0; transform:translateY(14px);
+      transition:opacity 0.65s ease, transform 0.65s ease;
+    }
+    .essay.visible { opacity:1; transform:translateY(0); }
+
+    .essay p {
+      font-size:18px; font-weight:300;
+      color:var(--cream); line-height:2;
+      margin-bottom:1.6em;
+    }
+
+    .essay p.drop::first-letter {
+      font-family:var(--serif);
+      font-size:4em;
+      float:left;
+      line-height:0.76;
+      margin:0.08em 0.1em 0 0;
+      color:var(--accent2);
+      font-style:italic;
+    }
+
+    /* pulled philosopher quote */
+    .philosopher-quote {
+      margin:44px 0 44px 0;
+      padding:24px 28px 24px 32px;
+      border-left:1px solid var(--accent);
+      background:var(--surface);
+      position:relative;
+      opacity:0; transform:translateY(10px);
+      transition:opacity 0.6s ease, transform 0.6s ease;
+    }
+    .philosopher-quote.visible { opacity:1; transform:translateY(0); }
+    .philosopher-quote::before {
+      content:'"';
+      position:absolute; top:-14px; left:20px;
+      font-family:var(--serif); font-size:60px;
+      color:rgba(136,120,200,0.15); line-height:1;
+      font-style:italic; pointer-events:none; user-select:none;
+    }
+    .philosopher-quote p {
+      font-family:var(--serif);
+      font-size:17px; font-style:italic;
+      color:var(--dim2); line-height:1.85;
+      margin:0;
+    }
+    .philosopher-quote cite {
+      display:block; margin-top:12px;
+      font-family:var(--mono); font-size:9px; letter-spacing:1.8px;
+      text-transform:uppercase; font-style:normal; color:var(--dim);
+    }
+
+    /* section break */
+    .section-break {
+      display:flex; align-items:center; gap:16px;
+      margin:52px 0;
+      opacity:0; transition:opacity 0.6s ease;
+    }
+    .section-break.visible { opacity:1; }
+    .section-break::before, .section-break::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(to right, transparent, rgba(120,110,180,0.2), transparent);
+    }
+    .section-break-glyph {
+      font-family:var(--serif); font-size:14px;
+      color:rgba(136,120,200,0.3); letter-spacing:6px; font-style:italic;
+      user-select:none;
+    }
+
+    /* COLOPHON */
+    .colophon {
+      margin-top:72px; padding:36px 32px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      text-align:center; position:relative;
+      opacity:0; transform:translateY(12px);
+      transition:opacity 0.6s ease, transform 0.6s ease;
+    }
+    .colophon.visible { opacity:1; transform:translateY(0); }
+    .colophon::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(to right, transparent, var(--accent), transparent);
+    }
+    .colophon-text {
+      font-family:var(--serif); font-style:italic;
+      font-size:14.5px; color:var(--dim2);
+      max-width:44ch; margin:0 auto; line-height:1.85;
+    }
+    .colophon-sig {
+      margin-top:18px;
+      font-family:var(--mono); font-size:9px; letter-spacing:2px;
+      text-transform:uppercase; color:var(--dim);
+    }
+    .colophon-sig span { color:var(--accent2); }
+
+    /* FOOTER */
+    .page-footer {
+      margin-top:52px; padding-top:20px;
+      border-top:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    }
+    .footer-left { font-size:11px; font-family:var(--mono); color:var(--dim); }
+    .footer-left span { color:var(--accent2); }
+    .footer-right { display:flex; gap:18px; }
+    .footer-link { font-size:10px; font-family:var(--mono); color:var(--dim); text-decoration:none; letter-spacing:1px; text-transform:uppercase; transition:color 0.2s; }
+    .footer-link:hover { color:var(--accent2); }
+
+    @media(max-width:600px){
+      .page-outer { padding:36px 18px 90px; }
+      .essay p { font-size:16.5px; }
+      .philosopher-quote p { font-size:15.5px; }
+    }
+  </style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+
+<div class="page-outer">
+
+  <nav class="top-nav">
+    <a href="index.html" class="nav-link"><i class="fa-solid fa-house" style="margin-right:4px"></i>Home</a>
+    <span class="nav-sep">›</span>
+    <a href="blogs.html" class="nav-link">Blogs</a>
+    <span class="nav-sep">›</span>
+    <a href="blogs-personal.html" class="nav-link">Personal</a>
+    <span class="nav-sep">›</span>
+    <a href="#" class="nav-link" style="color:var(--accent2);border-color:rgba(150,140,210,0.3);">On Meaning</a>
+  </nav>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <span class="masthead-label">Essay · Personal</span>
+    <h1>There Is No Meaning.<br>Go Outside Anyway.</h1>
+    <div class="masthead-sub">On life, loneliness, and the unbearable beauty of a meaningless world</div>
+    <div class="masthead-rule"></div>
+    <p class="masthead-note">I am not writing this to arrive somewhere. I am writing it because the alternative — pretending I have not thought these things — is its own kind of lie, and I have enough of those already.</p>
+  </header>
+
+  <!-- ESSAY -->
+  <div class="essay">
+
+    <p class="drop">Let me be honest with you from the first sentence, which is a thing most essays are too cowardly to do: I do not think life has a meaning. I have looked. I have looked the way you look for your keys when you are already late — with real urgency, turning over every system of thought that promised to have it, Marxism and Islam and stoicism and the various flavours of self-help that dress old despair in new fonts. The keys are not there. The house was never locked. There is no door.</p>
+
+    <p>And here is the thing that nobody who arrives at this conclusion tells you, because it doesn't make for a satisfying narrative: I am, on most days, fine.</p>
+
+    <p>Not fine in the grey, defeated way. Fine in the way a person is fine after they have been in a very long argument with reality and finally, exhaustedly, stopped arguing. The river doesn't care that you wanted it to run north. It runs where it runs. You can stand on the bank and shake your fist at it, or you can take your shoes off and put your feet in, and the water is cold and it is real and it is there, and that is not nothing.</p>
+
+  </div>
+
+  <div class="philosopher-quote">
+    <p>God is dead. God remains dead. And we have killed him. How shall we comfort ourselves, the murderers of all murderers?</p>
+    <cite>— Friedrich Nietzsche, The Gay Science, 1882</cite>
+  </div>
+
+  <div class="essay" style="transition-delay:0.05s">
+    <p>Nietzsche meant this as a horror. Most people read it as a permission slip. Both readings are correct. When you remove the scaffolding of divine purpose — the idea that the suffering is for something, that the arc is long but bends toward justice, that there is a someone keeping score — what's left is not peace. What's left is a very large and very quiet room, and you in it, and the question hanging: so what now?</p>
+
+    <p>Rust Cohle, if you have had the misfortune or fortune of sitting with him in that interrogation room, answers the question bluntly. He says: <em>"I think human consciousness is a tragic misstep in evolution. We became too self-aware. Nature created an aspect of nature separate from itself — we are creatures that should not exist by natural law."</em> He is not wrong. He is also, crucially, still there. Still drinking his coffee. Still working the case. The nihilism does not produce inaction. It produces a different kind of action — one stripped of the vanity of purpose, which is, in some ways, purer.</p>
+  </div>
+
+  <div class="section-break"><span class="section-break-glyph">✦</span></div>
+
+  <div class="essay" style="transition-delay:0.08s">
+    <p>The question that killed Dostoevsky's characters was not whether God exists. It was what happens to a man's behaviour when he decides He doesn't. Ivan Karamazov decides that without God, everything is permitted. He thinks this is freedom. It destroys him. Not because the logic is wrong — the logic is airtight — but because a human being cannot actually live inside an airtight argument. We are too leaky for that. We keep caring about things that the argument says we shouldn't care about. We keep finding the specific, unnecessary beauty of a particular evening unbearable to look at and then looking at it anyway.</p>
+
+    <p>That is the crack in the nihilist position that I keep falling through. The one I cannot seal no matter how logically rigorous I try to be: things keep being beautiful, and I keep noticing, and the noticing does something to me that resembles meaning even when I have decided meaning is a confabulation.</p>
+  </div>
+
+  <div class="philosopher-quote" style="transition-delay:0.04s">
+    <p>I took a deep breath and listened to the old brag of my heart: I am, I am, I am.</p>
+    <cite>— Sylvia Plath, The Bell Jar, 1963</cite>
+  </div>
+
+  <div class="essay" style="transition-delay:0.1s">
+    <p>Plath knew, as well as anyone has ever known, that being alive is not a gift you asked for and frequently resembles a sentence. And yet. That heartbeat. That stubborn, dumb, biological insistence. <em>I am, I am, I am.</em> Not because it means anything. Not because the heart has consulted the philosophy and decided existence is justified. Just because it does. Just because the machinery runs, and the running feels, from the inside, like something.</p>
+
+    <p>I have had evenings — specific, unrepeatable evenings — where the light came through a window at exactly the wrong angle and illuminated something ordinary: a cup, a page, the back of a hand. And the beauty was so specific and so unnecessary and so completely indifferent to my theories about it that I could not maintain the argument. I just stood there. Something in me very old and very pre-verbal simply registered: this. Yes. This.</p>
+
+    <p>That is not meaning. I want to be precise about this. That is not a message from the universe. The universe sent nothing. But I received something anyway, from myself, about myself, about what it feels like to be a thing that perceives in a world that does not care that it is perceived. And the feeling was not comfortable. It was closer to grief than to joy — the grief of something that knows it will end, watching itself not end yet, for one more moment, in one more room, with one more cup, in one more angle of light.</p>
+  </div>
+
+  <div class="section-break" style="transition-delay:0.04s"><span class="section-break-glyph">✦</span></div>
+
+  <div class="essay" style="transition-delay:0.12s">
+    <p>Camus said the only serious philosophical question is whether to commit suicide. I think he was, as usual, being precise where everyone else is being polite. Because if you genuinely believe there is no meaning, and meaning is the thing required to justify suffering, and suffering is the primary texture of conscious experience — then the question is real. It is not dramatic. It is mathematical. And Camus's answer — his actual answer, not the bumper sticker — is not "choose life because life is beautiful." His answer is: <em>you must imagine Sisyphus happy.</em> The rock goes back down. He goes back. He chooses to go back. Not because the task has meaning. Because the choosing has weight. Because a man in full possession of his absurdity, who continues anyway, has done something the rock cannot do.</p>
+
+    <p>That is the most honest argument for living I have ever encountered. It contains no false promises. It does not tell you the pain was worth it. It says: the pain was the pain. It was real. And you were there for it, and you are still here, and that is its own kind of statement, even if there is no one to read it.</p>
+  </div>
+
+  <div class="philosopher-quote" style="transition-delay:0.04s">
+    <p>One must imagine Sisyphus happy.</p>
+    <cite>— Albert Camus, The Myth of Sisyphus, 1942</cite>
+  </div>
+
+  <div class="essay" style="transition-delay:0.14s">
+    <p>I am lonely in the way that I think most people who think too much are lonely: not from lack of company, but from the specific solitude of having a particular kind of interior that does not come with a user manual and is difficult to translate. You meet someone. They are warm, intelligent, kind. They ask how you are. You say fine. You are fine. You are also standing in a room inside yourself that they will never see, because by the time you found the words for it the moment would have passed and the room would have changed, and the translation is always slightly wrong anyway.</p>
+
+    <p>This used to feel like a deficiency. Now I think it is just the condition — the price of consciousness, which is that you are always slightly more alone inside than outside, and the gap between the two is where all the good writing comes from, and also most of the 3 AM hours you were not entirely glad to be awake for.</p>
+
+    <p>The loneliness is also, I have found, where the attention goes. Alone — genuinely, quietly alone, without the anaesthetic of noise — you start to notice. The way a room changes when the last person leaves it. The specific weight of a silence that follows something difficult being said. The face of a stranger on a train who is looking out the window at nothing and everything, who is somewhere else entirely, who is in the same nowhere you are in, and you will never speak, and somehow the not-speaking is its own kind of companionship.</p>
+  </div>
+
+  <div class="section-break" style="transition-delay:0.04s"><span class="section-break-glyph">✦</span></div>
+
+  <div class="essay" style="transition-delay:0.16s">
+    <p>Here is what I actually believe, stripped of the performance of certainty in either direction: I do not know. I do not know if anything means anything. I do not know if the fact that I am here and aware and capable of finding a stranger's expression on a train genuinely moving — I do not know if that is significant or accidental or both or neither. I hold the not-knowing the way you hold something delicate that you are not sure belongs to you, careful, both hands, trying not to break it before you have figured out what it is.</p>
+
+    <p>What I do know — and this is small, but it is mine, and I am not giving it back — is that the moments where something struck me as beautiful were real. The books that rearranged something structural inside me were real. The people who, for however long, made me feel possible — they were real. The work that asked something of me I was not sure I had — real. These things did not add up to a meaning. They did not point toward a destination. They were just there. They happened. They mattered in the way that things matter when you are the kind of creature who cannot help but let things matter.</p>
+
+    <p>I am that creature. Most of us are, which is why nihilism is a philosophy that is easy to believe and almost impossible to live. Not because it is wrong, but because it is incomplete — it accounts for the universe but not for the fact of being this specific, embarrassing, feeling thing inside it, who keeps finding the evening light unacceptable in its beauty, who keeps being moved, who keeps, despite all evidence and all argument, wanting.</p>
+
+    <p>Life has no meaning. Sisyphus goes back up the hill. The heart says: <em>I am, I am, I am.</em></p>
+
+    <p>Go outside. Look at something. Let it do what it does to you. That is enough. It is not enough. It will have to be enough.</p>
+  </div>
+
+  <!-- COLOPHON -->
+  <div class="colophon">
+    <p class="colophon-text">This essay was written in one sitting, at an hour that had no right to produce clarity, and revised twice with the lights on. It remains unresolved by design.</p>
+    <div class="colophon-sig">Written by <span>Muhammad Hamza</span> · IIT Kharagpur · <span id="year"></span></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <div class="footer-left">© <span id="year2"></span> <span>Muhammad Hamza</span> · IIT Kharagpur</div>
+    <nav class="footer-right">
+      <a href="mailto:hamza.iitkgp@gmail.com" class="footer-link">Email</a>
+      <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="footer-link">Medium</a>
+      <a href="index.html" class="footer-link">Portfolio</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script>
+  window.addEventListener('scroll',()=>{
+    const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight||1);
+    document.getElementById('scroll-progress').style.width=(pct*100)+'%';
+  },{passive:true});
+
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  },{threshold:0.04});
+  document.querySelectorAll('.masthead,.essay,.philosopher-quote,.section-break,.colophon').forEach(el=>obs.observe(el));
+
+  const y=new Date().getFullYear();
+  document.getElementById('year').textContent=y;
+  document.getElementById('year2').textContent=y;
+</script>
+</body>
+</html>
