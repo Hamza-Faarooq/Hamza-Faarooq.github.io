@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>On Reading & Books — Muhammad Hamza</title>
+  <link rel="icon" type="image/jpg" href="bh.jpg">
+  <meta name="description" content="Notes on the books that arrived at exactly the right moment and left something structural behind. By Muhammad Hamza, IIT Kharagpur." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg:#060504;
+      --surface:#0e0b08;
+      --surface2:#161210;
+      --surface3:#1e1812;
+      --border:rgba(160,130,80,0.09);
+      --border-hi:rgba(180,150,90,0.26);
+      --ink:#c2b090;
+      --ink2:#ddd0b0;
+      --cream:#ede5d0;
+      --muted:#52453a;
+      --muted2:#8a7860;
+      --rust:#7a3a20;
+      --rust2:#a05030;
+      --serif:'IM Fell English',Georgia,serif;
+      --body:'Crimson Pro',Georgia,serif;
+      --mono:'DM Mono',monospace;
+    }
+
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background:var(--bg);
+      color:var(--cream);
+      font-family:var(--body);
+      font-size:18px;
+      line-height:2.0;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+
+    /* parchment grain */
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E");
+      background-size:180px;
+    }
+
+    /* candlelight vignette — warmer and darker than the others */
+    body::after {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(80,40,10,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, transparent 45%, rgba(0,0,0,0.65) 100%);
+    }
+
+    /* ── scroll bar ── */
+    ::-webkit-scrollbar { width:4px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:var(--muted); border-radius:99px; }
+    ::-webkit-scrollbar-thumb:hover { background:var(--ink); }
+
+    #scroll-progress {
+      position:fixed; top:0; left:0; z-index:200; height:1px; width:0%;
+      background:linear-gradient(to right, transparent, var(--ink2), transparent);
+      transition:width 0.08s linear;
+    }
+
+    /* ── LAYOUT ── */
+    .page-outer {
+      position:relative; z-index:2;
+      max-width:700px;
+      margin:0 auto;
+      padding:60px 28px 130px;
+    }
+
+    /* ── NAV ── */
+    .top-nav { display:flex; gap:6px; align-items:center; margin-bottom:56px; flex-wrap:wrap; }
+    .nav-link {
+      color:var(--muted); text-decoration:none;
+      border:1px solid var(--border); padding:6px 12px;
+      font-size:10px; letter-spacing:1.2px; text-transform:uppercase; font-family:var(--mono);
+      transition:all 0.2s ease;
+    }
+    .nav-link:hover { color:var(--ink); border-color:var(--border-hi); }
+    .nav-sep { color:var(--muted); font-size:10px; opacity:0.4; font-family:var(--mono); }
+
+    /* ── ILLUMINATED BORDER — top of page, medieval manuscript feel ── */
+    .manuscript-top {
+      width:100%;
+      text-align:center;
+      margin-bottom:44px;
+      position:relative;
+    }
+    .manuscript-top::before,
+    .manuscript-top::after {
+      content:'';
+      position:absolute; top:50%; left:0;
+      width:100%; height:1px;
+      background:linear-gradient(to right, transparent, rgba(160,130,80,0.18), rgba(160,130,80,0.18), transparent);
+      transform:translateY(-50%);
+    }
+    .manuscript-glyph {
+      position:relative; z-index:1;
+      display:inline-block;
+      background:var(--bg);
+      padding:0 20px;
+      font-family:var(--serif);
+      font-size:15px; font-style:italic;
+      color:rgba(160,130,80,0.35);
+      letter-spacing:6px;
+    }
+
+    /* ── MASTHEAD ── */
+    .masthead { margin-bottom:68px; }
+    .masthead-label {
+      font-family:var(--mono); font-size:9px; letter-spacing:3px;
+      text-transform:uppercase; color:var(--muted);
+      display:block; margin-bottom:18px;
+    }
+    .masthead h1 {
+      font-family:var(--serif);
+      font-size:clamp(28px, 5.5vw, 46px);
+      font-weight:400; font-style:italic;
+      color:var(--cream); line-height:1.2; margin-bottom:0;
+    }
+    .masthead h1 em {
+      display:block;
+      font-size:0.62em;
+      color:var(--muted2);
+      margin-top:10px;
+      font-style:italic;
+      letter-spacing:0.5px;
+    }
+    .masthead-rule {
+      width:56px; height:1px; margin:26px 0;
+      background:linear-gradient(to right, var(--ink), transparent);
+    }
+    .masthead-byline {
+      font-family:var(--mono); font-size:9.5px; letter-spacing:2px;
+      text-transform:uppercase; color:var(--muted);
+    }
+
+    /* ── ESSAY BODY ── */
+    .essay p {
+      font-size:18px; font-weight:300;
+      color:var(--cream);
+      line-height:2.0;
+      margin-bottom:1.55em;
+    }
+    .essay p:last-child { margin-bottom:0; }
+
+    /* drop cap */
+    .essay p.drop::first-letter {
+      font-family:var(--serif);
+      font-size:4.2em;
+      float:left;
+      line-height:0.74;
+      margin:0.08em 0.11em 0 0;
+      color:var(--ink2);
+      font-style:italic;
+    }
+
+    /* section break — medieval cross/star */
+    .section-break {
+      text-align:center;
+      margin:52px 0;
+      position:relative;
+    }
+    .section-break::before,
+    .section-break::after {
+      content:'';
+      position:absolute; top:50%; left:0;
+      width:44%; height:1px;
+      background:linear-gradient(to right, transparent, rgba(160,130,80,0.15));
+    }
+    .section-break::after {
+      left:auto; right:0;
+      background:linear-gradient(to left, transparent, rgba(160,130,80,0.15));
+    }
+    .section-break-glyph {
+      display:inline-block;
+      font-family:var(--serif);
+      font-size:11px; letter-spacing:8px;
+      color:rgba(160,130,80,0.3);
+      position:relative; z-index:1;
+      padding:0 8px;
+      background:var(--bg);
+    }
+
+    /* ── BOOK ENTRY — each book gets its own block ── */
+    .book-entry {
+      margin:52px 0;
+      position:relative;
+    }
+
+    /* Roman numeral margin annotation */
+    .book-numeral {
+      position:absolute;
+      left:-52px; top:4px;
+      font-family:var(--serif);
+      font-size:11px; font-style:italic;
+      color:rgba(160,130,80,0.22);
+      letter-spacing:1px;
+      writing-mode:vertical-rl;
+      text-orientation:mixed;
+      user-select:none;
+    }
+
+    .book-header {
+      margin-bottom:20px;
+      padding-bottom:16px;
+      border-bottom:1px solid var(--border);
+      position:relative;
+    }
+    .book-header::after {
+      content:'';
+      position:absolute; bottom:-1px; left:0;
+      width:48px; height:1px;
+      background:var(--ink);
+    }
+    .book-title-line {
+      display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+    }
+    .book-title {
+      font-family:var(--serif);
+      font-size:21px; font-style:italic; font-weight:400;
+      color:var(--cream); line-height:1.25;
+    }
+    .book-author {
+      font-family:var(--mono); font-size:9.5px; letter-spacing:1.5px;
+      text-transform:uppercase; color:var(--muted2);
+    }
+    .book-year {
+      font-family:var(--mono); font-size:9px; letter-spacing:1px;
+      color:var(--muted); margin-left:auto;
+    }
+    .book-body p {
+      font-size:17.5px; font-weight:300;
+      color:var(--cream); line-height:2.0;
+      margin-bottom:1.4em;
+    }
+    .book-body p:last-child { margin-bottom:0; }
+
+    /* ── INLINE QUOTE — pulled from the book ── */
+    .inline-quote {
+      margin:36px 0;
+      padding:24px 28px 22px;
+      border-left:1px solid rgba(160,130,80,0.22);
+      background:var(--surface);
+      position:relative;
+    }
+    .inline-quote::before {
+      content:'\201C';
+      position:absolute; top:8px; left:16px;
+      font-family:var(--serif); font-size:52px;
+      color:rgba(160,130,80,0.08); line-height:1;
+      font-style:italic; user-select:none;
+    }
+    .inline-quote p {
+      font-family:var(--serif);
+      font-size:16.5px; font-style:italic;
+      color:var(--ink2); line-height:1.85;
+      margin-bottom:0; padding-left:6px;
+    }
+    .inline-quote cite {
+      display:block; margin-top:10px; padding-left:6px;
+      font-family:var(--mono); font-size:9px;
+      letter-spacing:1.8px; text-transform:uppercase;
+      color:var(--muted); font-style:normal;
+    }
+
+    /* ── MARGINAL NOTE — the sidebar annotation feeling ── */
+    .marginal {
+      margin:40px 0;
+      padding:0 0 0 24px;
+      border-left:2px solid rgba(160,130,80,0.15);
+    }
+    .marginal p {
+      font-family:var(--serif);
+      font-size:15px; font-style:italic;
+      color:var(--muted2); line-height:1.9;
+      margin-bottom:0;
+    }
+
+    /* ── COLOPHON ── */
+    .colophon {
+      margin-top:80px; padding:42px 34px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      text-align:center; position:relative;
+    }
+    .colophon::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(to right, transparent, var(--ink), transparent);
+    }
+    /* corner ornaments — manuscript illumination feel */
+    .colophon::after {
+      content:'✦';
+      position:absolute; bottom:14px; right:18px;
+      font-size:10px; color:rgba(160,130,80,0.2);
+      letter-spacing:0; font-family:var(--serif);
+    }
+    .colophon-mark {
+      font-family:var(--serif); font-size:16px;
+      letter-spacing:14px; color:var(--ink); opacity:0.3;
+      display:block; margin-bottom:18px;
+    }
+    .colophon-text {
+      font-family:var(--serif); font-style:italic;
+      font-size:15px; color:var(--muted2);
+      max-width:44ch; margin:0 auto; line-height:1.85;
+    }
+    .colophon-sig {
+      margin-top:18px;
+      font-family:var(--mono); font-size:9px;
+      letter-spacing:2px; text-transform:uppercase; color:var(--muted);
+    }
+    .colophon-sig span { color:var(--ink); }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      margin-top:56px; padding-top:18px;
+      border-top:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:12px;
+    }
+    .footer-left { font-size:11px; font-family:var(--mono); color:var(--muted); }
+    .footer-left span { color:var(--ink); }
+    .footer-right { display:flex; gap:18px; }
+    .footer-link { font-size:10px; font-family:var(--mono); color:var(--muted); text-decoration:none; letter-spacing:1px; text-transform:uppercase; transition:color 0.2s; }
+    .footer-link:hover { color:var(--ink); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity:0; transform:translateY(14px); transition:opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:820px){
+      .book-numeral { display:none; }
+    }
+    @media(max-width:600px){
+      .page-outer { padding:36px 18px 90px; }
+      .essay p, .book-body p { font-size:17px; }
+      .masthead h1 { font-size:28px; }
+      .book-year { display:none; }
+    }
+  </style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+
+<div class="page-outer">
+
+  <!-- NAV -->
+  <nav class="top-nav">
+    <a href="index.html" class="nav-link"><i class="fa-solid fa-house" style="margin-right:4px"></i>Home</a>
+    <span class="nav-sep">›</span>
+    <a href="blogs.html" class="nav-link">Blogs</a>
+    <span class="nav-sep">›</span>
+    <a href="blogs-personal.html" class="nav-link">Personal</a>
+    <span class="nav-sep">›</span>
+    <a href="#" class="nav-link" style="color:var(--ink);border-color:rgba(160,130,80,0.25);">On Reading</a>
+  </nav>
+
+  <!-- manuscript ornament -->
+  <div class="manuscript-top reveal">
+    <span class="manuscript-glyph">✦ &nbsp; liber &nbsp; ✦</span>
+  </div>
+
+  <!-- MASTHEAD -->
+  <header class="masthead reveal">
+    <span class="masthead-label">Essay · On Books</span>
+    <h1>
+      The Books That Did Not<br>Leave Quietly
+      <em>Notes on reading as damage, repair, and the strange gratitude you feel for both</em>
+    </h1>
+    <div class="masthead-rule"></div>
+    <div class="masthead-byline">Muhammad Hamza &nbsp;·&nbsp; IIT Kharagpur</div>
+  </header>
+
+  <!-- OPENING ESSAY -->
+  <div class="essay">
+
+    <p class="drop reveal">I want to be honest about what reading has done to me, which is the same as being honest about what it has undone. There is a version of this essay that could be written as a warm list — the books I love, the ones I recommend, perhaps a rating system, a tidy summary of themes. That version would be a lie, or at least an omission so significant it functions as one. Because the books that mattered did not improve me the way a vitamin improves you, quietly and without complication. They broke things open. They rearranged the furniture without asking. They handed me a mirror I was not prepared to look into and waited, without patience, while I looked.</p>
+
+    <p class="reveal">I do not read to escape. I tried that, early on, and the books I reached for with that intention always managed to find me anyway — which is, I have come to understand, the whole point. A book that lets you escape is entertainment. There is nothing wrong with entertainment. But a book that follows you out of the room, that sits with you at dinner, that comes back to you three weeks later when you are doing something completely unrelated and suddenly you understand what it was actually saying — that is something else. That is the thing I am talking about. That is the only kind of reading I am interested in.</p>
+
+    <p class="reveal">This is not a ranking. It is not a syllabus. It is an attempt to say, honestly, what certain books cost me — and why, in every case, I am glad I paid.</p>
+
+  </div>
+
+  <div class="section-break reveal"><span class="section-break-glyph">✦ &nbsp; &nbsp; ✦</span></div>
+
+  <!-- BOOK I — THE BROTHERS KARAMAZOV -->
+  <div class="book-entry reveal">
+    <span class="book-numeral">I</span>
+    <div class="book-header">
+      <div class="book-title-line">
+        <span class="book-title">The Brothers Karamazov</span>
+        <span class="book-author">Dostoevsky</span>
+        <span class="book-year">1880</span>
+      </div>
+    </div>
+    <div class="book-body">
+
+      <div class="inline-quote">
+        <p>Above all, don't lie to yourself. The man who lies to himself and listens to his own lie comes to a point that he cannot distinguish the truth within him, or around him, and so loses all respect for himself and for others.</p>
+        <cite>— Father Zosima</cite>
+      </div>
+
+      <p>I came to Dostoevsky late, which means I came to him at exactly the right time, which is the only way anyone comes to Dostoevsky. You do not read him when you are content. You read him when something in you is already coming loose and you do not yet have words for what it is, and he provides the words, and the words are not comforting, and you are grateful anyway.</p>
+
+      <p>The Brothers Karamazov is not a novel. It is a trial. Not the legal kind — the kind where every belief you have ever held is put in the dock and examined without mercy and asked to justify itself or be dismissed. Ivan Karamazov's rebellion against God — not God's existence, God's justice — is the most honest thing I have ever read. He does not say God is not real. He says: even if You are real, I refuse to accept a universe in which a child suffers to complete someone else's harmony. He returns the ticket. He gives the whole thing back.</p>
+
+      <p>I read that passage on a train somewhere between cities and I had to put the book down and look out the window for a long time. Not because Ivan was right. Because he was asking the question honestly, without softening it, without the usual theological manoeuvres that make the suffering of innocents into something manageable. He refused to make it manageable. I respected that enormously and found it, at the same time, completely insufficient, which is precisely where Dostoevsky wanted me.</p>
+
+      <p>Because Alyosha is the answer. Not the answer to Ivan's question — no one answers Ivan's question, not in the book, not in life. Alyosha is the answer to a different question, the one underneath: given everything Ivan has said, which is true, how do you live? And Alyosha's answer is not an argument. It is a practice. He goes out into the world and he loves people, specifically, with his hands, in ordinary situations, without requiring the cosmic justification to be in place first. He acts as though love is the point. And the acting — the daily, undramatic, unremarkable practice of it — is more radical than Ivan's grand refusal.</p>
+
+      <p>I have been both of them. I am still both of them. The argument has not resolved. Dostoevsky knew it wouldn't. He put both brothers in the same book and let them live alongside each other, unreconciled, because that is what the actual interior of a person who thinks looks like.</p>
+
+    </div>
+  </div>
+
+  <div class="section-break reveal"><span class="section-break-glyph">✦</span></div>
+
+  <!-- BOOK II — THE STRANGER -->
+  <div class="book-entry reveal">
+    <span class="book-numeral">II</span>
+    <div class="book-header">
+      <div class="book-title-line">
+        <span class="book-title">The Stranger</span>
+        <span class="book-author">Albert Camus</span>
+        <span class="book-year">1942</span>
+      </div>
+    </div>
+    <div class="book-body">
+
+      <div class="inline-quote">
+        <p>I had been right, I was still right, I was always right. I had lived my life one way and I could just as well have lived it another. I had done this and I hadn't done that. I hadn't done this thing but I had done another. And so?</p>
+        <cite>— Meursault, Part Two</cite>
+      </div>
+
+      <p>The first time I read this book I thought Meursault was cold. The second time I thought he was honest. The third time I understood that those are the same thing, and that the coldness is not a deficiency in him but a mirror held up to the warmth in everyone else — which is largely performed, largely demanded by social convention, largely unexamined.</p>
+
+      <p>Meursault does not pretend. This is his crime — not the murder, not in the deepest sense. His crime is that he refuses to perform the grief, the remorse, the rehabilitation of self-image that the world requires. He says: this is what I did. This is what I feel. And what I feel is not what you need me to feel, and I will not manufacture it for your comfort. The court does not sentence him for killing a man. It sentences him for failing to cry at his mother's funeral. For being, in the exact wrong moment, exactly himself.</p>
+
+      <p>Camus is not endorsing this. But he is asking you to sit with it until you can separate the discomfort from the moral objection, and when you have separated them, to look honestly at which one is doing more of the work.</p>
+
+      <div class="marginal">
+        <p>I think about Meursault whenever I am in a situation that requires the performance of an emotion I do not feel. Which is not a reason to withhold it — performance is sometimes what love looks like on the outside — but it is a reason to know you are performing. The lie told consciously is not the same as the lie you have forgotten is a lie.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section-break reveal"><span class="section-break-glyph">✦</span></div>
+
+  <!-- BOOK III — THE TRIAL -->
+  <div class="book-entry reveal">
+    <span class="book-numeral">III</span>
+    <div class="book-header">
+      <div class="book-title-line">
+        <span class="book-title">The Trial</span>
+        <span class="book-author">Franz Kafka</span>
+        <span class="book-year">1925</span>
+      </div>
+    </div>
+    <div class="book-body">
+
+      <div class="inline-quote">
+        <p>Someone must have slandered Josef K., for one morning, without having done anything wrong, he was arrested.</p>
+        <cite>— Opening sentence</cite>
+      </div>
+
+      <p>That first sentence is the most efficient horror ever written. One sentence and you are already in it — the feeling of it, the specific texture of being accused of something you cannot name by a process you cannot access using a system that will not explain itself. You know this feeling. Everyone who has ever been young and powerless and confused by the structures that govern their life knows this feeling. Kafka did not invent it. He just refused to put a lamp in it, the way everyone else did — he left it dark, and somehow the darkness is more honest than any illumination.</p>
+
+      <p>Josef K. spends the entire novel trying to understand the charge. He never finds out. That is not the failure of the plot — that is the plot. The charge cannot be found because the charge is existence. The crime is being a person inside a system that requires compliance but will not provide the compliance manual, and will penalise you for not having read it. Every bureaucracy. Every social hierarchy. Every system of unstated rules that you are expected to have absorbed through some form of osmosis that no one has explained. Kafka just put it in a courtroom.</p>
+
+      <p>I read Kafka during a period where I was running into walls I could not see — applications that went nowhere without explanation, rooms I could not enter through doors that were not marked as doors. It did not help, reading him. But it named something. And naming the thing you are inside is, I have found, not nothing. It does not open the door. But it means you stop blaming your own eyesight for the wall.</p>
+
+    </div>
+  </div>
+
+  <div class="section-break reveal"><span class="section-break-glyph">✦</span></div>
+
+  <!-- BOOK IV — NOTES FROM UNDERGROUND -->
+  <div class="book-entry reveal">
+    <span class="book-numeral">IV</span>
+    <div class="book-header">
+      <div class="book-title-line">
+        <span class="book-title">Notes from Underground</span>
+        <span class="book-author">Dostoevsky</span>
+        <span class="book-year">1864</span>
+      </div>
+    </div>
+    <div class="book-body">
+
+      <div class="inline-quote">
+        <p>I am a sick man... I am a spiteful man. I am an unattractive man. I think my liver hurts.</p>
+        <cite>— The Underground Man, opening</cite>
+      </div>
+
+      <p>That opening. I have never read a first paragraph that so immediately put me in the position of recognising someone I had hoped I was not. The Underground Man is not a sympathetic character — Dostoevsky is not interested in giving you that comfort. He is interested in making you recognise him. He is petty, self-obsessed, cruel to people who try to be kind to him, and possessed of an intelligence that he uses almost exclusively to make himself miserable. He is, in other words, the part of consciousness that turns itself into its own worst enemy and is simultaneously too clever and too proud to stop.</p>
+
+      <p>He thinks too much. This is the diagnosis and also the entire condition. He is so aware of every motive behind every impulse that he cannot act on any of them cleanly — every gesture has been analysed into paralysis before it reaches his hands. He wants to connect with people and understands the wanting too clearly to let himself do it without sabotaging the attempt. He is the most alive character in the book and also the most dead, and you do not know, reading him, whether to pity or admire or despise him, and Dostoevsky knew you wouldn't know, and that was the point.</p>
+
+      <p>There is a kind of intelligence — I recognise it in myself and say this without pleasure — that becomes a trap. That turns every experience into observation, every emotion into material, every conversation into data. It gives you an accurate picture of the room and an increasing inability to be in it. Notes from Underground is the first and still the most precise description of that trap I have ever read. It did not cure me of it. Nothing cures you of it. But there is something in being seen, even by a dead Russian novelist, even through a character you find partly repellent. Something that makes the walls slightly more bearable because they have, at least, been named.</p>
+
+    </div>
+  </div>
+
+  <div class="section-break reveal"><span class="section-break-glyph">✦</span></div>
+
+  <!-- BOOK V — THE BELL JAR -->
+  <div class="book-entry reveal">
+    <span class="book-numeral">V</span>
+    <div class="book-header">
+      <div class="book-title-line">
+        <span class="book-title">The Bell Jar</span>
+        <span class="book-author">Sylvia Plath</span>
+        <span class="book-year">1963</span>
+      </div>
+    </div>
+    <div class="book-body">
+
+      <div class="inline-quote">
+        <p>I saw my life branching out before me like the green fig tree in the story. From the tip of every branch, like a fat purple fig, a wonderful future beckoned and winked... I wanted each and every one of them, but choosing one meant losing all the rest.</p>
+        <cite>— Esther Greenwood</cite>
+      </div>
+
+      <p>Plath is routinely misread as a poet of suffering. She is actually a poet of precision. The suffering is precise. The observations are precise. The fig tree passage — which I have returned to more times than I can count, always at moments of paralysis, always with the recognition you feel when someone describes a feeling you assumed was only yours — is not a description of depression. It is a description of the specific hell of having possibilities, which is the hell no one warns you about, the one that looks from outside like luck and feels from inside like drowning.</p>
+
+      <p>The bell jar itself — the image of being trapped inside your own mind, suffocating on your own recycled air, watching the world continue through the glass — I have never found a better description of certain kinds of mental states than this. Not the dramatic ones, the ones that announce themselves. The quiet ones. The ones where you are functionally present, outwardly fine, attending things and eating things and conducting conversations, while something fundamental is sealed off, unreachable, breathing its own stale air.</p>
+
+      <p>What saves her, in the book, is not resolution. Not an answer. It is, eventually, time, and care, and the stubborn persistence of the body's heartbeat — that old brag, that dumb animal insistence. I am, I am, I am. She heard it. She wrote it down. The fact that she wrote it down — that she took the worst interior she could find and turned it into something that would be read by other people in other dark rooms and make them feel slightly less alone inside their own — that is, I think, the closest thing to meaning I have found in a book. Not the message. The act. The refusal to be only in the suffering. The decision to make the suffering into language and send it out into the world and trust the world to receive it.</p>
+
+    </div>
+  </div>
+
+  <div class="section-break reveal"><span class="section-break-glyph">✦ &nbsp; &nbsp; ✦</span></div>
+
+  <!-- CLOSING ESSAY -->
+  <div class="essay">
+
+    <p class="reveal">I should say, to close this, what I actually believe reading is for — not in the abstract, not the answer you give at dinner, but the honest one.</p>
+
+    <p class="reveal">Reading is how I have most consistently felt less alone. Not less lonely — the loneliness is structural and books do not fix structures. But less alone in the specific sense of: there has been someone, somewhere, who saw what I see, who felt the weight of the thing I feel the weight of, who took the experience seriously enough to spend years turning it into language — and that language is still here, long after the person is gone, sitting in a book that waited on a shelf for exactly the moment I needed it, which is miraculous and mundane and both at once.</p>
+
+    <p class="reveal">The books that mattered arrived when I was not looking for them, or when I was looking desperately and found something adjacent — the wrong book for the right moment, which turned out to be the right book after all. They did not make me wiser, exactly. They made me more honest. They showed me the parts of myself I was in the habit of not looking at, and they looked at them without flinching, and somehow the not-flinching was permission. You can look. You can look at the whole of it. It will not kill you. It has not killed me, and I have been looking for years.</p>
+
+    <div class="marginal reveal">
+      <p>I am still reading. I am always still reading. There is a book open somewhere in every room I regularly inhabit, at whatever page I last left it — dog-eared, annotated in the margins, occasionally creased from being carried in a bag to a city it was not opened in. The books I love look used. That is the highest compliment I know how to pay them.</p>
+    </div>
+
+  </div>
+
+  <!-- COLOPHON -->
+  <div class="colophon reveal">
+    <span class="colophon-mark">· &nbsp; ✦ &nbsp; ·</span>
+    <p class="colophon-text">This is not a list of the best books. It is a list of the books that are now partly structural — that are in the walls, in the reasoning, in the way certain things are seen. You cannot remove them without taking something else with them. I have stopped wanting to.</p>
+    <div class="colophon-sig">Written by <span>Muhammad Hamza</span> · IIT Kharagpur · <span id="year"></span></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <div class="footer-left">© <span id="year2"></span> <span>Muhammad Hamza</span> · IIT Kharagpur</div>
+    <nav class="footer-right">
+      <a href="mailto:hamza.iitkgp@gmail.com" class="footer-link">Email</a>
+      <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="footer-link">Medium</a>
+      <a href="index.html" class="footer-link">Portfolio</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script>
+  window.addEventListener('scroll',()=>{
+    const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight||1);
+    document.getElementById('scroll-progress').style.width=(pct*100)+'%';
+  },{passive:true});
+
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  },{threshold:0.04});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  const y=new Date().getFullYear();
+  document.getElementById('year').textContent=y;
+  document.getElementById('year2').textContent=y;
+</script>
+</body>
+</html>
