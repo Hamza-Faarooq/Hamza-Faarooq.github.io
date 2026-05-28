@@ -907,39 +907,6 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         </div>
       </div>
 
-      <!-- PROJECT: CFD Solver -->
-      <div class="proj">
-        <div class="proj-header">
-          <div class="proj-title-wrap">
-            <h3>Physics-Informed Generative CFD Solver</h3>
-          </div>
-          <span class="proj-year">2026</span>
-        </div>
-        <div class="proj-tags">
-          <span class="proj-tag tag-torch">PyTorch</span>
-          <span class="proj-tag tag-green">Neural Operators</span>
-          <span class="proj-tag tag-purple">DDPM</span>
-          <span class="proj-tag tag-blue">PIKAN-FNO</span>
-        </div>
-        <div class="proj-metrics">
-          <span class="proj-metric">Navier-Stokes PDEs</span>
-          <span class="proj-metric">U-Net backbone</span>
-          <span class="proj-metric">Physics-constrained</span>
-        </div>
-        <p class="proj-short">Designed a physics-informed generative framework (PIKAN-FNO) integrating Kolmogorov Arnold Networks with Fourier Neural Operators to solve steady-state Navier-Stokes equations with high-fidelity approximations.</p>
-        <div class="proj-full" id="pf1">
-          <ul>
-            <li>Developed a Denoising Diffusion Probabilistic Model (DDPM) with a custom U-Net backbone to generate continuous fluid flow fields, enabling data-driven initialization for physics-constrained refinement.</li>
-            <li>Addressed training instability in PINNs by formulating an Ansatz for exact boundary condition enforcement and implementing dynamic loss-weighting to balance PDE residuals and constraint terms.</li>
-            <li>Validated model performance through quantitative error analysis and qualitative flow-field visualization, demonstrating consistency with governing fluid dynamics.</li>
-          </ul>
-        </div>
-        <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/Physics-Guided-Diffusion-with-Kolmogorov-Arnold-Neural-Operators" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
-          <button class="proj-expand-btn" onclick="toggleProj('pf1',this)">Read more ↓</button>
-        </div>
-      </div>
-
       <!-- PROJECT: Transformer Robustness -->
       <div class="proj">
         <div class="proj-header">
@@ -1004,36 +971,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         </div>
       </div>
 
-      <!-- PROJECT: Handwritten Digit Recognition -->
-      <div class="proj">
-        <div class="proj-header">
-          <div class="proj-title-wrap">
-            <h3>Handwritten Digit Recognition — Neural Network from Scratch</h3>
-          </div>
-          <span class="proj-year">2024</span>
-        </div>
-        <div class="proj-tags">
-          <span class="proj-tag tag-torch">Python</span>
-          <span class="proj-tag tag-green">NumPy</span>
-          <span class="proj-tag tag-blue">From Scratch</span>
-        </div>
-        <div class="proj-metrics">
-          <span class="proj-metric">91.8% test accuracy</span>
-          <span class="proj-metric">Loss 0.007</span>
-          <span class="proj-metric">Zero ML frameworks</span>
-        </div>
-        <p class="proj-short">Fully custom-built modular feedforward neural network with zero ML-framework dependency achieving <strong>91.8% test accuracy</strong>. Complete backprop pipeline including activations, weight initialisation, and optimiser — all from scratch.</p>
-        <div class="proj-full" id="pf4">
-          <ul>
-            <li>Engineered and optimised the training pipeline, consistently reducing validation loss and improving prediction accuracy across epochs.</li>
-            <li>Designed the architecture to be modular, extensible and scalable — supporting arbitrary layer depths and activation functions without code refactoring.</li>
-          </ul>
-        </div>
-        <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/Handwritten-Mathematical-Symbols-Recognition-using-NeuralNets-from-Scratch" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
-          <button class="proj-expand-btn" onclick="toggleProj('pf4',this)">Read more ↓</button>
-        </div>
-      </div>
+
 
     </div><!-- /projects-grid -->
 
