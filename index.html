@@ -907,6 +907,40 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         </div>
       </div>
 
+
+      <div class="proj">
+        <div class="proj-header">
+          <div class="proj-title-wrap">
+            <h3>VictorianGPT: Compound AI Conversational Agent</h3>
+          </div>
+          <span class="proj-year">2026</span>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag tag-torch">QLoRA</span>
+          <span class="proj-tag tag-green">RAG</span>
+          <span class="proj-tag tag-purple">ChromaDB</span>
+          <span class="proj-tag tag-blue">Gradio</span>
+        </div>
+        <div class="proj-metrics">
+          <span class="proj-metric">Qwen 2.5 (3B)</span>
+          <span class="proj-metric">4-bit NF4 Quantization</span>
+          <span class="proj-metric">Contextual Prompt Engineering</span>
+        </div>
+        <p class="proj-short">Engineered an end-to-end Machine Learning pipeline combining Parameter-Efficient Fine-Tuning with Retrieval-Augmented Generation to deploy a highly atmospheric, 19th-century conversational agent.</p>
+        <div class="proj-full" id="pf1">
+          <ul>
+            <li>Fine-tuned the Qwen 2.5 3B instruct model using QLoRA (4-bit quantization) on ~10,000 synthetic conversational pairs to align generation with a Dark Academia and Victorian gothic aesthetic.</li>
+            <li>Architected a semantic memory pipeline using ChromaDB and MiniLM embeddings to retrieve and inject historical context from authentic 19th-century literature (Dickens, Stoker, Wilde).</li>
+            <li>Resolved 'Context Domination' (Lazy RAG) hurdles by restructuring the prompt injection hierarchy and mathematically tuning generation constraints (repetition penalties) to force original prose.</li>
+            <li>Deployed the full compound architecture to Hugging Face Spaces via a custom Gradio web interface, managing background thread execution and memory caching.</li>
+          </ul>
+        </div>
+        <div class="proj-footer">
+          <a href="https://github.com/tm-vettel/VictorianGPT" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <button class="proj-expand-btn" onclick="toggleProj('pf1',this)">Read more ↓</button>
+        </div>
+      </div>
+
       <!-- PROJECT: Transformer Robustness -->
       <div class="proj">
         <div class="proj-header">
