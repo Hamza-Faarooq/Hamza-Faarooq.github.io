@@ -874,6 +874,42 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
     <h2 class="section-title"><span class="tnum">04</span>Projects</h2>
     <div class="projects-grid">
 
+
+<div class="proj">
+        <div class="proj-header">
+          <div class="proj-title-wrap">
+            <h3>ApexSearch: Audio-Visual RAG & Multimodal Video Retrieval Engine</h3>
+          </div>
+          <span class="proj-year">2026</span>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag tag-torch">PyTorch & Transformers</span>
+          <span class="proj-tag tag-green">FAISS</span>
+          <span class="proj-tag tag-purple">Multimodal RAG</span>
+          <span class="proj-tag tag-blue">Streamlit</span>
+        </div>
+        <div class="proj-metrics">
+          <span class="proj-metric">CLIP & CLAP</span>
+          <span class="proj-metric">Late-Fusion Heuristic</span>
+          <span class="proj-metric">Groq LPU Inference</span>
+        </div>
+        <p class="proj-short">Engineered an interactive, end-to-end multimodal retrieval-augmented generation (RAG) system allowing natural language querying and autonomous live commentary over untrimmed, high-speed Formula 1 broadcasts.</p>
+        <div class="proj-full" id="pf0">
+          <ul>
+            <li>Engineered an end-to-end multimodal retrieval-augmented generation (RAG) system for untrimmed sports broadcasts, localizing specific events (e.g., crashes, pit stops) from natural language queries[cite: 1829].</li>
+            <li>Extracted temporal visual features (1 FPS) and synchronized audio chunks, vectorizing them via frozen CLIP and CLAP transformers into independent FAISS vector databases for sub-50ms retrieval[cite: 1830].</li>
+            <li>Implemented a dynamically weighted late-fusion scoring heuristic to resolve cross-modal ambiguity (e.g., trusting audio over visual during heavy motion blur), significantly improving retrieval robustness[cite: 1831].</li>
+            <li>Architected a serverless deployment pipeline using GitHub and Streamlit Community Cloud, decoupling Vision-Language Model inference into external Groq API calls to bypass cloud GPU constraints and achieve zero-cost hosting[cite: 2108].</li>
+          </ul>
+        </div>
+        <div class="proj-footer">
+          <a href="https://github.com/Hamza-Faarooq/ApexSearch" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          <a href="https://apexsearch.streamlit.app/" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Test out the system</a>
+
+          <button class="proj-expand-btn" onclick="toggleProj('pf0',this)">Read more ↓</button>
+        </div>
+      </div>
+      
       <div class="proj">
         <div class="proj-header">
           <div class="proj-title-wrap">
@@ -945,37 +981,7 @@ footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid 
         </div>
       </div>
 
-      <!-- PROJECT: Transformer Robustness -->
-      <div class="proj">
-        <div class="proj-header">
-          <div class="proj-title-wrap">
-            <h3>Robustness &amp; Calibration Analysis of Transformer Classifiers</h3>
-          </div>
-          <span class="proj-year">2025</span>
-        </div>
-        <div class="proj-tags">
-          <span class="proj-tag tag-torch">PyTorch</span>
-          <span class="proj-tag tag-blue">Transformers</span>
-          <span class="proj-tag tag-purple">DistilBERT</span>
-          <span class="proj-tag tag-gold">Calibration</span>
-        </div>
-        <div class="proj-metrics">
-          <span class="proj-metric">67k-sample SST-2</span>
-          <span class="proj-metric">38% relative ECE increase</span>
-          <span class="proj-metric">ECE 0.074→0.103</span>
-        </div>
-        <p class="proj-short">Fine-tuned DistilBERT on 67k-sample SST-2 dataset, achieving 90% validation accuracy and evaluated robustness under prompt and token-level perturbations, observing 38% relative ECE increase despite accuracy degradation.</p>
-        <div class="proj-full" id="pf2">
-          <ul>
-            <li>Performed reliability analysis using ECE (0.074 → 0.103) and reliability diagrams, revealing systematic overconfidence and confidence–accuracy misalignment of softmax outputs under simulated distribution shifts.</li>
-            <li>Benchmarked against standard baselines to isolate calibration drift from accuracy degradation under out-of-distribution prompts and adversarial token-level perturbations.</li>
-          </ul>
-        </div>
-        <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/Robustness-and-Calibration-Analysis-of-Transformer-Classifiers-" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
-          <button class="proj-expand-btn" onclick="toggleProj('pf2',this)">Read more ↓</button>
-        </div>
-      </div>
+   
 
       <!-- PROJECT: Volatility Surface -->
       <div class="proj">
