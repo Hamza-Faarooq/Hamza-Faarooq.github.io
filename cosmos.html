@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Universe Learned to Ask Questions — Muhammad Hamza</title>
+  <link rel="icon" type="image/jpg" href="bh.jpg">
+  <meta name="description" content="Stars made the elements. Elements made us. We make the questions. On consciousness as the universe turning its attention inward." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg:#04050a;
+      --surface:#09090f;
+      --surface2:#0f0f18;
+      --border:rgba(100,120,200,0.08);
+      --border-hi:rgba(120,140,220,0.22);
+      --star:#a0aae0;
+      --star2:#d0d8f8;
+      --cream:#e8eaf8;
+      --muted:#404468;
+      --muted2:#70789a;
+      --serif:'IM Fell English',Georgia,serif;
+      --body:'Crimson Pro',Georgia,serif;
+      --mono:'DM Mono',monospace;
+    }
+
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background:var(--bg);
+      color:var(--cream);
+      font-family:var(--body);
+      font-size:18px;
+      line-height:2.0;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+
+    /* grain */
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+      background-size:180px;
+    }
+
+    /* deep space — cold, infinite, beautiful */
+    body::after {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%,   rgba(20,30,80,0.20) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 30% at 85% 20%,  rgba(40,20,80,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, transparent 42%,   rgba(0,0,0,0.78) 100%);
+    }
+
+    /* scattered star-points — pure CSS */
+    .star-field {
+      position:fixed; inset:0; z-index:1; pointer-events:none;
+      overflow:hidden;
+    }
+    .star-field span {
+      position:absolute;
+      display:block;
+      border-radius:50%;
+      background:#fff;
+      animation:twinkle var(--d,4s) ease-in-out infinite var(--delay,0s);
+    }
+    @keyframes twinkle {
+      0%,100%{ opacity:var(--lo,0.1); transform:scale(1); }
+      50%    { opacity:var(--hi,0.5); transform:scale(1.3); }
+    }
+
+    ::-webkit-scrollbar { width:4px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:var(--muted); border-radius:99px; }
+    ::-webkit-scrollbar-thumb:hover { background:var(--star); }
+
+    #scroll-progress {
+      position:fixed; top:0; left:0; z-index:200; height:1px; width:0%;
+      background:linear-gradient(to right, transparent, var(--star2), transparent);
+      transition:width 0.08s linear;
+    }
+
+    /* ── LAYOUT ── */
+    .page-outer {
+      position:relative; z-index:2;
+      max-width:700px;
+      margin:0 auto;
+      padding:60px 28px 130px;
+    }
+
+    /* ── NAV ── */
+    .top-nav { display:flex; gap:6px; align-items:center; margin-bottom:56px; flex-wrap:wrap; }
+    .nav-link {
+      color:var(--muted); text-decoration:none;
+      border:1px solid var(--border); padding:6px 12px;
+      font-size:10px; letter-spacing:1.2px; text-transform:uppercase; font-family:var(--mono);
+      transition:all 0.2s ease;
+    }
+    .nav-link:hover { color:var(--star); border-color:var(--border-hi); }
+    .nav-sep { color:var(--muted); font-size:10px; opacity:0.4; font-family:var(--mono); }
+
+    /* ── MASTHEAD ── */
+    .masthead { margin-bottom:68px; }
+
+    .masthead-label {
+      font-family:var(--mono); font-size:9px; letter-spacing:3px;
+      text-transform:uppercase; color:var(--muted);
+      display:block; margin-bottom:20px;
+    }
+
+    .masthead h1 {
+      font-family:var(--serif);
+      font-size:clamp(28px, 5.5vw, 47px);
+      font-weight:400; font-style:italic;
+      color:var(--cream); line-height:1.2;
+    }
+
+    .masthead-sub {
+      display:block; margin-top:14px;
+      font-family:var(--serif); font-style:italic;
+      font-size:15.5px; color:var(--muted2);
+      line-height:1.75; max-width:50ch;
+    }
+
+    .masthead-rule {
+      width:56px; height:1px; margin:26px 0;
+      background:linear-gradient(to right, var(--star), transparent);
+    }
+
+    .masthead-byline {
+      font-family:var(--mono); font-size:9.5px;
+      letter-spacing:2px; text-transform:uppercase; color:var(--muted);
+    }
+
+    /* ── ESSAY ── */
+    .essay p {
+      font-size:18px; font-weight:300;
+      color:var(--cream);
+      line-height:2.05;
+      margin-bottom:1.6em;
+    }
+    .essay p:last-child { margin-bottom:0; }
+
+    .essay p.drop::first-letter {
+      font-family:var(--serif);
+      font-size:4.2em; float:left;
+      line-height:0.74;
+      margin:0.08em 0.11em 0 0;
+      color:var(--star2); font-style:italic;
+    }
+
+    /* ── PULL QUOTE ── */
+    .pull-quote {
+      margin:46px 0;
+      padding:26px 30px 24px;
+      border-left:1px solid rgba(100,120,200,0.2);
+      background:var(--surface);
+      position:relative;
+    }
+    .pull-quote::before {
+      content:'\201C';
+      position:absolute; top:6px; left:16px;
+      font-family:var(--serif); font-size:54px;
+      color:rgba(100,120,200,0.07); line-height:1;
+      font-style:italic; user-select:none;
+    }
+    .pull-quote p {
+      font-family:var(--serif);
+      font-size:16.5px; font-style:italic;
+      color:var(--star2); line-height:1.85;
+      margin-bottom:0; padding-left:6px;
+    }
+    .pull-quote cite {
+      display:block; margin-top:11px; padding-left:6px;
+      font-family:var(--mono); font-size:9px;
+      letter-spacing:1.8px; text-transform:uppercase;
+      color:var(--muted); font-style:normal;
+    }
+
+    /* ── SECTION BREAK ── */
+    .section-break {
+      text-align:center; margin:52px 0;
+      position:relative;
+    }
+    .section-break::before,
+    .section-break::after {
+      content:'';
+      position:absolute; top:50%; left:0;
+      width:44%; height:1px;
+      background:linear-gradient(to right, transparent, rgba(100,120,200,0.12));
+    }
+    .section-break::after {
+      left:auto; right:0;
+      background:linear-gradient(to left, transparent, rgba(100,120,200,0.12));
+    }
+    .break-glyph {
+      position:relative; z-index:1;
+      display:inline-block;
+      font-size:10px; letter-spacing:8px;
+      color:rgba(100,120,200,0.25);
+      padding:0 8px; background:var(--bg);
+      user-select:none;
+    }
+
+    /* ── QURAN VERSE ── */
+    .quran-verse {
+      margin:52px 0;
+      padding:30px 34px;
+      border:1px solid rgba(100,120,200,0.1);
+      border-top:1px solid rgba(160,170,230,0.25);
+      background:var(--surface);
+      text-align:center;
+      position:relative;
+    }
+    .quran-arabic {
+      font-size:21px; line-height:2.1;
+      color:var(--star2);
+      margin-bottom:12px;
+      direction:rtl;
+      font-family:'Times New Roman',serif;
+    }
+    .quran-translation {
+      font-family:var(--serif); font-style:italic;
+      font-size:15.5px; color:var(--star);
+      line-height:1.8; margin-bottom:10px;
+    }
+    .quran-ref {
+      font-family:var(--mono); font-size:9px;
+      letter-spacing:2px; text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    /* ── COLOPHON ── */
+    .colophon {
+      margin-top:80px; padding:44px 36px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      text-align:center; position:relative;
+    }
+    .colophon::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(to right, transparent, var(--star), transparent);
+    }
+    .colophon-mark {
+      font-family:var(--serif); font-size:14px;
+      letter-spacing:14px; color:var(--star); opacity:0.25;
+      display:block; margin-bottom:20px;
+    }
+    .colophon-text {
+      font-family:var(--serif); font-style:italic;
+      font-size:15px; color:var(--muted2);
+      max-width:46ch; margin:0 auto; line-height:1.9;
+    }
+    .colophon-sig {
+      margin-top:18px;
+      font-family:var(--mono); font-size:9px;
+      letter-spacing:2px; text-transform:uppercase; color:var(--muted);
+    }
+    .colophon-sig span { color:var(--star); }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      margin-top:56px; padding-top:18px;
+      border-top:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:12px;
+    }
+    .footer-left { font-size:11px; font-family:var(--mono); color:var(--muted); }
+    .footer-left span { color:var(--star); }
+    .footer-right { display:flex; gap:18px; }
+    .footer-link {
+      font-size:10px; font-family:var(--mono); color:var(--muted);
+      text-decoration:none; letter-spacing:1px; text-transform:uppercase;
+      transition:color 0.2s;
+    }
+    .footer-link:hover { color:var(--star); }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity:0; transform:translateY(14px);
+      transition:opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @media(max-width:600px){
+      .page-outer { padding:36px 18px 90px; }
+      .essay p { font-size:17px; }
+      .masthead h1 { font-size:28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- star field — generated by JS below -->
+<div class="star-field" id="stars"></div>
+
+<div id="scroll-progress"></div>
+
+<div class="page-outer">
+
+  <!-- NAV -->
+  <nav class="top-nav">
+    <a href="index.html" class="nav-link"><i class="fa-solid fa-house" style="margin-right:4px"></i>Home</a>
+    <span class="nav-sep">›</span>
+    <a href="blogs.html" class="nav-link">Blogs</a>
+    <span class="nav-sep">›</span>
+    <a href="blogs-personal.html" class="nav-link">Personal</a>
+    <span class="nav-sep">›</span>
+    <a href="#" class="nav-link" style="color:var(--star);border-color:rgba(100,120,200,0.25);">The Universe Learned to Ask</a>
+  </nav>
+
+  <!-- MASTHEAD -->
+  <header class="masthead reveal">
+    <span class="masthead-label">Essay · On Consciousness &amp; Cosmos</span>
+    <h1>The Universe Learned<br>to Ask Questions</h1>
+    <span class="masthead-sub">On stars, carbon, consciousness, and what it means that the cosmos produced something capable of wondering about itself.</span>
+    <div class="masthead-rule"></div>
+    <div class="masthead-byline">Muhammad Hamza &nbsp;·&nbsp; IIT Kharagpur</div>
+  </header>
+
+  <!-- ESSAY -->
+  <div class="essay">
+
+    <p class="drop reveal">Thirteen billion years ago, give or take, there was nothing that could ask a question. There was energy, and there was the slow cooling of that energy into matter, and there was matter pulling itself together under gravity into the first stars, which burned and collapsed and detonated, seeding space with the heavier elements they had spent millions of years forging in their cores. Carbon. Oxygen. Iron. The periodic table written in stellar fire and scattered across the dark. Not one particle of that process was curious about itself. It simply happened, the way a river happens — driven by forces, indifferent to its own motion.</p>
+
+    <p class="reveal">And then, somewhere in the middle of this vast mechanical unfolding, something went wrong. Or right. Depending on how you look at it. Chemistry became biology. Biology became complexity. Complexity, after an almost comically long delay, became a creature sitting under a night sky, looking up at the same stars that made it, and asking: <em>what is this.</em></p>
+
+    <p class="reveal">That moment — which is every moment you have ever looked at the sky with genuine wonder — is, I think, the strangest and most underappreciated event in the history of the universe. Not the Big Bang. Not the formation of galaxies. This: a collection of atoms, assembled from the debris of dead stars, becoming briefly aware of the fact that it exists and finding that fact, somehow, insufficient. Needing more. Needing to understand.</p>
+
+    <div class="pull-quote reveal">
+      <p>The cosmos is within us. We are made of star-stuff. We are a way for the universe to know itself.</p>
+      <cite>— Carl Sagan, Cosmos, 1980</cite>
+    </div>
+
+    <p class="reveal">Sagan said this as a scientist and it reads like poetry, which tells you something about the territory. When you follow the physics all the way down — when you trace the carbon in your body back to a stellar core, the iron in your blood back to a supernova, the calcium in your bones back to a star that finished burning before the Sun existed — you are not reaching for metaphor. You are reaching the literal truth. You are made of this. The distance between you and the night sky is not the distance between observer and observed. It is the distance between one part of a system and another part of the same system, briefly separated, looking back.</p>
+
+    <p class="reveal">What I cannot stop thinking about is the direction of the looking. The universe spent thirteen billion years not knowing it existed. Then it produced us — or something like us, probably elsewhere too, in configurations we cannot imagine — and suddenly it does know. Not perfectly. Not completely. But something that was entirely unconscious has a part of itself that is conscious now, that wakes up in the morning and makes coffee and occasionally, in the right light, with the right kind of silence, becomes aware of the sheer improbability of the whole situation. That awareness is the universe's awareness. When you are genuinely astonished by existence, the cosmos is astonishing itself through you. The question is the cosmos asking.</p>
+
+  </div>
+
+  <div class="section-break reveal"><span class="break-glyph">✦ &nbsp; ✦</span></div>
+
+  <div class="essay">
+
+    <p class="reveal">This is where I want to be careful, because the idea is seductive enough to become a comfortable one, and comfortable ideas should always be pressed on. Is this meaningful — the universe knowing itself through consciousness — or is it merely a beautiful way of describing something that is ultimately indifferent? Does the fact that we are made of stars change what it feels like to suffer? Does the cosmic perspective console the person who is losing someone they love, or the one who has worked for something for years and found, at the end, only silence?</p>
+
+    <p class="reveal">Honestly. No. Not directly. The astrophysics does not absorb the grief. The long view does not shorten the 3 AM. And I am not interested in a philosophy that requires you to zoom out far enough that the things which matter to you stop mattering — that is not wisdom, that is just distance pretending to be perspective.</p>
+
+    <p class="reveal">But here is what it does do. It reframes the question of whether any of this was worth making. If the universe had simply expanded and cooled and run its processes to heat death without producing a single conscious thing — no wonder, no grief, no love, no questions asked — then what would have been the point of the complexity? It would have been elaborate machinery performing for no audience, beautiful in a way no one was there to register. The production of consciousness is the universe making itself legible to itself. And every question you have ever asked — the small ones about why people behave as they do, and the large ones about what death is and what comes after — is part of that process of the universe becoming readable. You are not a spectator. You are the reading.</p>
+
+    <div class="quran-verse reveal">
+      <div class="quran-arabic">سَنُرِيهِمْ آيَاتِنَا فِي الْآفَاقِ وَفِي أَنفُسِهِمْ</div>
+      <div class="quran-translation">We will show them Our signs in the horizons and within themselves.</div>
+      <div class="quran-ref">Surah Fussilat · 41:53</div>
+    </div>
+
+    <p class="reveal">The horizons and within themselves. In the outward cosmos and in the interior of the person standing in it. The Quran does not present these as separate investigations — the study of the universe and the study of the self are, in this framing, the same study pursued from different angles. Every galaxy observed is a sign. Every moment of self-examination is a sign. The cosmos turning its attention outward and the cosmos turning its attention inward are both, finally, directed at the same thing: the reality of what was made, and by whom, and why anything rather than nothing.</p>
+
+    <p class="reveal">I do not think consciousness is an accident. I cannot think it is an accident. Not because the physics forbids it — the physics is neutral on the question, as physics tends to be about the things that matter most. But because the alternative — that thirteen billion years of stellar evolution produced, by pure chance, something capable of love and grief and the specific ache of finding a piece of music unbearably beautiful — that alternative is, to me, a harder thing to believe than design. The wonder feels intentional. Not in the naive sense, not in the sense of a blueprint handed down. In the sense of a system that was always tending toward this: toward awareness, toward the question, toward a creature that looks at the night sky it was made from and finds it, despite everything, extraordinary.</p>
+
+  </div>
+
+  <div class="section-break reveal"><span class="break-glyph">✦ &nbsp; ✦</span></div>
+
+  <div class="essay">
+
+    <p class="reveal">The question I keep returning to is this: what are you supposed to do with this information. And the answer I have arrived at — slowly, imperfectly, subject to revision — is simply: take it seriously. Take the consciousness seriously. Take the wondering seriously. Do not treat the questions you ask about existence as distractions from the business of living. They are the business. They are what the whole thirteen billion years was building toward. When you sit with a genuine question about what any of this means, you are not wasting time. You are the universe doing the only thing it learned, very late, to do: look at itself. Ask. Not know — ask. The asking is the point. The asking is what consciousness is for.</p>
+
+    <p class="reveal">You are made of the same atoms as everything. You will return to them eventually. Between now and then you have been given, at no cost and without being asked, the extraordinary and entirely improbable gift of being the part of matter that wonders about matter. That is not nothing. That may be everything.</p>
+
+  </div>
+
+  <!-- COLOPHON -->
+  <div class="colophon reveal">
+    <span class="colophon-mark">· &nbsp; ✦ &nbsp; ·</span>
+    <p class="colophon-text">Written at night, under a sky made of the same material as the essay. The irony was not lost. Neither was the wonder.</p>
+    <div class="colophon-sig">Written by <span>Muhammad Hamza</span> · IIT Kharagpur · <span id="year"></span></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <div class="footer-left">© <span id="year2"></span> <span>Muhammad Hamza</span> · IIT Kharagpur</div>
+    <nav class="footer-right">
+      <a href="mailto:hamza.iitkgp@gmail.com" class="footer-link">Email</a>
+      <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="footer-link">Medium</a>
+      <a href="index.html" class="footer-link">Portfolio</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script>
+  /* star field */
+  (function(){
+    const sf = document.getElementById('stars');
+    const count = Math.floor((window.innerWidth * window.innerHeight) / 5000);
+    for(let i = 0; i < count; i++){
+      const s = document.createElement('span');
+      const size = Math.random() * 1.6 + 0.4;
+      s.style.cssText = [
+        `left:${Math.random()*100}%`,
+        `top:${Math.random()*100}%`,
+        `width:${size}px`,
+        `height:${size}px`,
+        `--d:${(Math.random()*5+3).toFixed(1)}s`,
+        `--delay:-${(Math.random()*6).toFixed(1)}s`,
+        `--lo:${(Math.random()*0.12+0.04).toFixed(2)}`,
+        `--hi:${(Math.random()*0.5+0.2).toFixed(2)}`,
+        `opacity:0.1`
+      ].join(';');
+      sf.appendChild(s);
+    }
+  })();
+
+  /* scroll progress */
+  window.addEventListener('scroll',()=>{
+    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight || 1);
+    document.getElementById('scroll-progress').style.width = (pct * 100) + '%';
+  },{passive:true});
+
+  /* reveal */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  },{threshold:0.04});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  const y = new Date().getFullYear();
+  document.getElementById('year').textContent  = y;
+  document.getElementById('year2').textContent = y;
+</script>
+</body>
+</html>
