@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VictorianGPT: Teaching a 3B Model to Speak Victorian — and Grading Its Own Work</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']], tags: 'ams' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #efecea;
+    --surface3: #e5e1db;
+    --text: #1a1714;
+    --text-muted: #635e57;
+    --text-faint: #9e9890;
+    --accent: #1a3a5c;
+    --accent-light: #edf2f8;
+    --accent-border: #a8c0d8;
+    --red: #b83232;
+    --red-light: #fdf2f2;
+    --red-border: #e8b0b0;
+    --green: #1a6b4a;
+    --green-light: #edf7f2;
+    --green-border: #90d4b8;
+    --amber: #8a5a00;
+    --amber-light: #fdf8ee;
+    --amber-border: #e8cc88;
+    --purple: #4a2a7a;
+    --purple-light: #f4eefb;
+    --purple-border: #c4a8e8;
+    --border: #ddd9d2;
+    --border-strong: #bfbab2;
+    --code-bg: #eceae4;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18.5px;
+    line-height: 1.85;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+  .site-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .site-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .site-label a { text-decoration: none; color: inherit; }
+  .header-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    display: flex;
+    gap: 16px;
+  }
+
+  #reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(to right, var(--accent), var(--purple), var(--red));
+    z-index: 200;
+    transition: width 0.08s linear;
+  }
+
+  .page-wrapper {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 28px 100px;
+  }
+
+  .hero {
+    padding: 72px 0 56px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+  .hero-kicker {
+    font-family: 'Space Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-kicker::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.35;
+  }
+  h1.hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2em, 5vw, 3.1em);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    margin-bottom: 28px;
+  }
+  .hero-title span.accent-word { color: var(--accent); }
+  .hero-subtitle {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.18em;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    max-width: 660px;
+    font-style: italic;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+  .hero-meta-item {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .hero-meta-item strong { color: var(--text); font-weight: 600; }
+  .hero-meta-divider { color: var(--border-strong); font-size: 14px; }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 400;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .hero-tag.tag-primary {
+    background: var(--accent-light);
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6em;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    margin-top: 80px;
+    margin-bottom: 22px;
+    letter-spacing: -0.025em;
+  }
+  h2::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 14px;
+    border-radius: 2px;
+  }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.22em;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    margin-top: 52px;
+    margin-bottom: 16px;
+    letter-spacing: -0.015em;
+  }
+  h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.76em;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: 36px;
+    margin-bottom: 12px;
+  }
+
+  p { margin-bottom: 1.35em; }
+  strong { font-weight: 600; color: var(--text); }
+  em { font-style: italic; }
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+
+  code {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.76em;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 0.15em 0.42em;
+    border-radius: 3px;
+    color: var(--text);
+  }
+
+  pre {
+    background: #13100d;
+    border-radius: 8px;
+    padding: 26px 28px;
+    overflow-x: auto;
+    margin: 36px 0;
+    line-height: 1.65;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  pre code {
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #e0dbd2;
+  }
+  .tok-c   { color: #6b7080; font-style: italic; }
+  .tok-k   { color: #d4956a; }
+  .tok-kw  { color: #c792ea; }
+  .tok-fn  { color: #82b4e0; }
+  .tok-s   { color: #a8cc8c; }
+  .tok-num { color: #f0a070; }
+  .tok-op  { color: #7ecfdf; }
+  .tok-cls { color: #f5d87a; }
+  .tok-cmt { color: #5a6070; font-style: italic; }
+  .tok-hl  { color: #82b4e0; }
+
+  .math-block {
+    overflow-x: auto;
+    padding: 22px 16px;
+    text-align: center;
+    margin: 32px 0 8px;
+    font-size: 1.05em;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .math-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    text-align: center;
+    margin-bottom: 28px;
+    letter-spacing: 0.03em;
+  }
+
+  .callout {
+    border-radius: 6px;
+    padding: 22px 26px;
+    margin: 40px 0;
+    position: relative;
+  }
+  .callout-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .callout p { font-size: 0.93em; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  .callout-insight  { background: var(--accent-light);  border: 1px solid var(--accent-border);  }
+  .callout-insight  .callout-label { color: var(--accent); }
+  .callout-warning  { background: var(--amber-light);   border: 1px solid var(--amber-border);   }
+  .callout-warning  .callout-label { color: var(--amber); }
+  .callout-danger   { background: var(--red-light);     border: 1px solid var(--red-border);     }
+  .callout-danger   .callout-label { color: var(--red); }
+  .callout-success  { background: var(--green-light);   border: 1px solid var(--green-border);   }
+  .callout-success  .callout-label { color: var(--green); }
+  .callout-derivation { background: var(--purple-light); border: 1px solid var(--purple-border); }
+  .callout-derivation .callout-label { color: var(--purple); }
+
+  .toc {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 26px 30px;
+    margin: 0 0 64px;
+  }
+  .toc-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+  .toc ol { padding-left: 22px; margin: 0; }
+  .toc li {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    margin-bottom: 9px;
+    color: var(--text-muted);
+  }
+  .toc a { color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
+  .toc a:hover { color: var(--accent); }
+
+  .section-break {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 72px 0;
+    color: var(--text-faint);
+  }
+  .section-break::before, .section-break::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-break span {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 32px 0;
+  }
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 18px;
+    text-align: center;
+  }
+  .result-card.good  { border-color: var(--green-border);  background: var(--green-light);  }
+  .result-card.bad   { border-color: var(--red-border);    background: var(--red-light);    }
+  .result-card.ok    { border-color: var(--amber-border);  background: var(--amber-light);  }
+  .result-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8em;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .result-card.good .result-num { color: var(--green); }
+  .result-card.bad  .result-num { color: var(--red); }
+  .result-card.ok   .result-num { color: var(--amber); }
+  .result-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+
+  .timeline { margin: 40px 0; position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent-border), var(--border));
+  }
+  .timeline-item { display: flex; gap: 24px; margin-bottom: 32px; position: relative; }
+  .timeline-dot {
+    width: 42px; height: 42px;
+    border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    position: relative; z-index: 1;
+  }
+  .d1 { background: var(--accent-light); color: var(--accent); border: 2px solid var(--accent-border); }
+  .d2 { background: var(--purple-light); color: var(--purple); border: 2px solid var(--purple-border); }
+  .d3 { background: var(--green-light);  color: var(--green);  border: 2px solid var(--green-border); }
+  .d4 { background: var(--amber-light);  color: var(--amber);  border: 2px solid var(--amber-border); }
+  .d5 { background: var(--red-light);    color: var(--red);    border: 2px solid var(--red-border); }
+  .timeline-content { flex: 1; padding-top: 8px; }
+  .timeline-content h3 { margin-top: 0; margin-bottom: 8px; font-size: 1.05em; }
+  .timeline-content p { margin-bottom: 0; font-size: 0.92em; color: var(--text-muted); }
+
+  .plot-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 24px 16px;
+    margin: 36px 0;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+  }
+  .plot-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    letter-spacing: 0.01em;
+  }
+  .plot-caption {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-top: 14px;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+
+  .proof-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--purple);
+    border-radius: 0 6px 6px 0;
+    padding: 20px 24px;
+    margin: 28px 0;
+    font-size: 0.93em;
+  }
+  .proof-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 10px;
+  }
+  .proof-block p:last-child { margin-bottom: 0; }
+
+  .algo-box {
+    background: #0f0d0a;
+    border: 1px solid #2a2620;
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 36px 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #e0dbd2;
+    box-shadow: var(--shadow-md);
+  }
+  .algo-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #f0a070;
+    margin-bottom: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px 0;
+    font-size: 0.9em;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table.data-table th, table.data-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data-table th {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    background: var(--surface2);
+  }
+  table.data-table tr:last-child td { border-bottom: none; }
+  table.data-table td strong { color: var(--accent); }
+
+  ul, ol.plain { padding-left: 24px; margin-bottom: 1.35em; }
+  ul li, ol.plain li { margin-bottom: 0.5em; }
+
+  @media (max-width: 640px) {
+    h1.hero-title { font-size: 2em; }
+    .hero-kicker::after { display: none; }
+    .site-header-inner { flex-direction: column; gap: 6px; align-items: flex-start; }
+    .header-meta { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <span class="site-label"><a href="blogs.html">← ML Blogs</a></span>
+    <div class="header-meta">
+      <span>Muhammad Hamza · IIT KGP</span>
+      <span>~15 min read</span>
+    </div>
+  </div>
+</header>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-kicker">Applied NLP · Systems &amp; Evaluation</div>
+    <h1 class="hero-title">VictorianGPT: Teaching a 3B Model to Speak <span class="accent-word">Victorian</span> — and Grading Its Own Work</h1>
+    <p class="hero-subtitle">LoRA fine-tuning + retrieval-augmented generation over 40 public-domain novels, built entirely on free Colab GPUs — with an evaluation section that reports the numbers that didn't work, not just the ones that did.</p>
+    <div class="hero-meta">
+      <span class="hero-meta-item"><strong>Muhammad Hamza</strong></span>
+      <span class="hero-meta-divider">·</span>
+      <span class="hero-meta-item">IIT Kharagpur</span>
+      <span class="hero-meta-divider">·</span>
+      <span class="hero-meta-item">September 1, 2026</span>
+      <span class="hero-tag tag-primary">LLM Fine-Tuning</span>
+      <span class="hero-tag">RAG</span>
+      <span class="hero-tag">Evaluation</span>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-title">In this article</div>
+    <ol>
+      <li><a href="#motivation">Why Fine-Tune Instead of Just Prompting</a></li>
+      <li><a href="#architecture">The Architecture: Two Models, One Router</a></li>
+      <li><a href="#pipeline">The Pipeline, Stage by Stage</a></li>
+      <li><a href="#evaluation">Evaluation: The Section Most Projects Skip</a></li>
+      <li><a href="#implementation">Implementation Details Worth Stealing</a></li>
+      <li><a href="#lessons">What Broke, and What I'd Do Differently</a></li>
+    </ol>
+  </nav>
+
+  <!-- ─────────────── SECTION 1 ─────────────── -->
+  <section id="motivation">
+    <h2>Why Fine-Tune Instead of Just Prompting</h2>
+
+    <p>Most "make an LLM sound like X" projects lean entirely on prompting: a system prompt says <em>"you are a Victorian gentleman,"</em> and a large frontier model does a passable job, because it has broad enough world knowledge to fake the register convincingly. That's a legitimate approach for a demo. It's also a thin one — it doesn't teach you anything about actually <em>shaping</em> a model's behavior, and it doesn't transfer to domains where the base model's prior is weak, wrong, or simply absent.</p>
+
+    <p>I wanted to answer a narrower, more interesting question: <strong>can a 3B-parameter open model be taught a specific register through supervised fine-tuning, cheaply enough to run on a free GPU, and can that fine-tune be measured rather than just eyeballed?</strong></p>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ The trap with "sounds old-timey" projects</div>
+      <p>The single most common failure mode in period-style generation is faux-archaic filler — sprinkling in <em>thou, thee, thy, dost</em> and calling it done. That's costume, not voice. Actual Victorian prose has a distinctive sentence rhythm, vocabulary register, and level of formality that has almost nothing to do with archaic pronouns. Getting this right required an explicit ban on that vocabulary in both the synthetic data generation prompt and the inference-time system prompt.</p>
+    </div>
+
+    <p>The Victorian angle was partly for fun — period fiction has enough distinctive rhythm to make a fine-tuning effect visible and evaluable — and partly practical. Project Gutenberg gives unlimited public-domain 19th-century text, which meant I could build both the fine-tuning corpus <em>and</em> the retrieval corpus from the same 40 source novels, with zero licensing concerns and zero manual data collection cost.</p>
+
+  </section>
+
+  <div class="section-break"><span>System Design</span></div>
+
+  <!-- ─────────────── SECTION 2 ─────────────── -->
+  <section id="architecture">
+    <h2>The Architecture: Two Models, One Router</h2>
+
+    <p>VictorianGPT isn't one monolithic model — it's a fine-tuned generator paired with a retrieval layer, connected by a routing decision made at inference time.</p>
+
+    <div class="algo-box">
+      <div class="algo-title">System flow</div>
+      <pre style="margin:0; box-shadow:none; padding:0; border:none; background:transparent;"><code style="font-size: 13px;">
+Query
+  │
+  ▼
+Embed query (MiniLM-L6-v2)
+  │
+  ▼
+similarity_search_with_score against ChromaDB (40-novel corpus)
+  │
+  ├── distance < threshold ──▶ HISTORIAN MODE
+  │                            inject retrieved passage as grounding context
+  │
+  └── distance ≥ threshold ──▶ EMPATHY MODE
+                               no passage injected, persona-only response
+  │
+  ▼
+LoRA fine-tuned Qwen2.5-3B-Instruct generates the reply
+      </code></pre>
+    </div>
+
+    <p>Early prototypes always retrieved something and injected it into every response — including for queries like <em>"I had a rough day at work."</em> That produced answers that awkwardly shoehorned in irrelevant plot details from whichever novel happened to score highest similarity, even when nothing in the corpus was actually relevant to what the user said.</p>
+
+    <div class="callout callout-insight">
+      <div class="callout-label">🔍 The fix: retrieval with abstention</div>
+      <p>A confidence threshold on the retrieval distance score gives the system a way to say <em>"nothing relevant here"</em> instead of forcing a match. Below the threshold, there's a genuinely close passage and the model should ground its answer in it — <strong>Historian Mode</strong>. Above the threshold, the model falls back to persona-only generation with period-appropriate emotional register — <strong>Empathetic Companion Mode</strong>. This is a standard RAG-with-abstention pattern, but it's the single design decision that made the chatbot feel coherent instead of randomly literary.</p>
+    </div>
+
+  </section>
+
+  <div class="section-break"><span>The Build</span></div>
+
+  <!-- ─────────────── SECTION 3 ─────────────── -->
+  <section id="pipeline">
+    <h2>The Pipeline, Stage by Stage</h2>
+
+    <p>The whole project runs as five sequential notebooks, each depending on the artifacts of the last — data collection, dataset construction, fine-tuning, retrieval indexing, and evaluation.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot d1">1</div>
+        <div class="timeline-content">
+          <h3>Data Collection &amp; Cleaning</h3>
+          <p>40 curated 19th-century and Gothic novels scraped from Project Gutenberg — Dickens, the Brontës, Stoker, Wells, Doyle, Hardy, Austen, Eliot, Gaskell, Wilkie Collins, and more. Gutenberg boilerplate stripped, punctuation normalized, NLTK sentence tokenization, chunked into 6-sentence windows with 2-sentence overlap to preserve context across chunk boundaries.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot d2">2</div>
+        <div class="timeline-content">
+          <h3>Dialogue Dataset Construction</h3>
+          <p>45,881 authentic pairs extracted by regex from consecutive quoted dialogue in the novels — zero manual annotation. 432 synthetic pairs generated by Qwen2.5-3B itself, translating modern first-person emotional prompts into Victorian register, to cover conversational territory the novels don't: everyday modern statements like "I feel anxious after an interview."</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot d3">3</div>
+        <div class="timeline-content">
+          <h3>LoRA Fine-Tuning</h3>
+          <p>Qwen2.5-3B-Instruct, 4-bit via Unsloth, LoRA rank 16 (α=16) across all attention and MLP projections, updating ~1–2% of parameters. Single epoch, effective batch size 16, on a free Colab T4 — a hard constraint, not an oversight, and one that shows up honestly in the evaluation numbers below.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot d4">4</div>
+        <div class="timeline-content">
+          <h3>Retrieval-Augmented Generation</h3>
+          <p>Every cleaned novel embedded with sentence-transformers/all-MiniLM-L6-v2 and indexed into ChromaDB, processed file-by-file to stay within Colab's RAM limits. Confidence-threshold routing between Historian and Empathy modes at inference time, described above.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot d5">5</div>
+        <div class="timeline-content">
+          <h3>Evaluation</h3>
+          <p>Perplexity (base vs fine-tuned), retrieval hit-rate@3 and MRR on a hand-labeled query set, router accuracy on a separate labeled set, and an LLM-as-judge persona-consistency score. Built from scratch — there's no off-the-shelf "Victorian persona benchmark" to import.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="section-break"><span>The Numbers</span></div>
+
+  <!-- ─────────────── SECTION 4 ─────────────── -->
+  <section id="evaluation">
+    <h2>Evaluation: The Section Most Projects Skip</h2>
+
+    <p>This is the part I think matters most for anyone evaluating this project critically — and it's also the part most similar "fine-tune + RAG chatbot" projects don't do at all. Reporting only the metrics that flatter the system isn't evaluation, it's a highlight reel. Here's everything, including what's currently broken.</p>
+
+    <div class="results-grid">
+      <div class="result-card good">
+        <div class="result-num">46.0%</div>
+        <div class="result-label">Perplexity reduction<br>36.48 → 19.68 (base → fine-tuned)</div>
+      </div>
+      <div class="result-card good">
+        <div class="result-num">92.31%</div>
+        <div class="result-label">Retrieval hit-rate@3<br>n=39 hand-labeled queries</div>
+      </div>
+      <div class="result-card good">
+        <div class="result-num">0.906</div>
+        <div class="result-label">Retrieval MRR<br>mean reciprocal rank of correct novel</div>
+      </div>
+      <div class="result-card bad">
+        <div class="result-num">50.0%</div>
+        <div class="result-label">Router accuracy<br>n=40 — essentially chance</div>
+      </div>
+      <div class="result-card bad">
+        <div class="result-num">1.00 / 5</div>
+        <div class="result-label">Persona-consistency score<br>judge pipeline currently broken</div>
+      </div>
+      <div class="result-card ok">
+        <div class="result-num">46,313</div>
+        <div class="result-label">Total training examples<br>45,881 authentic + 432 synthetic</div>
+      </div>
+    </div>
+
+    <!-- Canvas Plot -->
+    <div class="plot-container">
+      <div class="plot-title">Perplexity Reduction vs. Retrieval Accuracy vs. Router Accuracy</div>
+      <canvas id="evalCanvas" height="300" style="width:100%; max-width:680px; margin:0 auto; display:block;"></canvas>
+      <p class="plot-caption"><strong>Left: perplexity.</strong> Fine-tuning nearly halves perplexity on a sampled subset of training data. <strong>Right: retrieval vs. routing.</strong> The retriever finds the right novel 92% of the time — but the fixed distance threshold that decides <em>whether to use it</em> is only right half the time. Two different failure surfaces, easy to conflate if you only report "RAG works."</p>
+    </div>
+
+    <h3>Perplexity: does the fine-tune actually change anything?</h3>
+    <p>Base Qwen2.5-3B vs. the fine-tuned model, evaluated on a 150-example sampled subset of the training data using standard cross-entropy-based perplexity: <strong>36.48 → 19.68, a 46.0% reduction.</strong></p>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ An honest caveat</div>
+      <p>This is <em>not</em> a true held-out evaluation. The original training run didn't reserve a validation split, so this measures in-distribution fit on a sampled subset the model has already seen — not generalization to genuinely unseen Victorian text. It's a legitimate signal that LoRA meaningfully shifted the model's distribution toward the target register, but it's a narrower claim than "generalizes well." A proper held-out split is the obvious next step before trusting this number further.</p>
+    </div>
+
+    <h3>Retrieval: does the RAG layer find the right novel?</h3>
+    <p>39 hand-labeled <code>(query, expected_novel)</code> pairs — one plot-specific question per novel in the corpus, e.g. <em>"What happens to the ship Demeter in the storm?" → dracula.txt</em> — checked against the top-3 ChromaDB results: <strong>92.31% hit-rate@3, MRR 0.906.</strong> This is the strongest number in the project. Dense sentence embeddings are well-suited to exactly this task — distinctive plot content maps to distinctive semantic regions, and MiniLM is a solid, well-tested retrieval embedding model at this scale.</p>
+
+    <h3>Router accuracy: does the system know <em>when</em> to retrieve?</h3>
+    <p>40 hand-labeled queries — 20 that should trigger Historian Mode, 20 that should trigger Empathy Mode — checked against the fixed-threshold router's predictions: <strong>50.0% accuracy. Coin-flip performance.</strong></p>
+
+    <div class="callout callout-danger">
+      <div class="callout-label">✗ Sitting with a bad number instead of hiding it</div>
+      <p>A 50% router accuracy sitting right next to a 92% retrieval accuracy tells a specific, useful story: <strong>the retriever is finding the right documents — the distance-score threshold that decides whether to actually use them is miscalibrated.</strong> These are two separate failure surfaces that a single "RAG works" claim would have hidden. The threshold was set as a placeholder during development and never tuned against the real distribution of distance scores the corpus produces. It's fixable — a threshold sweep against this same labeled set would very likely recover most of the lost accuracy — but it's currently unfixed, and reporting a correct 50% beats implying an untested 90%.</p>
+    </div>
+
+    <h3>Persona-consistency: broken, and I'm saying so</h3>
+    <p>An LLM-as-judge script rates sampled generations 1–5 for Victorian tone adherence. It currently returns <strong>1.00/5</strong> across every sample — implausible given the perplexity improvement, and almost certainly a pipeline bug (likely token-truncation cutting off the judge's digit response, or an under-specified prompt) rather than a real finding about persona quality. It's included here anyway, because an evaluation section that only reports numbers that "worked" isn't really an evaluation.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Metric</th><th>Result</th><th>Sample Size</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Dataset size</td><td><strong>46,313</strong></td><td>full dataset</td><td>reliable</td></tr>
+        <tr><td>Perplexity (base → fine-tuned)</td><td><strong>36.48 → 19.68</strong></td><td>150 sampled</td><td>reliable, in-distribution only</td></tr>
+        <tr><td>Retrieval hit-rate@3</td><td><strong>92.31%</strong></td><td>39 labeled</td><td>reliable</td></tr>
+        <tr><td>Retrieval MRR</td><td><strong>0.906</strong></td><td>39 labeled</td><td>reliable</td></tr>
+        <tr><td>Router accuracy</td><td><strong>50.0%</strong></td><td>40 labeled</td><td>needs recalibration</td></tr>
+        <tr><td>Persona-consistency</td><td><strong>1.00 / 5</strong></td><td>5 samples</td><td>judge script broken</td></tr>
+      </tbody>
+    </table>
+
+  </section>
+
+  <div class="section-break"><span>Under the Hood</span></div>
+
+  <!-- ─────────────── SECTION 5 ─────────────── -->
+  <section id="implementation">
+    <h2>Implementation Details Worth Stealing</h2>
+
+    <p>A few pieces of this pipeline generalize well beyond a Victorian chatbot — the confidence-routing pattern, the synthetic-data-to-cover-a-distribution-gap trick, and computing perplexity delta as a fine-tuning sanity check are all reusable on any small-model fine-tune + RAG project.</p>
+
+    <div class="algo-box">
+      <div class="algo-title">Router: confidence-threshold retrieval with abstention</div>
+      <pre style="margin: 0; box-shadow: none; padding: 0; border: none; background: transparent;"><code style="font-size: 13px;">
+<span class="tok-k">def</span> <span class="tok-fn">route_query</span>(query, vectorstore, threshold):
+    result = vectorstore.similarity_search_with_score(query, k=<span class="tok-num">1</span>)
+    <span class="tok-kw">if not</span> result:
+        <span class="tok-kw">return</span> <span class="tok-s">"Empathy"</span>, <span class="tok-k">None</span>
+
+    doc, distance = result[<span class="tok-num">0</span>]
+    <span class="tok-kw">if</span> distance &lt; threshold:
+        <span class="tok-cmt"># strong match found — ground the response in retrieved text</span>
+        <span class="tok-kw">return</span> <span class="tok-s">"Historian"</span>, doc.page_content
+    <span class="tok-kw">else</span>:
+        <span class="tok-cmt"># nothing relevant — fall back to persona-only generation</span>
+        <span class="tok-kw">return</span> <span class="tok-s">"Empathy"</span>, <span class="tok-k">None</span>
+      </code></pre>
+    </div>
+
+    <div class="algo-box">
+      <div class="algo-title">Perplexity delta: the cheapest fine-tune sanity check</div>
+      <pre style="margin: 0; box-shadow: none; padding: 0; border: none; background: transparent;"><code style="font-size: 13px;">
+<span class="tok-kw">import</span> torch, math
+
+<span class="tok-k">def</span> <span class="tok-fn">compute_perplexity</span>(model, tokenizer, texts, max_length=<span class="tok-num">512</span>):
+    model.<span class="tok-fn">eval</span>()
+    total_loss, total_tokens = <span class="tok-num">0.0</span>, <span class="tok-num">0</span>
+    <span class="tok-kw">for</span> text <span class="tok-kw">in</span> texts:
+        enc = tokenizer(text, return_tensors=<span class="tok-s">"pt"</span>,
+                         truncation=<span class="tok-k">True</span>, max_length=max_length).to(model.device)
+        <span class="tok-kw">with</span> torch.no_grad():
+            out = model(**enc, labels=enc[<span class="tok-s">"input_ids"</span>])
+        n = enc[<span class="tok-s">"input_ids"</span>].shape[<span class="tok-num">1</span>]
+        total_loss += out.loss.item() * n
+        total_tokens += n
+    <span class="tok-kw">return</span> math.exp(total_loss / total_tokens)
+
+<span class="tok-hl">base_ppl = compute_perplexity(base_model, tokenizer, held_out_texts)</span>
+<span class="tok-hl">ft_ppl   = compute_perplexity(finetuned_model, tokenizer, held_out_texts)</span>
+<span class="tok-cmt"># 36.48 -&gt; 19.68, a 46.0% reduction</span>
+      </code></pre>
+    </div>
+
+    <div class="proof-block">
+      <div class="proof-label">Why synthetic data was necessary, not optional</div>
+      <p>The authentic dialogue pairs teach the model period cadence and vocabulary — but novels don't contain first-person modern statements like <em>"I feel anxious after an interview."</em> Without synthetic coverage, the model would have no training signal for the single most common category of real user input: everyday emotional statements. The synthetic set is small (432 examples, under 1% of the total) precisely because its job isn't to teach the voice — the 45,881 authentic pairs already do that — its job is narrowly to teach the model to apply that voice to modern input it would otherwise never have seen during training.</p>
+    </div>
+
+  </section>
+
+  <div class="section-break"><span>Retrospective</span></div>
+
+  <!-- ─────────────── SECTION 6 ─────────────── -->
+  <section id="lessons">
+    <h2>What Broke, and What I'd Do Differently</h2>
+
+    <p>Two infrastructure lessons cost real time and are worth naming plainly. First, <strong>ChromaDB doesn't persist across Colab sessions unless <code>persist_directory</code> explicitly points into a mounted Drive path</strong> — an earlier run's vector index lived only on the runtime's local disk and was silently wiped when that session ended, meaning the "finished" RAG layer had to be rebuilt from the cleaned novel files before evaluation could even start. Second, <strong>LoRA checkpoints save under <code>checkpoints/checkpoint-&lt;step&gt;/</code> by default</strong>, not into a tidy <code>models/</code> folder — a mismatch between the README's aspirational structure and what actually landed on disk that took a directory walk to untangle.</p>
+
+    <p>Neither is a deep technical insight. Both are the kind of thing that doesn't show up in a tutorial and only shows up once you've actually run the pipeline end-to-end on infrastructure you don't fully control.</p>
+
+    <ul>
+      <li><strong>Recalibrate the router threshold</strong> using the existing 40-query labeled set — a threshold sweep plotting accuracy vs. threshold should recover most of the lost accuracy, and would turn the current 50% into a clean "before/after" story.</li>
+      <li><strong>Debug the persona-judge script</strong> and get a trustworthy signal, rather than leaving it at an implausible 1.00/5.</li>
+      <li><strong>Add a genuine held-out split</strong> for perplexity, ideally with enough compute budget to also check for overfitting across more than one epoch.</li>
+      <li><strong>Run ablations</strong> — there's currently no comparison against LoRA rank 8 or 32, or a no-RAG baseline, so rank 16 is a working choice, not a demonstrated best choice. This is the gap I'd close first if extending this into something more research-shaped.</li>
+      <li><strong>Expand eval set sizes</strong> beyond ~40 queries per metric for tighter confidence intervals on the numbers already reported.</li>
+    </ul>
+
+    <div class="callout callout-success">
+      <div class="callout-label">✓ Closing thought</div>
+      <p>The parts of this project I'm most glad I did aren't the fine-tuning or the RAG pipeline themselves — both are increasingly standard, well-tooled techniques. The parts that actually taught me something were building the evaluation from scratch, since there's no off-the-shelf "Victorian persona benchmark" to import, and then sitting with a 50% router accuracy number instead of quietly tuning the threshold before writing any of this up. That process — build, measure, find the thing that doesn't work, say so precisely — is a more honest description of doing ML work than a polished demo GIF ever is.</p>
+    </div>
+
+    <p>Full code, notebooks, and evaluation scripts: <a href="https://github.com/Hamza-Faarooq/Victorian_GPT" target="_blank" rel="noopener">github.com/Hamza-Faarooq/Victorian_GPT</a></p>
+
+  </section>
+
+</div><!-- end page-wrapper -->
+
+<footer>
+  <div class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-text">
+        <strong style="color:var(--text);">Muhammad Hamza</strong><br>
+        Indian Institute of Technology, Kharagpur<br>
+        <a href="mailto:hamza.iitkgp@gmail.com">hamza.iitkgp@gmail.com</a>
+      </div>
+      <div class="footer-text" style="text-align:right;">
+        <a href="https://hamza-faarooq.github.io/" target="_blank" rel="noopener">hamza-faarooq.github.io</a><br>
+        Applied NLP · Systems &amp; Evaluation
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+  document.getElementById('reading-progress').style.width = (pct * 100) + '%';
+}, { passive: true });
+
+(function() {
+  const canvas = document.getElementById('evalCanvas');
+  if (!canvas) return;
+  const W = canvas.offsetWidth || 680;
+  const H = 300;
+  canvas.width = W * (window.devicePixelRatio || 1);
+  canvas.height = H * (window.devicePixelRatio || 1);
+  const ctx = canvas.getContext('2d');
+  ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+
+  const bg = '#f7f5f0';
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  const axisColor = 'rgba(26,58,92,0.3)';
+  const greenFill = 'rgba(26,107,74,0.55)';
+  const greenStroke = '#1a6b4a';
+  const redFill = 'rgba(184,50,50,0.55)';
+  const redStroke = '#b83232';
+  const amberFill = 'rgba(138,90,0,0.5)';
+  const amberStroke = '#8a5a00';
+  const textMuted = '#635e57';
+
+  const baseY = H - 50;
+  const chartTop = 40;
+  const chartHeight = baseY - chartTop;
+
+  // Left panel: perplexity bars
+  const leftCenter = W * 0.27;
+  const barW = 46;
+  const gap = 20;
+  const maxPpl = 40;
+
+  const pplBase = 36.48, pplFt = 19.68;
+  const bx1 = leftCenter - barW - gap/2;
+  const bx2 = leftCenter + gap/2;
+
+  ctx.strokeStyle = axisColor;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(leftCenter - 90, baseY); ctx.lineTo(leftCenter + 90, baseY);
+  ctx.stroke();
+
+  function drawBar(x, value, maxVal, fill, stroke, label, valueLabel) {
+    const h = (value / maxVal) * chartHeight;
+    const y = baseY - h;
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x, y, barW, h, 4) : ctx.rect(x, y, barW, h);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#1a1714';
+    ctx.font = 'bold 12px Space Mono';
+    ctx.textAlign = 'center';
+    ctx.fillText(valueLabel, x + barW/2, y - 10);
+    ctx.fillStyle = textMuted;
+    ctx.font = '11px Syne';
+    ctx.fillText(label, x + barW/2, baseY + 18);
+  }
+
+  drawBar(bx1, pplBase, maxPpl, redFill, redStroke, 'Base', '36.48');
+  drawBar(bx2, pplFt, maxPpl, greenFill, greenStroke, 'Fine-tuned', '19.68');
+
+  ctx.fillStyle = textMuted;
+  ctx.font = 'bold 13px Syne';
+  ctx.textAlign = 'center';
+  ctx.fillText('Perplexity (↓ better)', leftCenter, H - 12);
+
+  // divider
+  ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+  ctx.beginPath();
+  ctx.moveTo(W * 0.53, chartTop - 10);
+  ctx.lineTo(W * 0.53, baseY + 30);
+  ctx.stroke();
+
+  // Right panel: retrieval vs router accuracy
+  const rightCenter = W * 0.76;
+  const maxPct = 100;
+  const rx1 = rightCenter - barW - gap/2;
+  const rx2 = rightCenter + gap/2;
+
+  ctx.strokeStyle = axisColor;
+  ctx.beginPath();
+  ctx.moveTo(rightCenter - 90, baseY); ctx.lineTo(rightCenter + 90, baseY);
+  ctx.stroke();
+
+  drawBar(rx1, 92.31, maxPct, greenFill, greenStroke, 'Retrieval', '92.3%');
+  drawBar(rx2, 50.0, maxPct, redFill, redStroke, 'Router', '50.0%');
+
+  ctx.fillStyle = textMuted;
+  ctx.font = 'bold 13px Syne';
+  ctx.textAlign = 'center';
+  ctx.fillText('Retrieval vs. Router Accuracy', rightCenter, H - 12);
+
+})();
+</script>
+</body>
+</html>
