@@ -1,1370 +1,521 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Muhammad Hamza — ML Researcher · IIT Kharagpur</title>
-  <link rel="icon" type="image/jpg" href="bh.jpg">
-  <meta name="description" content="Muhammad Hamza — ML researcher, IIT Kharagpur. Dual Degree B.Tech+M.Tech, Neural operators, spherical PDEs, SNNs, multimodal ML."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@300;400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Muhammad Hamza — ML Researcher · IIT Kharagpur</title>
+<link rel="icon" type="image/jpg" href="bh.jpg">
+<meta name="description" content="Muhammad Hamza — ML researcher at IIT Kharagpur. Neural operators, spherical PDEs, SNNs, multimodal ML. Author of Sherlock Holmes fiction."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-/* ═══════════════════════════════════════════════
-   TOKENS
-   DARK MODE: Richer midnight-navy base with
-   warmer accent temperatures. Blues shifted
-   slightly violet-ward for depth; greens kept
-   vivid but de-saturated slightly so they don't
-   compete with accent; gold warmed +10°.
-═══════════════════════════════════════════════ */
-:root{
-  /* --- Backgrounds: deep midnight navy, not pure black --- */
-  --bg:#05070f;
-  --surface:#090c18;
-  --surface2:#0d1122;
-  --surface3:#12162c;
+:root{--bg:#05070f;--surface:#090c18;--surface2:#0d1122;--surface3:#12162c;--border:rgba(100,120,255,.09);--border-hi:rgba(100,120,255,.26);--accent:#6a9fff;--accent2:#9370e0;--accent3:#22d4a0;--gold:#e0ac2a;--text:#dde8fa;--muted:#5d7595;--muted2:#8aa0c0;--mono:'JetBrains Mono',monospace;--serif:'Playfair Display',Georgia,serif;--body:'Source Serif 4',Georgia,serif;--grid:rgba(100,120,255,.025)}
+html.light{--bg:#f2f4fa;--surface:#fff;--surface2:#eaecf5;--surface3:#e0e4f0;--border:rgba(50,90,220,.1);--border-hi:rgba(50,90,220,.28);--accent:#2855c8;--accent2:#5a3a9a;--accent3:#0a7c5e;--gold:#8a6700;--text:#0d1422;--muted:#5a6f90;--muted2:#3a5070;--grid:rgba(50,90,220,.04)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{background:var(--bg);color:var(--text);font:15px/1.75 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .3s,color .3s}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:40px 40px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#progress{position:fixed;top:0;left:0;z-index:200;height:2px;width:0;background:linear-gradient(to right,var(--accent),var(--accent3))}
+#theme-toggle{position:fixed;top:16px;right:20px;z-index:300;width:40px;height:40px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted2);cursor:pointer;font-size:15px}
+#theme-toggle:hover{color:var(--accent);border-color:var(--border-hi)}
+.t-sun{display:none}html.light .t-sun{display:inline}html.light .t-moon{display:none}
 
-  /* --- Borders: slightly warmer blue-violet tint --- */
-  --border:rgba(100,120,255,0.09);
-  --border-hi:rgba(100,120,255,0.26);
+.wrap{position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:44px 28px 72px;display:grid;grid-template-columns:272px 1fr;gap:40px;align-items:start}
 
-  /* --- Accents: primary cooler-violet blue, secondary warm purple, tertiary teal --- */
-  --accent:#6a9fff;       /* slightly more violet than original #5b8fff */
-  --accent2:#9370e0;      /* richer purple */
-  --accent3:#22d4a0;      /* slightly cooler mint-teal */
-  --gold:#e0ac2a;         /* warmer, richer gold */
+/* sidebar */
+.left{position:sticky;top:28px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.avatar-wrap{width:178px;height:178px;border-radius:50%;padding:4px;margin-bottom:22px;background:conic-gradient(var(--accent),var(--accent2),var(--accent3),var(--accent))}
+.avatar{width:100%;height:100%;border-radius:50%;overflow:hidden;background:var(--surface2);border:4px solid var(--bg);display:flex;align-items:center;justify-content:center}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar span{font:48px var(--serif);color:var(--muted)}
+h1.name{font:600 24px/1.15 var(--serif)}
+.affil{margin-top:4px;font:11px var(--mono);color:var(--muted2)}
+.affil.hl{color:var(--accent3)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:12px 0 4px}
+.chip,.role{font:10px var(--mono);letter-spacing:.5px;padding:3px 9px;border-radius:4px}
+.role{color:var(--accent);background:rgba(106,159,255,.08);border:1px solid rgba(106,159,255,.2);border-radius:99px;padding:4px 11px}
+.divider{width:80%;height:1px;background:linear-gradient(to right,transparent,var(--border-hi),transparent);margin:14px 0}
+.contact{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:14px}
+.icon-btn{width:38px;height:38px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--muted2);transition:.2s}
+.icon-btn:hover{color:var(--accent);border-color:var(--border-hi);transform:translateY(-3px)}
+.cv-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font:11px var(--mono);letter-spacing:1px;text-transform:uppercase;color:var(--muted2);text-decoration:none;background:var(--surface2);border:1px solid var(--border);padding:9px;border-radius:7px}
+.cv-btn:hover{color:var(--accent);border-color:var(--border-hi)}
 
-  /* --- Text: crisper white with a hint of blue --- */
-  --text:#dde8fa;
-  --muted:#4a607e;
-  --muted2:#7e96b8;
+/* nav + sections */
+.top-nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:26px}
+.nav-link{color:var(--muted2);text-decoration:none;border:1px solid var(--border);padding:6px 13px;border-radius:6px;font:11px var(--mono);letter-spacing:1px;text-transform:uppercase}
+.nav-link:hover,.nav-link.active{color:var(--accent);background:rgba(106,159,255,.07);border-color:var(--border-hi)}
+.nav-link.active{box-shadow:inset 0 -2px 0 var(--accent)}
+.section{background:var(--surface);padding:24px 28px;border-radius:12px;margin-bottom:18px;border:1px solid var(--border);transition:border-color .3s}
+.section:hover{border-color:var(--border-hi)}
+h2.st{font:600 21px var(--serif);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+h2.st::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border-hi),transparent)}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
+.reveal.visible{opacity:1;transform:none}
 
-  --radius:12px;
-  --maxw:1160px;
-  --mono:'JetBrains Mono','Courier New',monospace;
-  --serif:'Playfair Display',Georgia,serif;
-  --body:'Source Serif 4',Georgia,serif;
-  --grid:rgba(100,120,255,0.025);
-}
-
-/* Light mode — unchanged from original */
-html.light{
-  --bg:#f2f4fa; --surface:#ffffff; --surface2:#eaecf5; --surface3:#e0e4f0;
-  --border:rgba(50,90,220,0.1); --border-hi:rgba(50,90,220,0.28);
-  --accent:#2855c8; --accent2:#5a3a9a; --accent3:#0a7c5e; --gold:#a07800;
-  --text:#0d1422; --muted:#6b7fa0; --muted2:#3a5070;
-  --grid:rgba(50,90,220,0.04);
-}
-html.light body{background:var(--bg);}
-html.light body::before{opacity:0.55;}
-html.light #bg-canvas{opacity:0.08;}
-html.light ::-webkit-scrollbar-track{background:#e4e8f4;}
-html.light ::-webkit-scrollbar-thumb{background:#b8c4dc;}
-html.light .avatar-ring-mask{background:var(--bg);}
-
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;scroll-padding-top:20px;}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:var(--body);font-size:15px;line-height:1.75;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
-  transition:background-color 0.35s,color 0.35s;
-}
-
-/* Coordinate-paper grid overlay */
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:
-    linear-gradient(var(--grid) 1px,transparent 1px),
-    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:40px 40px;
-  transition:opacity 0.35s;
-}
-
-/* noise */
-body::after{
-  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  background-size:160px;
-}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:#1a2035;border-radius:99px;}
-::-webkit-scrollbar-thumb:hover{background:var(--accent);}
-
-/* LOADER */
-#loader{
-  position:fixed;inset:0;z-index:9999;background:var(--bg);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;
-  transition:opacity 0.6s ease,visibility 0.6s ease;
-}
-#loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
-.loader-name{font-family:var(--serif);font-size:20px;color:var(--accent);letter-spacing:1px;}
-.loader-sub{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:-8px;}
-.loader-bar{width:160px;height:1px;background:var(--surface3);border-radius:99px;overflow:hidden;}
-.loader-bar-fill{height:100%;background:linear-gradient(to right,var(--accent),var(--accent3));animation:loaderAnim 1.1s cubic-bezier(0.4,0,0.2,1) forwards;}
-@keyframes loaderAnim{from{width:0}to{width:100%}}
-
-/* PROGRESS */
-#scroll-progress{position:fixed;top:0;left:0;z-index:200;height:1px;width:0%;background:linear-gradient(to right,var(--accent),var(--accent3));transition:width 0.08s linear;}
-
-/* THEME TOGGLE */
-#theme-toggle{
-  position:fixed;top:18px;right:22px;z-index:300;
-  width:40px;height:40px;border-radius:10px;
-  background:var(--surface2);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:15px;color:var(--muted2);
-  box-shadow:0 2px 12px rgba(0,0,0,0.3);
-  transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
-}
-#theme-toggle:hover{border-color:var(--border-hi);color:var(--accent);transform:scale(1.08) rotate(12deg);}
-.t-moon{display:block;}.t-sun{display:none;}
-html.light .t-moon{display:none;}html.light .t-sun{display:block;}
-
-/* CURSOR */
-#cursor-dot{position:fixed;z-index:9998;pointer-events:none;width:6px;height:6px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);mix-blend-mode:screen;}
-#cursor-ring{position:fixed;z-index:9997;pointer-events:none;width:28px;height:28px;border-radius:50%;border:1px solid rgba(106,159,255,0.35);transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,border-color 0.2s;}
-#cursor-ring.hover{width:44px;height:44px;border-color:var(--accent);}
-
-/* BG CANVAS */
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.28;transition:opacity 0.35s;}
-
-/* LAYOUT */
-.wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:44px 28px 72px;display:grid;grid-template-columns:272px 1fr;gap:40px;align-items:start;}
-
-/* ═══════════════════════════════════════════════
-   SIDEBAR
-═══════════════════════════════════════════════ */
-.left{position:sticky;top:28px;display:flex;flex-direction:column;align-items:center;text-align:center;animation:slideIn 0.8s cubic-bezier(0.22,1,0.36,1) both;}
-@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-
-/* avatar */
-.avatar-wrap{position:relative;width:178px;height:178px;margin-bottom:22px;}
-.avatar-ring-outer{position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,var(--accent) 0%,var(--accent2) 35%,var(--accent3) 68%,var(--accent) 100%);animation:rotateRing 8s linear infinite;opacity:0.55;}
-@keyframes rotateRing{to{transform:rotate(360deg)}}
-.avatar-ring-mask{position:absolute;inset:3px;border-radius:50%;background:var(--bg);transition:background 0.35s;}
-.avatar{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:var(--surface2);display:flex;align-items:center;justify-content:center;}
-.avatar img{width:100%;height:100%;object-fit:cover;display:block;}
-.avatar-init{font-family:var(--serif);font-size:48px;color:rgba(106,159,255,0.18);}
-
-/* name block */
-.name-card{margin-bottom:16px;width:100%;}
-h1.name{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text);line-height:1.15;letter-spacing:-0.3px;}
-.affil-line{margin-top:7px;font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:0.3px;}
-
-/* role chips row */
-.role-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px 0 16px;}
-.role-chip{
-  font-size:9px;font-family:var(--mono);letter-spacing:1.8px;text-transform:uppercase;
-  color:var(--accent);background:rgba(106,159,255,0.07);border:1px solid rgba(106,159,255,0.17);
-  padding:4px 11px;border-radius:99px;
-  display:inline-flex;align-items:center;gap:5px;
-}
-.role-chip::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent3);animation:pulseDot 2s ease-in-out infinite;}
-@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
-html.light .role-chip{background:rgba(40,85,200,0.07);border-color:rgba(40,85,200,0.18);color:var(--accent);}
-
-/* stat row */
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;width:100%;margin-bottom:16px;}
-.stat-box{
-  background:var(--surface2);border:1px solid var(--border);border-radius:9px;
-  padding:9px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;
-  transition:border-color 0.2s,background 0.2s;
-}
-.stat-box:hover{border-color:var(--border-hi);background:var(--surface3);}
-.stat-num{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--accent);line-height:1;}
-.stat-label{font-size:8.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:var(--mono);}
-
-/* tech stack */
-.stack-section{width:100%;margin-bottom:14px;}
-.stack-title{font-size:9px;font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;text-align:left;}
-.stack-item{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.stack-name{font-size:11px;font-family:var(--mono);color:var(--muted2);min-width:72px;text-align:left;}
-.stack-bar-track{flex:1;height:3px;background:var(--surface3);border-radius:99px;overflow:hidden;}
-.stack-bar-fill{height:100%;border-radius:99px;background:linear-gradient(to right,var(--accent),var(--accent3));transition:width 1.2s cubic-bezier(0.22,1,0.36,1);}
-
-/* divider */
-.divider{width:80%;height:1px;background:linear-gradient(to right,transparent,rgba(106,159,255,0.18),transparent);margin:12px 0;}
-
-/* contact icons */
-.contact-icons{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:14px;}
-.icon-btn{
-  width:38px;height:38px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--muted2);font-size:14px;
-  transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);
-}
-.icon-btn:hover{color:var(--accent);border-color:rgba(106,159,255,0.35);transform:translateY(-3px) scale(1.08);box-shadow:0 6px 18px rgba(106,159,255,0.12);}
-.icon-btn[title="LinkedIn"]:hover{color:#0a66c2;border-color:rgba(10,102,194,0.45);}
-.icon-btn[title="GitHub"]:hover{color:#cdd9f5;border-color:rgba(200,215,245,0.25);}
-html.light .icon-btn[title="GitHub"]:hover{color:#111;border-color:rgba(0,0,0,0.25);}
-.icon-btn[title="Medium"]:hover{color:#00ab6c;border-color:rgba(0,171,108,0.4);}
-.icon-btn[title="Quora"]:hover{color:#b92b27;border-color:rgba(185,43,39,0.4);}
-
-.resume-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:10px;font-family:var(--mono);letter-spacing:1.8px;text-transform:uppercase;
-  color:var(--muted2);text-decoration:none;
-  background:var(--surface2);border:1px solid var(--border);
-  padding:9px 18px;border-radius:7px;
-  transition:all 0.2s ease;width:100%;justify-content:center;
-}
-.resume-btn:hover{color:var(--accent);border-color:var(--border-hi);background:rgba(106,159,255,0.06);}
-
-/* ═══════════════════════════════════════════════
-   MAIN
-═══════════════════════════════════════════════ */
-.main{animation:fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.12s both;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-
-/* NAV */
-.top-nav{display:flex;gap:5px;align-items:center;margin-bottom:28px;flex-wrap:wrap;}
-.nav-link{
-  color:var(--muted);text-decoration:none;
-  border:1px solid var(--border);padding:6px 13px;border-radius:6px;
-  font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-family:var(--mono);
-  transition:all 0.18s ease;background:transparent;
-}
-.nav-link:hover,.nav-link.active{color:var(--accent);background:rgba(106,159,255,0.06);border-color:var(--border-hi);}
-.nav-link.active{box-shadow:inset 0 -2px 0 var(--accent);}
-
-/* SECTION */
-.section{
-  background:var(--surface);padding:24px 28px;
-  border-radius:var(--radius);margin-bottom:18px;
-  border:1px solid var(--border);position:relative;overflow:hidden;
-  transition:border-color 0.3s,box-shadow 0.3s,background-color 0.35s;
-}
-.section::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(to right,var(--accent),var(--accent2),var(--accent3));
-  opacity:0;transition:opacity 0.3s;
-}
-.section:hover::before{opacity:1;}
-.section:hover{
-  border-color:var(--border-hi);
-  box-shadow:0 12px 40px rgba(0,0,0,0.32),0 0 0 1px rgba(106,159,255,0.05);
-}
-html.light .section:hover{box-shadow:0 8px 28px rgba(0,0,0,0.07);}
-
-/* section number + title */
-h2.section-title{
-  font-family:var(--serif);font-size:21px;font-weight:600;
-  color:var(--text);margin-bottom:16px;
-  display:flex;align-items:center;gap:12px;
-  letter-spacing:-0.2px;
-}
-.tnum{
-  font-size:9px;font-family:var(--mono);color:var(--accent);
-  background:rgba(106,159,255,0.08);border:1px solid rgba(106,159,255,0.15);
-  padding:2px 7px;border-radius:4px;letter-spacing:1.2px;
-}
-html.light .tnum{background:rgba(40,85,200,0.08);border-color:rgba(40,85,200,0.16);}
-h2.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border-hi),transparent);}
-
-/* reveal */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
-
-/* ── ABOUT ── */
-.lead{color:var(--muted2);font-size:14.5px;max-width:68ch;line-height:1.85;}
-.lead strong{color:var(--text);font-weight:600;}
-.lead a{color:var(--accent);text-decoration:none;border-bottom:1px dashed rgba(106,159,255,0.35);}
-.lead a:hover{border-color:var(--accent);}
-
-/* keyword tags in about */
-.kw-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;}
-.kw{
-  font-size:10px;font-family:var(--mono);letter-spacing:0.8px;
-  padding:4px 12px;border-radius:5px;cursor:default;
-  transition:all 0.18s ease;
-}
-.kw-blue {color:var(--accent); background:rgba(106,159,255,0.08); border:1px solid rgba(106,159,255,0.19);}
-.kw-green{color:var(--accent3);background:rgba(34,212,160,0.07);  border:1px solid rgba(34,212,160,0.18);}
-.kw-purple{color:#b090ff;      background:rgba(176,144,255,0.07); border:1px solid rgba(176,144,255,0.18);}
-.kw-gold {color:var(--gold);   background:rgba(224,172,42,0.07);  border:1px solid rgba(224,172,42,0.18);}
-.kw:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.2);}
-
-.typed-cursor{display:inline-block;width:2px;height:1em;background:var(--accent);margin-left:1px;vertical-align:text-bottom;animation:blink 1s step-end infinite;}
+/* about */
+.lead{color:var(--muted2);font-size:14.5px;max-width:68ch;line-height:1.85}
+.lead+.lead{margin-top:12px}
+.lead strong{color:var(--text);font-weight:600}
+.lead a{color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--border-hi)}
+#typed{color:var(--accent)}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--accent);margin-left:1px;vertical-align:text-bottom;animation:blink 1s step-end infinite}
 @keyframes blink{50%{opacity:0}}
+.kw-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.kw{font:10px var(--mono);letter-spacing:.6px;padding:4px 12px;border-radius:5px}
+.c-blue{color:var(--accent);background:rgba(106,159,255,.08);border:1px solid rgba(106,159,255,.2)}
+.c-green{color:var(--accent3);background:rgba(34,212,160,.07);border:1px solid rgba(34,212,160,.2)}
+.c-purple{color:var(--accent2);background:rgba(147,112,224,.08);border:1px solid rgba(147,112,224,.22)}
+.c-gold{color:var(--gold);background:rgba(224,172,42,.08);border:1px solid rgba(224,172,42,.22)}
 
-/* ── TIMELINE ── */
-.timeline{position:relative;padding-left:20px;}
-.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--accent),var(--accent2),transparent);}
-.tl-item{position:relative;padding:0 0 16px 18px;}
-.tl-item.tl-hidden{display:none;}
-.tl-item::before{content:'';position:absolute;left:-4px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);transition:background 0.2s,transform 0.2s;}
-.tl-item:hover::before{background:var(--accent);transform:scale(1.3);}
-.tl-badge{display:inline-block;font-size:9.5px;font-family:var(--mono);letter-spacing:1px;color:var(--accent);background:rgba(106,159,255,0.08);border:1px solid rgba(106,159,255,0.15);padding:2px 8px;border-radius:4px;margin-bottom:3px;}
-html.light .tl-badge{background:rgba(40,85,200,0.07);border-color:rgba(40,85,200,0.16);}
-.tl-text{font-size:13px;color:var(--muted2);line-height:1.5;}
-.tl-text strong{color:var(--text);font-weight:500;}
-.tl-toggle{background:transparent;border:1px solid var(--border-hi);color:var(--accent);padding:6px 16px;border-radius:6px;cursor:pointer;font-size:10px;font-family:var(--mono);letter-spacing:1.2px;text-transform:uppercase;transition:all 0.2s ease;margin-top:4px;}
-.tl-toggle:hover{background:rgba(106,159,255,0.07);}
+/* timeline */
+.timeline{position:relative;padding-left:20px}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(var(--accent),var(--accent2),transparent)}
+.tl{position:relative;padding:0 0 14px 18px}
+.tl::before{content:'';position:absolute;left:-4px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.tl[hidden]{display:none}
+.tl-date{display:inline-block;font:10px var(--mono);color:var(--accent);background:rgba(106,159,255,.08);border:1px solid rgba(106,159,255,.18);padding:1px 8px;border-radius:4px;margin-bottom:2px}
+.tl-text{font-size:13px;color:var(--muted2);line-height:1.5}
+.tl-text strong{color:var(--text);font-weight:600}
+.btn-ghost{background:none;border:1px solid var(--border-hi);color:var(--accent);padding:6px 16px;border-radius:6px;cursor:pointer;font:11px var(--mono);letter-spacing:1px;text-transform:uppercase;margin-top:4px}
+.btn-ghost:hover{background:rgba(106,159,255,.08)}
 
-/* ── RESEARCH ── */
-.research-entry{
-  display:grid;grid-template-columns:120px 1fr;
-  gap:18px;padding:18px 0;border-bottom:1px solid var(--border);
-}
-.research-entry:last-child{border-bottom:none;padding-bottom:0;}
-.research-entry:first-child{padding-top:0;}
-.r-thumb{width:120px;height:82px;border-radius:7px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);flex-shrink:0;}
-.r-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s ease;}
-.research-entry:hover .r-thumb img{transform:scale(1.06);}
-.r-thumb-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;color:rgba(106,159,255,0.14);background:linear-gradient(135deg,#080f20,#06101e);}
-html.light .r-thumb-ph{background:linear-gradient(135deg,#d8e4f8,#e4edf8);color:rgba(40,85,200,0.18);}
+/* entries (research / industry) */
+.entry{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--border)}
+.entry:first-of-type{padding-top:0}.entry:last-child{border-bottom:0;padding-bottom:0}
+.thumb{width:120px;height:82px;border-radius:7px;overflow:hidden;background:var(--surface2);border:1px solid var(--border)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--muted);background:var(--surface2)}
+.e-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.e-title{font:600 15.5px/1.38 var(--serif);flex:1}
+.badge{flex-shrink:0;font:9px var(--mono);letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:4px;white-space:nowrap;align-self:flex-start}
+.b-gold{color:var(--gold);background:rgba(224,172,42,.08);border:1px solid rgba(224,172,42,.22)}
+.b-green{color:var(--accent3);background:rgba(34,212,160,.07);border:1px solid rgba(34,212,160,.2)}
+.b-blue{color:var(--accent);background:rgba(106,159,255,.08);border:1px solid rgba(106,159,255,.2)}
+.e-meta{font:11px var(--mono);color:var(--accent)}
+.e-date{font:10.5px var(--mono);color:var(--muted);margin-bottom:8px}
+.metrics{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.metric{font:9.5px var(--mono);padding:2px 8px;border-radius:4px;color:var(--accent3);background:rgba(34,212,160,.07);border:1px solid rgba(34,212,160,.18)}
+.desc{font-size:12.5px;color:var(--muted2);line-height:1.75;max-height:58px;overflow:hidden;transition:max-height .4s}
+.desc.open{max-height:500px}
+.more{background:none;border:0;cursor:pointer;font:10px var(--mono);color:var(--accent);letter-spacing:.8px;padding:3px 0}
+.more:hover{opacity:.7}
+.links{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.link{display:inline-flex;align-items:center;gap:5px;font:10px var(--mono);color:var(--muted2);text-decoration:none;border:1px solid var(--border);padding:3px 9px;border-radius:4px;transition:.18s}
+.link:hover{color:var(--accent);border-color:var(--border-hi);background:rgba(106,159,255,.05)}
 
-.r-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:5px;flex-wrap:wrap;}
-.r-title{font-family:var(--serif);font-size:15.5px;font-weight:600;color:var(--text);line-height:1.38;flex:1;}
-.venue-badge{
-  flex-shrink:0;font-size:9px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;
-  padding:3px 9px;border-radius:4px;white-space:nowrap;margin-top:2px;
-}
-.venue-intl{color:var(--gold);background:rgba(224,172,42,0.08);border:1px solid rgba(224,172,42,0.22);}
-.venue-intern{color:var(--accent3);background:rgba(34,212,160,0.07);border:1px solid rgba(34,212,160,0.18);}
+/* publications */
+.pub{display:grid;grid-template-columns:36px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--border)}
+.pub:first-child{padding-top:0}.pub:last-child{border-bottom:0;padding-bottom:0}
+.pub-idx{font:500 11px var(--mono);color:var(--gold);padding-top:3px}
+.pub-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.pub-title{font:600 13.5px/1.45 var(--serif);margin-bottom:4px}
+.pub-auth{font:11.5px var(--mono);color:var(--muted2)}
+.pub-auth b{color:var(--accent);font-weight:500}
+.pub-venue{font:italic 11px var(--mono);color:var(--muted);margin-top:3px}
 
-.r-meta{font-size:11px;font-family:var(--mono);color:var(--accent);margin-bottom:2px;}
-.r-date{font-size:10.5px;font-family:var(--mono);color:var(--muted);margin-bottom:8px;}
+/* projects + competitions */
+.proj{padding:18px 0;border-bottom:1px solid var(--border)}
+.proj:first-child{padding-top:0}.proj:last-child{border-bottom:0;padding-bottom:0}
+.proj-head{display:flex;justify-content:space-between;gap:12px}
+.proj h3{font:600 15px/1.35 var(--serif);margin-bottom:6px}
+.proj:hover h3{color:var(--accent)}
+.year{font:10px var(--mono);color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.tag{font:9px var(--mono);padding:2px 8px;border-radius:3px}
+.proj-short{font-size:12.5px;color:var(--muted2);line-height:1.72}
+.proj-full{max-height:0;opacity:0;overflow:hidden;transition:max-height .38s,opacity .3s;font-size:12px;color:var(--muted2);line-height:1.75}
+.proj-full.open{max-height:400px;opacity:1}
+.proj-full ul{padding-left:16px;margin-top:6px}.proj-full li{margin-bottom:5px}
+.proj-foot{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.comp-title{font:11px var(--mono);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin:26px 0 12px}
+.comp{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:13px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-bottom:10px}
+.comp-name{font:600 13.5px var(--serif);margin-bottom:3px}
+.comp-desc{font:11px/1.6 var(--mono);color:var(--muted2)}
+.comp-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.rank{font:500 11px var(--mono);color:var(--gold);background:rgba(224,172,42,.08);border:1px solid rgba(224,172,42,.22);padding:3px 9px;border-radius:4px;white-space:nowrap}
+.comp-date{font:10px var(--mono);color:var(--muted);white-space:nowrap}
 
-.r-metrics{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
-.metric-chip{
-  font-size:9.5px;font-family:var(--mono);
-  padding:2px 8px;border-radius:4px;
-  color:var(--accent3);background:rgba(34,212,160,0.07);border:1px solid rgba(34,212,160,0.16);
-}
+/* writing */
+.book-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.book{display:grid;grid-template-columns:92px 1fr;gap:14px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:14px}
+.book:hover{border-color:rgba(224,172,42,.4)}
+.cover{width:92px;aspect-ratio:2/3;border-radius:5px;overflow:hidden;background:var(--surface3);border:1px solid var(--border)}
+.cover img{width:100%;height:100%;object-fit:cover}
+.book-kind{font:10px var(--mono);letter-spacing:1px;color:var(--gold)}
+.book h3{font:600 15px/1.3 var(--serif);margin:3px 0 2px}
+.book-sub{font:10.5px var(--mono);color:var(--muted);margin-bottom:7px}
+.book p{font-size:12px;color:var(--muted2);line-height:1.65}
+.tease{display:flex;align-items:center;gap:16px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:14px 18px;margin-top:10px;text-decoration:none;color:inherit;transition:.25s}
+.tease:hover{border-color:var(--border-hi);transform:translateX(4px)}
+.tease-icon{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gold);background:rgba(224,172,42,.08);border:1px solid rgba(224,172,42,.22)}
+.tease.pink .tease-icon{color:#f472b6;background:rgba(244,114,182,.08);border-color:rgba(244,114,182,.2)}
+.tease h3{font:600 15px var(--serif)}
+.tease p{font-size:12.5px;color:var(--muted2)}
+.tease>i{margin-left:auto;color:var(--muted)}
 
-.r-desc{font-size:12.5px;color:var(--muted2);line-height:1.75;max-height:58px;overflow:hidden;transition:max-height 0.4s ease;}
-.r-desc.expanded{max-height:400px;}
-.r-expand{background:none;border:none;cursor:pointer;font-size:10px;font-family:var(--mono);color:var(--accent);letter-spacing:0.8px;padding:3px 0;margin-top:3px;display:inline-block;transition:opacity 0.2s;}
-.r-expand:hover{opacity:0.7;}
-.r-links{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap;}
-.r-link{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-family:var(--mono);color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:3px 9px;border-radius:4px;transition:all 0.18s ease;}
-.r-link:hover{color:var(--accent);border-color:var(--border-hi);background:rgba(106,159,255,0.05);}
+footer{grid-column:1/-1;margin-top:30px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font:11px var(--mono);color:var(--muted)}
+footer a{color:var(--muted);text-decoration:none;margin-left:14px;text-transform:uppercase;letter-spacing:1px}
+footer a:hover{color:var(--accent)}
 
-
-
-
-#industry .r-desc{
-  max-height:200px;
-  overflow:visible;
-}
-
-  
-/* ── PROJECTS GRID ── */
-.projects-grid{display:flex;flex-direction:column;gap:0;margin-top:4px;}
-
-.proj{
-  background:transparent;
-  padding:18px 0;
-  border-bottom:1px solid var(--border);
-  position:relative;
-  opacity:0;transform:translateY(12px);
-  animation:fadeUp 0.45s ease-out forwards;
-  transition:background-color 0.35s;
-}
-.proj:last-child{border-bottom:none;padding-bottom:0;}
-.proj:first-child{padding-top:0;}
-.proj:nth-child(1){animation-delay:0.04s}.proj:nth-child(2){animation-delay:0.09s}
-.proj:nth-child(3){animation-delay:0.14s}.proj:nth-child(4){animation-delay:0.19s}
-.proj:nth-child(5){animation-delay:0.24s}.proj:nth-child(6){animation-delay:0.29s}
-
-.proj-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:7px;flex-wrap:wrap;}
-.proj-title-wrap{flex:1;}
-.proj h3{
-  font-family:var(--serif);font-size:15px;font-weight:600;
-  color:var(--text);line-height:1.35;margin-bottom:5px;
-  transition:color 0.2s;
-}
-.proj:hover h3{color:var(--accent);}
-.proj-year{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:1px;padding-top:3px;flex-shrink:0;}
-
-.proj-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
-.proj-tag{
-  font-size:9px;font-family:var(--mono);letter-spacing:0.8px;
-  padding:2px 8px;border-radius:3px;
-}
-.tag-torch  {color:#f59e0b;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.18);}
-.tag-tf     {color:#f97316;background:rgba(249,115,22,0.07);border:1px solid rgba(249,115,22,0.18);}
-.tag-green  {color:var(--accent3);background:rgba(34,212,160,0.07);border:1px solid rgba(34,212,160,0.16);}
-.tag-blue   {color:var(--accent);background:rgba(106,159,255,0.07);border:1px solid rgba(106,159,255,0.16);}
-.tag-purple {color:#b090ff;background:rgba(176,144,255,0.07);border:1px solid rgba(176,144,255,0.16);}
-.tag-gold   {color:var(--gold);background:rgba(224,172,42,0.07);border:1px solid rgba(224,172,42,0.18);}
-
-.proj-short{font-size:12.5px;color:var(--muted2);line-height:1.72;margin-bottom:8px;}
-.proj-full{
-  font-size:12px;color:var(--muted2);line-height:1.75;
-  max-height:0;overflow:hidden;
-  transition:max-height 0.38s ease,opacity 0.3s ease;
-  opacity:0;
-}
-.proj-full.open{max-height:300px;opacity:1;}
-.proj-full ul{padding-left:16px;margin-top:4px;}
-.proj-full ul li{margin-bottom:5px;}
-
-.proj-footer{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;}
-.proj-gh-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:10px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;
-  color:var(--muted2);text-decoration:none;
-  background:var(--surface2);border:1px solid var(--border);
-  padding:4px 11px;border-radius:5px;
-  transition:all 0.18s ease;
-}
-.proj-gh-btn:hover{color:var(--accent);border-color:var(--border-hi);background:rgba(106,159,255,0.06);}
-.proj-expand-btn{
-  background:none;border:none;cursor:pointer;
-  font-size:10px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;
-  color:var(--accent);padding:4px 0;transition:opacity 0.2s;
-}
-.proj-expand-btn:hover{opacity:0.65;}
-
-.proj-metrics{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
-.proj-metric{
-  font-size:9px;font-family:var(--mono);
-  padding:2px 8px;border-radius:3px;
-  color:var(--accent3);background:rgba(34,212,160,0.06);border:1px solid rgba(34,212,160,0.14);
-}
-
-/* ── COMPETITIONS ── */
-.comp-title{
-  font-size:10px;font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;
-  color:var(--muted);margin:24px 0 12px;
-  display:flex;align-items:center;gap:10px;
-}
-.comp-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border-hi),transparent);}
-.comp-list{display:flex;flex-direction:column;gap:10px;}
-.comp-card{
-  background:var(--surface2);border:1px solid var(--border);border-radius:9px;
-  padding:13px 16px;
-  display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;
-  transition:border-color 0.22s,background 0.22s,transform 0.22s;
-  text-decoration:none;color:inherit;cursor:default;
-}
-a.comp-card{cursor:pointer;}
-a.comp-card:hover{border-color:var(--border-hi);background:var(--surface3);transform:translateX(3px);}
-.comp-card.no-link{opacity:0.75;}
-.comp-name{font-family:var(--serif);font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.3;}
-.comp-desc{font-size:11px;color:var(--muted2);line-height:1.6;font-family:var(--mono);}
-.comp-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;min-width:0;}
-.comp-rank{
-  font-size:11px;font-family:var(--mono);font-weight:500;
-  color:var(--gold);background:rgba(224,172,42,0.08);
-  border:1px solid rgba(224,172,42,0.22);padding:3px 9px;border-radius:4px;
-  white-space:nowrap;text-align:right;
-}
-.comp-date{font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:0.5px;white-space:nowrap;text-align:right;}
-
-/* ── PUBLICATIONS ── */
-.pub-list{display:flex;flex-direction:column;gap:0;}
-.pub-entry{
-  padding:16px 0;border-bottom:1px solid var(--border);
-  display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:flex-start;
-}
-.pub-entry:last-child{border-bottom:none;padding-bottom:0;}
-.pub-entry:first-child{padding-top:0;}
-.pub-idx{
-  font-family:var(--mono);font-size:11px;font-weight:500;
-  color:var(--gold);letter-spacing:0.5px;
-  padding-top:3px;
-}
-.pub-badges{display:flex;gap:6px;margin-bottom:7px;flex-wrap:wrap;}
-.pub-badge{font-size:9px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px;}
-
-/* ── badge palette ── */
-.badge-conf   {color:var(--gold);   background:rgba(224,172,42,0.08);  border:1px solid rgba(224,172,42,0.22);}
-.badge-ieee   {color:#7ab3ff;       background:rgba(122,179,255,0.08); border:1px solid rgba(122,179,255,0.22);}
-.badge-nlp    {color:var(--accent3);background:rgba(34,212,160,0.07);  border:1px solid rgba(34,212,160,0.18);}
-/* NEW — amber "under review" pill */
-.badge-preprint{color:#f5a623;      background:rgba(245,166,35,0.08);  border:1px solid rgba(245,166,35,0.22);}
-/* NEW — violet-blue "Neurocomputing" pill */
-.badge-neuro  {color:var(--accent); background:rgba(106,159,255,0.08); border:1px solid rgba(106,159,255,0.20);}
-
-.pub-title{font-size:13.5px;color:var(--text);font-family:var(--serif);font-weight:600;line-height:1.45;margin-bottom:5px;}
-.pub-authors{font-size:11.5px;color:var(--muted2);font-family:var(--mono);line-height:1.5;}
-.pub-authors .me{color:var(--accent);font-weight:500;}
-.pub-venue-line{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:3px;font-style:italic;}
-
-/* NEW — pub links row (matches r-links style) */
-.pub-links{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
-.pub-link{
-  display:inline-flex;align-items:center;gap:4px;
-  font-size:10px;font-family:var(--mono);
-  color:var(--muted);text-decoration:none;
-  border:1px solid var(--border);padding:3px 9px;border-radius:4px;
-  transition:all 0.18s ease;
-}
-.pub-link:hover{color:var(--accent);border-color:var(--border-hi);background:rgba(106,159,255,0.05);}
-
-/* ── ACHIEVEMENTS ── */
-.achiev-list{display:flex;flex-direction:column;gap:10px;margin-top:2px;}
-.achiev-item{
-  display:flex;align-items:flex-start;gap:12px;
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:8px;padding:12px 16px;
-  transition:border-color 0.22s,background 0.22s;
-}
-.achiev-item:hover{border-color:var(--border-hi);background:var(--surface3);}
-.achiev-icon{
-  width:34px;height:34px;border-radius:7px;flex-shrink:0;
-  background:rgba(224,172,42,0.08);border:1px solid rgba(224,172,42,0.20);
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;color:var(--gold);
-}
-.achiev-text{flex:1;}
-.achiev-title{font-family:var(--serif);font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.35;}
-.achiev-sub{font-size:11px;font-family:var(--mono);color:var(--muted2);line-height:1.5;}
-.achiev-badge{
-  flex-shrink:0;align-self:flex-start;
-  font-size:9.5px;font-family:var(--mono);letter-spacing:0.8px;text-transform:uppercase;
-  color:var(--gold);background:rgba(224,172,42,0.08);border:1px solid rgba(224,172,42,0.20);
-  padding:3px 8px;border-radius:4px;white-space:nowrap;
-}
-
-/* ── POEMS ── */
-.poems-tease{
-  display:flex;align-items:center;gap:18px;
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:9px;padding:16px 20px;
-  text-decoration:none;color:inherit;
-  transition:border-color 0.25s,background 0.25s,transform 0.25s;
-}
-.poems-tease:hover{border-color:rgba(244,114,182,0.3);background:rgba(244,114,182,0.04);transform:translateX(4px);}
-.poems-icon{width:44px;height:44px;border-radius:9px;background:rgba(244,114,182,0.08);border:1px solid rgba(244,114,182,0.18);display:flex;align-items:center;justify-content:center;font-size:18px;color:#f472b6;flex-shrink:0;}
-.poems-text h3{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--text);margin-bottom:3px;}
-.poems-text p{font-size:12.5px;color:var(--muted2);}
-.poems-arrow{margin-left:auto;font-size:12px;color:var(--muted);transition:color 0.2s,transform 0.2s;}
-.poems-tease:hover .poems-arrow{color:#f472b6;transform:translateX(4px);}
-
-/* ── SHORT STORIES ── */
-.stories-tease{
-  display:flex;align-items:center;gap:18px;
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:9px;padding:16px 20px;
-  text-decoration:none;color:inherit;
-  transition:border-color 0.25s,background 0.25s,transform 0.25s;
-}
-.stories-tease:hover{border-color:rgba(224,172,42,0.35);background:rgba(224,172,42,0.04);transform:translateX(4px);}
-.stories-icon{width:44px;height:44px;border-radius:9px;background:rgba(224,172,42,0.08);border:1px solid rgba(224,172,42,0.22);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--gold);flex-shrink:0;}
-.stories-text h3{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--text);margin-bottom:3px;}
-.stories-text p{font-size:12.5px;color:var(--muted2);}
-.stories-arrow{margin-left:auto;font-size:12px;color:var(--muted);transition:color 0.2s,transform 0.2s;}
-.stories-tease:hover .stories-arrow{color:var(--gold);transform:translateX(4px);}
-
-/* ── FOOTER ── */
-footer{grid-column:1/-1;margin-top:40px;padding:20px 0 4px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.footer-left{font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:0.5px;}
-.footer-left span{color:var(--accent);}
-.footer-right{display:flex;gap:14px;}
-.footer-link{font-size:10px;font-family:var(--mono);color:var(--muted);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
-.footer-link:hover{color:var(--accent);}
-
-/* RESPONSIVE */
 @media(max-width:880px){
-  .wrap{grid-template-columns:1fr;padding:20px 16px 56px;}
-  .left{position:static;flex-direction:row;flex-wrap:wrap;justify-content:flex-start;text-align:left;}
-  .avatar-wrap{width:86px;height:86px;margin-right:16px;margin-bottom:0;}
-  .name-card{flex:1;min-width:170px;}
-  .stat-row,.contact-icons,.resume-btn,.divider,.stack-section{width:100%;}
-  .projects-grid{grid-template-columns:1fr;}
-  .research-entry{grid-template-columns:1fr;}
-  .r-thumb{width:100%;height:140px;}
-  footer{flex-direction:column;align-items:flex-start;}
-  #theme-toggle{top:12px;right:12px;}
+.wrap{grid-template-columns:1fr;padding:20px 16px 56px}
+.left{position:static}
+.entry{grid-template-columns:1fr}.thumb{width:100%;height:140px}
+.book-grid{grid-template-columns:1fr}
+#theme-toggle{top:10px;right:10px}
 }
-@media print{
-  #bg-canvas,#loader,#cursor-dot,#cursor-ring,#scroll-progress,.top-nav,#theme-toggle,body::before{display:none!important;}
-  body{background:#fff;color:#111;font-size:11pt;}
-  .wrap{display:block;max-width:100%;padding:0;}
-  .left{position:static;}
-  .section{border:1px solid #ddd;break-inside:avoid;}
-}
+@media(max-width:480px){.book{grid-template-columns:72px 1fr}.cover{width:72px}.comp{grid-template-columns:1fr}.comp-right{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}.reveal{opacity:1;transform:none}}
+@media print{#theme-toggle,#progress,.top-nav{display:none!important}body{background:#fff;color:#111}.wrap{display:block}.left{position:static}}
 </style>
 </head>
 <body>
-
-<div id="loader">
-  <div class="loader-name">Muhammad Hamza</div>
-  <div class="loader-sub">ML Researcher · IIT Kharagpur</div>
-  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-</div>
-
-<button id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle theme">
-  <i class="fa-solid fa-moon t-moon"></i>
-  <i class="fa-solid fa-sun t-sun"></i>
-</button>
-
-<div id="scroll-progress"></div>
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
-<canvas id="bg-canvas"></canvas>
+<button id="theme-toggle" aria-label="Toggle light/dark mode"><i class="fa-solid fa-moon t-moon"></i><i class="fa-solid fa-sun t-sun"></i></button>
+<div id="progress"></div>
 
 <div class="wrap">
-
-<!-- ══ SIDEBAR ══════════════════════════════════ -->
+<!-- SIDEBAR -->
 <aside class="left">
-  <div class="avatar-wrap">
-    <div class="avatar-ring-outer"></div>
-    <div class="avatar-ring-mask"></div>
-    <div class="avatar">
-      <img src="me.jpeg" alt="Muhammad Hamza"
-           onerror="this.style.display='none';document.getElementById('av-init').style.display='flex'">
-      <div class="avatar-init" id="av-init" style="display:none">MH</div>
-    </div>
-  </div>
-
-  <div class="name-card">
-    <h1 class="name">Muhammad Hamza</h1>
-    <div class="affil-line">Indian Institute of Technology, Kharagpur</div>
-    <div class="affil-line" style="margin-top:2px">Dual Degree (B.Tech + M.Tech) · AI Specialisation</div>
-        <div class="affil-line" style="margin-top:2px;color:var(--accent3)"> &nbsp;·&nbsp; Incoming SWE-ML Intern @ Glance InMobi</div>
-
-    <div class="affil-line" style="margin-top:2px;color:var(--accent3)"> &nbsp;·&nbsp; Graduating May 2028</div>
-  </div>
-
-  <div class="role-chips">
-    <span class="role-chip">ML Researcher</span>
-    <span class="role-chip">Aspiring ML Engineer</span>
-  </div>
-
-  <!-- <div class="stat-row">
-    <div class="stat-box"><div class="stat-num" data-target="2">0</div><div class="stat-label">Papers</div></div>
-    <div class="stat-box"><div class="stat-num" data-target="4">0</div><div class="stat-label">Interns</div></div>
-    <div class="stat-box">
-      <div class="stat-num" data-target="1" data-suffix="Million+">0</div>
-      <div class="stat-label">Quora Views</div>
-    </div>
-  </div> -->
-
+  <div class="avatar-wrap"><div class="avatar">
+    <img src="me.jpeg" alt="Muhammad Hamza" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span style="display:none">MH</span>
+  </div></div>
+  <h1 class="name">Muhammad Hamza</h1>
+  <div class="affil">Indian Institute of Technology, Kharagpur</div>
+  <div class="affil">Dual Degree (B.Tech + M.Tech) · AI Specialisation</div>
+  <div class="affil hl">Incoming SWE-ML Intern @ Glance, InMobi</div>
+  <div class="affil hl">Graduating May 2028</div>
+  <div class="chips"><span class="role">ML Engineer · Researcher</span></div>
   <div class="divider"></div>
-
-  <div class="contact-icons">
-    <a href="/cdn-cgi/l/email-protection#472f262a3d26692e2e332c203707202a262e2b6924282a" class="icon-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
-    <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" rel="noopener" class="icon-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-    <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="icon-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
-    <a href="https://hamza-faarooq.github.io" target="_blank" rel="noopener" class="icon-btn" title="Personal Website"><i class="fa-solid fa-globe"></i></a>
-    <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="icon-btn" title="Medium"><i class="fa-brands fa-medium"></i></a>
-    <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" rel="noopener" class="icon-btn" title="Quora"><i class="fa-brands fa-quora"></i></a>
+  <div class="contact">
+    <a href="mailto:hamza.iitkgp@gmail.com" class="icon-btn" title="Email" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+    <a href="https://www.linkedin.com/in/muhammad-hamza-iftekhar-hamid-784903204/" target="_blank" rel="noopener" class="icon-btn" title="LinkedIn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="icon-btn" title="GitHub" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+    <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="icon-btn" title="Medium" aria-label="Medium"><i class="fa-brands fa-medium"></i></a>
+    <a href="https://www.quora.com/profile/Muhammad-Hamza-1682" target="_blank" rel="noopener" class="icon-btn" title="Quora" aria-label="Quora"><i class="fa-brands fa-quora"></i></a>
   </div>
-
-  <a href="ResearchCV_Hamza.pdf" target="_blank" rel="noopener" class="resume-btn">
-    <i class="fa-solid fa-file-arrow-down"></i> Curriculum Vitae
-  </a>
+  <a href="ResearchCV_Hamza.pdf" target="_blank" rel="noopener" class="cv-btn"><i class="fa-solid fa-file-arrow-down"></i> Curriculum Vitae</a>
 </aside>
 
-<!-- ══ MAIN ══════════════════════════════════════ -->
-<main class="main">
+<main>
+<nav class="top-nav" aria-label="Page sections">
+  <a href="#about" class="nav-link" data-s="about">About</a>
+  <a href="#updates" class="nav-link" data-s="updates">News</a>
+  <a href="#industry" class="nav-link" data-s="industry">Industry</a>
+  <a href="#research" class="nav-link" data-s="research">Research</a>
+  <a href="#publications" class="nav-link" data-s="publications">Publications</a>
+  <a href="#projects" class="nav-link" data-s="projects">Projects</a>
+  <a href="#writing" class="nav-link" data-s="writing">Writing</a>
+  <a href="blogs.html" class="nav-link">Blogs</a>
+  <a href="ResearchCV_Hamza.pdf" target="_blank" rel="noopener" class="nav-link">CV</a>
+</nav>
 
-  <nav class="top-nav" aria-label="Page sections">
-    <a href="#about"        class="nav-link" data-section="about">About</a>
-    <a href="#updates"      class="nav-link" data-section="updates">News</a>
-    <a href="#industry" class="nav-link" data-section="industry">Industry</a>
-    <a href="#experience"   class="nav-link" data-section="experience">Research</a>
-    <a href="#projects"     class="nav-link" data-section="projects">Projects</a>
-    <a href="#publications" class="nav-link" data-section="publications">Publications</a>
-    <a href="poems.html"    class="nav-link">Poems</a>
-    <a href="stories.html"  class="nav-link">Stories</a>
-    <a href="blogs.html"    class="nav-link">Blogs</a>
-    <a href="ResearchCV_Hamza.pdf" target="_blank" rel="noopener" class="nav-link">CV <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:8px;margin-left:2px"></i></a>
-  </nav>
-
-  <!-- ABOUT -->
-  <section class="section reveal" id="about">
-    <h2 class="section-title"><span class="tnum">01</span>About</h2>
-    <p class="lead">
-      I'm <strong>Muhammad Hamza</strong> — a fourth-year undergraduate at
-      <strong>Indian Institute of Technology, Kharagpur</strong>, pursuing a <strong>Dual Degree (B.Tech + M.Tech)</strong> in Chemical Engineering
-      with a specialisation in <strong>Artificial Intelligence &amp; Applications</strong>.
-      My research interests span <span id="typed-phrase"></span><span class="typed-cursor"></span>
-    </p>
-    <p class="lead" style="margin-top:12px">
-      I aspire to work as an ML Engineer and actively seek collaborations in NLP, LLMs, and Computer Vision.
-      Outside the lab, I write on <a href="https://medium.com/@_hamza" target="_blank" rel="noopener">Medium</a>
-      (cricket &amp; sports analytics) and have accumulated <strong>1 Million+ views</strong> on Quora.
-    </p>
-    <div class="kw-row">
-      <span class="kw kw-blue">Neural Operators</span>
-      <span class="kw kw-blue">Large Language Models</span>
-      <span class="kw kw-green">Spiking Neural Networks</span>
-      <span class="kw kw-green">Multimodal Fusion</span>
-      <span class="kw kw-purple">Computer Vision</span>
-      <span class="kw kw-purple">NLP</span>
-      <span class="kw kw-gold">Theoretical ML</span>
-      <span class="kw kw-gold">Operator Learning</span>
-    </div>
-  </section>
-
-  <!-- NEWS / UPDATES -->
-  <section class="section reveal" id="updates">
-    <h2 class="section-title"><span class="tnum">02</span>News</h2>
-    <div class="timeline">
-    <div class="tl-item"><div class="tl-badge">July '26</div><div class="tl-text">Accepted to <strong>Algoverse AI</strong> as <strong>AI Research Fellow</strong>, one among the only 90 in the cohort from 100,000+ applications.</div></div>
-        <div class="tl-item"><div class="tl-badge">June '26</div><div class="tl-text">Accepted to <strong>Amazon ML Summer School 2026</strong></div></div>
-
-      <div class="tl-item"><div class="tl-badge">June '26</div><div class="tl-text">Preprint on SGD based optimisation published on <strong>arXiv</strong></div></div>
-    <div class="tl-item"><div class="tl-badge">May '26</div><div class="tl-text">Paper on Spiking Neural Networks under review at <strong>Neuromorphic Elsevier</strong></div></div>
-      <div class="tl-item"><div class="tl-badge">Apr '26</div><div class="tl-text">Paper published at <strong>IEEE Explore</strong></div></div>
-      <div class="tl-item"><div class="tl-badge">Jan '26</div><div class="tl-text">Paper accepted at <strong>IEEE ICCECE Conference 2026</strong></div></div>
-      <div class="tl-item"><div class="tl-badge">Nov '25</div><div class="tl-text">Started Research Intern at <strong>University of Manchester</strong> · Spherical Neural Operators</div></div>
-      <div class="tl-item"><div class="tl-badge">Oct '25</div><div class="tl-text">Paper accepted at <strong>iSAI-NLP Conference 2025</strong></div></div>
-      <div class="tl-item tl-hidden"><div class="tl-badge">May '25</div><div class="tl-text">Started Research Intern at <strong>University of Oulu, Finland</strong> · SNN Pruning &amp; Constrained Optimisation</div></div>
-      <div class="tl-item tl-hidden"><div class="tl-badge">Apr '25</div><div class="tl-text">Started Research Intern at <strong>IIM Ranchi</strong> · Multimodal ML</div></div>
-      <div class="tl-item tl-hidden"><div class="tl-badge">Jul '23</div><div class="tl-text">Accepted into <strong>IIT Kharagpur</strong></div></div>
-    </div>
-    <button class="tl-toggle" id="tl-toggle" aria-expanded="false">Show all ↓</button>
-  </section>
-
-
-<!-- INDUSTRY EXPERIENCE -->
-<section class="section reveal" id="industry">
-  <h2 class="section-title"><span class="tnum">04</span>Industry Experience</h2>
-
-  <div class="research-entry">
-    <div class="r-thumb">
-      <div class="r-thumb-ph">
-        <i class="fa-solid fa-building"></i>
-      </div>
-    </div>
-
-    <div>
-      <div class="r-header">
-        <div class="r-title">SWE-ML Intern</div>
-        <span class="venue-badge venue-intern">Incoming Intern</span>
-      </div>
-
-      <div class="r-meta">Glance · InMobi Group</div>
-      <div class="r-date">May 2027 – July 2027</div>
-
-      <div class="r-metrics">
-        <span class="metric-chip">Machine Learning Engineering</span>
-        <span class="metric-chip">Production ML Systems</span>
-        <span class="metric-chip">Industry Experience</span>
-      </div>
-
-      <div class="r-desc">
-        Incoming Software Engineering Intern specializing in Machine Learning at 
-        Glance, InMobi Group. Will contribute to developing scalable ML systems 
-        and production-grade AI solutions while gaining hands-on experience 
-        bridging research-driven models with real-world applications.
-      </div>
-    </div>
+<!-- ABOUT -->
+<section class="section reveal" id="about">
+  <h2 class="st">About</h2>
+  <p class="lead">I'm <strong>Muhammad Hamza</strong>, a fourth-year undergraduate at <strong>IIT Kharagpur</strong> pursuing a <strong>Dual Degree (B.Tech + M.Tech)</strong> in Chemical Engineering with a specialisation in <strong>Artificial Intelligence &amp; Applications</strong>. My research interests span <span id="typed"></span><span class="cursor"></span></p>
+  <p class="lead">I aspire to work as an ML Engineer and seek collaborations in NLP, LLMs, and Computer Vision. Outside the lab, I write cricket and sports analytics on <a href="https://medium.com/@_hamza" target="_blank" rel="noopener">Medium</a>, have <strong>1 Million+ views</strong> on Quora, and write fiction, including a Sherlock Holmes novel and a story collection (see <a href="#writing">Writing</a>). JEE Main 2023 AIR 3071 · JEE Advanced 2023 AIR 5072.</p>
+  <div class="kw-row">
+    <span class="kw c-blue">Neural Operators</span><span class="kw c-blue">Large Language Models</span>
+    <span class="kw c-green">Spiking Neural Networks</span><span class="kw c-green">Multimodal Fusion</span>
+    <span class="kw c-purple">Computer Vision</span><span class="kw c-purple">NLP</span>
+    <span class="kw c-gold">Theoretical ML</span><span class="kw c-gold">Operator Learning</span>
+    <span class="kw c-blue">PINNs</span><span class="kw c-purple">Diffusion Models</span>
   </div>
-
 </section>
-  
-  <!-- RESEARCH -->
-  <section class="section reveal" id="experience">
-    <h2 class="section-title"><span class="tnum">03</span>Research</h2>
 
-    <div class="research-entry">
-      <div class="r-thumb">
-        <img src="manchester_teaser.png" alt="DeepONet"
-             onerror="this.parentElement.innerHTML='<div class=\'r-thumb-ph\'><i class=\'fa-solid fa-wave-square\'></i></div>'">
-      </div>
-      <div>
-        <div class="r-header">
-          <div class="r-title">Neural Operators on Spherical Domains for PDE Learning</div>
-          <span class="venue-badge venue-intern">Research Intern</span>
-        </div>
-        <div class="r-meta">University of Manchester · Prof. Anirbit Mukherjee</div>
-        <div class="r-meta">NASA · We got collaboration with NASA, chuffed tbh!</div>
-        <div class="r-date">Nov 2025 – Present</div>
-        <div class="r-metrics">
-          <span class="metric-chip">S² manifolds</span>
-          <span class="metric-chip">HEALPix ~196K nodes</span>
-          <span class="metric-chip">L_max = 511</span>
-          <span class="metric-chip">40× compute reduction</span>
-        </div>
-        <div class="r-desc" id="rd1">Designed and implemented DeepONet-based neural operators on spherical domains, modeling heat PDE dynamics with L_max = 100+ harmonic modes, achieving stable spectral evolution and accurate eigenvalue decay. Engineered geometry-aware architectures combining Graph CNN (HEALPix, ~196K nodes) &amp; SIREN trunk networks, mitigating spectral bias and enabling high-frequency function reconstruction on S² manifolds. Optimized scalable training pipelines via stochastic spatial sampling (5K/196K nodes per step), reducing computational cost by ~40× while preserving convergence.</div>
-        <button class="r-expand" onclick="toggleRd('rd1',this)">Read more ↓</button>
-        <div class="r-links">
-          <a href="https://github.com/Vision-jarvis/DeepONet-Project" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
-          <a href="https://hamza-faarooq.github.io/burgers-deeponet/" class="r-link"> <i class="fa-solid fa-blog"></i> Blog </a>
-        </div>
-      </div>
-    </div>
-
-
-<div class="research-entry">
-  <div class="r-thumb">
-    <img src="cwgd_teaser.png" alt="CWGD"
-         onerror="this.parentElement.innerHTML='<div class=\'r-thumb-ph\'><i class=\'fa-solid fa-chart-line\'></i></div>'">
+<!-- NEWS -->
+<section class="section reveal" id="updates">
+  <h2 class="st">News</h2>
+  <div class="timeline">
+    <div class="tl"><div class="tl-date">Jul '26</div><div class="tl-text">Accepted to <strong>Algoverse AI</strong> as <strong>AI Research Fellow</strong>, one of 90 in the cohort from 100,000+ applications.</div></div>
+    <div class="tl"><div class="tl-date">Jun '26</div><div class="tl-text">Accepted to <strong>Amazon ML Summer School 2026</strong>.</div></div>
+    <div class="tl"><div class="tl-date">Jun '26</div><div class="tl-text">Preprint on SGD optimisation published on <strong>arXiv</strong>.</div></div>
+    <div class="tl"><div class="tl-date">May '26</div><div class="tl-text">Spiking Neural Networks paper under review at <strong>Neurocomputing (Elsevier)</strong>.</div></div>
+    <div class="tl"><div class="tl-date">Apr '26</div><div class="tl-text">Paper published on <strong>IEEE Xplore</strong>.</div></div>
+    <div class="tl"><div class="tl-date">Jan '26</div><div class="tl-text">Paper accepted at <strong>IEEE ICCECE 2026</strong>.</div></div>
+    <div class="tl"><div class="tl-date">Nov '25</div><div class="tl-text">Started Research Intern at <strong>University of Manchester</strong>: Spherical Neural Operators.</div></div>
+    <div class="tl" hidden><div class="tl-date">Oct '25</div><div class="tl-text">Paper accepted at <strong>iSAI-NLP 2025</strong>.</div></div>
+    <div class="tl" hidden><div class="tl-date">May '25</div><div class="tl-text">Started Research Intern at <strong>University of Oulu, Finland</strong>: SNN pruning &amp; constrained optimisation.</div></div>
+    <div class="tl" hidden><div class="tl-date">Apr '25</div><div class="tl-text">Started Research Intern at <strong>IIM Ranchi</strong>: Multimodal ML.</div></div>
+    <div class="tl" hidden><div class="tl-date">Jul '23</div><div class="tl-text">Joined <strong>IIT Kharagpur</strong>.</div></div>
   </div>
-  <div>
-    <div class="r-header">
-      <div class="r-title">Curvature-Weighted Gradient Diversity: A Noise Measure for Geometry-Adaptive SGD</div>
-      <span class="venue-badge venue-intern">Independent Research</span>
-    </div>
-    <div class="r-meta">Preprint out on arXiv</div>
-        <div class="r-meta">Submission to TMLR · Under Review</div>
+  <button class="btn-ghost" id="tl-toggle" aria-expanded="false">Show all ↓</button>
+</section>
 
-    <div class="r-date">March 2026 - May 2026</div>
-    <div class="r-metrics">
-      <span class="metric-chip">Strongly-convex quadratics</span>
-      <span class="metric-chip">Hutchinson estimation</span>
-      <span class="metric-chip">20% lower suboptimality</span>
-      <span class="metric-chip">Noise-adaptive schedules</span>
-    </div>
-    <div class="r-desc" id="rd2">
-      Developed Curvature-Weighted Gradient Diversity (CWGD), a novel noise measure that adjusts for landscape geometry by down-weighting high-curvature parameter directions. Proved that CWGD-modulated cosine annealing reduces asymptotic suboptimality floors by a factor of 1/(1+α), validated by empirical improvements of ~20% over plain cosine annealing across various condition numbers and noise regimes. Identified and resolved estimator degeneracies, delivering a provably exact Hutchinson-based implementation for diagonal Hessian approximations.
-    </div>
-    <button class="r-expand" onclick="toggleRd('rd2',this)">Read more ↓</button>
-    <div class="r-links">
-      <a href="https://github.com/Hamza-Faarooq/cwgd-optimizer" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
-      <a href="https://arxiv.org/abs/2606.30455" class="r-link"><i class="fa-solid fa-file-lines"></i> Preprint </a>
-                <a href="https://hamza-faarooq.github.io/cwgd-optimizer/" class="r-link"> <i class="fa-solid fa-blog"></i> Blog </a>
+<!-- INDUSTRY -->
+<section class="section reveal" id="industry">
+  <h2 class="st">Industry Experience</h2>
+  <div class="entry">
+    <div class="thumb"><div class="ph"><i class="fa-solid fa-building"></i></div></div>
+    <div>
+      <div class="e-head"><div class="e-title">SWE-ML Intern</div><span class="badge b-green">Incoming</span></div>
+      <div class="e-meta">Glance · InMobi Group</div>
+      <div class="e-date">May 2027 – July 2027</div>
+      <div class="metrics"><span class="metric">Machine Learning Engineering</span><span class="metric">Production ML Systems</span></div>
+      <div class="desc" style="max-height:none">Incoming software engineering intern specialising in machine learning at Glance, InMobi Group. Will contribute to scalable ML systems and production-grade AI solutions, bridging research-driven models with real-world applications.</div>
     </div>
   </div>
-</div>
+</section>
 
-    
-    <div class="research-entry">
-      <div class="r-thumb">
-        <img src="oulu_teaser.png" alt="SNN Pruning"
-             onerror="this.parentElement.innerHTML='<div class=\'r-thumb-ph\'><i class=\'fa-solid fa-brain\'></i></div>'">
+<!-- RESEARCH -->
+<section class="section reveal" id="research">
+  <h2 class="st">Research</h2>
+
+  <div class="entry">
+    <div class="thumb"><img src="manchester_teaser.png" alt="Spherical neural operators" onerror="this.parentElement.innerHTML='<div class=ph><i class=&quot;fa-solid fa-wave-square&quot;></i></div>'"></div>
+    <div>
+      <div class="e-head"><div class="e-title">Neural Operators on Spherical Domains for PDE Learning</div><span class="badge b-green">Research Intern</span></div>
+      <div class="e-meta">University of Manchester · Prof. Anirbit Mukherjee</div>
+      <div class="e-meta">Collaboration with NASA</div>
+      <div class="e-date">Nov 2025 – Present</div>
+      <div class="metrics"><span class="metric">S² manifolds</span><span class="metric">HEALPix ~196K nodes</span><span class="metric">L_max = 511</span><span class="metric">40× compute reduction</span></div>
+      <div class="desc" id="rd1">Designed and implemented DeepONet-based neural operators on spherical domains, modelling heat PDE dynamics with L_max = 100+ harmonic modes, achieving stable spectral evolution and accurate eigenvalue decay. Engineered geometry-aware architectures combining Graph CNN (HEALPix, ~196K nodes) and SIREN trunk networks, mitigating spectral bias and enabling high-frequency reconstruction on S² manifolds. Optimised training via stochastic spatial sampling (5K of 196K nodes per step), cutting compute by ~40× while preserving convergence.</div>
+      <button class="more" data-t="rd1">Read more ↓</button>
+      <div class="links">
+        <a href="https://github.com/Vision-jarvis/DeepONet-Project" class="link"><i class="fa-brands fa-github"></i> Code</a>
+        <a href="https://hamza-faarooq.github.io/burgers-deeponet/" class="link"><i class="fa-solid fa-blog"></i> Blog</a>
       </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="thumb"><img src="cwgd_teaser.png" alt="CWGD" onerror="this.parentElement.innerHTML='<div class=ph><i class=&quot;fa-solid fa-chart-line&quot;></i></div>'"></div>
+    <div>
+      <div class="e-head"><div class="e-title">Curvature-Weighted Gradient Diversity: A Noise Measure for Geometry-Adaptive SGD</div><span class="badge b-green">Independent Research</span></div>
+      <div class="e-meta">Preprint on arXiv · Submitted to TMLR (under review)</div>
+      <div class="e-date">Mar 2026 – May 2026</div>
+      <div class="metrics"><span class="metric">Strongly-convex quadratics</span><span class="metric">Hutchinson estimation</span><span class="metric">~20% lower suboptimality</span><span class="metric">Noise-adaptive schedules</span></div>
+      <div class="desc" id="rd2">Developed Curvature-Weighted Gradient Diversity (CWGD), a noise measure that adjusts for landscape geometry by down-weighting high-curvature directions. Proved that CWGD-modulated cosine annealing reduces asymptotic suboptimality floors by a factor of 1/(1+α), with ~20% empirical improvement over plain cosine annealing across condition numbers and noise regimes. Resolved estimator degeneracies, delivering a provably exact Hutchinson-based implementation for diagonal Hessian approximations.</div>
+      <button class="more" data-t="rd2">Read more ↓</button>
+      <div class="links">
+        <a href="https://github.com/Hamza-Faarooq/cwgd-optimizer" class="link"><i class="fa-brands fa-github"></i> Code</a>
+        <a href="https://arxiv.org/abs/2606.30455" class="link"><i class="fa-solid fa-file-lines"></i> Preprint</a>
+        <a href="https://hamza-faarooq.github.io/cwgd-optimizer/" class="link"><i class="fa-solid fa-blog"></i> Blog</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="thumb"><img src="oulu_teaser.png" alt="SNN pruning" onerror="this.parentElement.innerHTML='<div class=ph><i class=&quot;fa-solid fa-brain&quot;></i></div>'"></div>
+    <div>
+      <div class="e-head"><div class="e-title">Criticality-Constrained Pruning for Energy-Efficient Spiking Neural Networks</div><span class="badge b-green">Research Intern</span></div>
+      <div class="e-meta">University of Oulu · Prof. Shuai Lee</div>
+      <div class="e-date">Mar 2025 – Jun 2025</div>
+      <div class="metrics"><span class="metric">90% sparsity</span><span class="metric">95.6% MNIST accuracy</span><span class="metric">73% energy reduction</span><span class="metric">snnTorch · CVXPY</span></div>
+      <div class="desc" id="rd3">Designed Criticality-Constrained Quadratic Pruning (CQP), a native PyTorch pipeline fusing surrogate-gradient criticality with weight magnitude to prune SNNs without convex solvers. Characterised a continuous-relaxation trap in QP-based pruning that causes a 44 pp accuracy collapse, and a zombie-weight failure mode in Adam fine-tuning. Combining weight sparsification with KL-divergence temporal analysis yields a 73% energy reduction at 70% sparsity, retaining 95.6% MNIST accuracy at 90% sparsity. Submitted to Neurocomputing (Elsevier).</div>
+      <button class="more" data-t="rd3">Read more ↓</button>
+      <div class="links">
+        <a href="https://github.com/Hamza-Faarooq/Pruning-with-SNNs" class="link"><i class="fa-brands fa-github"></i> Code</a>
+        <a href="https://hamza-faarooq.github.io/snn-pruning.html" class="link"><i class="fa-solid fa-blog"></i> Blog</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="thumb"><img src="iim_teaser.png" alt="Multimodal fusion" onerror="this.parentElement.innerHTML='<div class=ph><i class=&quot;fa-solid fa-film&quot;></i></div>'"></div>
+    <div>
+      <div class="e-head"><div class="e-title">Multimodal Fusion for Movie Review Helpfulness Prediction</div><span class="badge b-gold">iSAI-NLP 2025</span></div>
+      <div class="e-meta">IIM Ranchi · Prof. Sobhan Sarkar</div>
+      <div class="e-date">Apr 2025 – Aug 2025</div>
+      <div class="metrics"><span class="metric">Acc 0.875</span><span class="metric">AUC 0.884</span><span class="metric">BERT · ViT · CLIP</span><span class="metric">Dempster-Shafer</span></div>
+      <div class="desc" id="rd4">Built a scalable multimodal pipeline over 54,000+ IMDB reviews and 30,000+ frames using BERT, ViT, and CLIP. Introduced Dempster-Shafer evidential fusion for uncertainty-aware helpfulness prediction, outperforming attention and concatenation baselines across all five standard metrics.</div>
+      <button class="more" data-t="rd4">Read more ↓</button>
+      <div class="links">
+        <a href="https://github.com/Hamza-Faarooq/IIM_Research_Intern" class="link"><i class="fa-brands fa-github"></i> Code</a>
+        <a href="https://ieeexplore.ieee.org/abstract/document/11492803/" class="link"><i class="fa-solid fa-trophy"></i> IEEE Xplore</a>
+        <a href="https://hamza-faarooq.github.io/IIM_Research_Intern/" class="link"><i class="fa-solid fa-blog"></i> Blog</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section class="section reveal" id="publications">
+  <h2 class="st">Publications</h2>
+
+  <div class="pub">
+    <div class="pub-idx">[1]</div>
+    <div>
+      <div class="pub-badges"><span class="badge b-gold">iSAI-NLP 2025</span><span class="badge b-blue">IEEE ICCECE 2026</span></div>
+      <div class="pub-title">Movie Review Helpfulness Prediction using Semantic Alignment and Evidential Fusion-based Multimodal Approach</div>
+      <div class="pub-auth"><b>Muhammad Hamza</b>, et al.</div>
+      <div class="pub-venue">iSAI-NLP 2025 · also accepted at IEEE ICCECE 2026</div>
+      <div class="links"><a href="https://ieeexplore.ieee.org/abstract/document/11492803/" class="link" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> IEEE Xplore</a></div>
+    </div>
+  </div>
+
+  <div class="pub">
+    <div class="pub-idx">[2]</div>
+    <div>
+      <div class="pub-badges"><span class="badge b-gold">Preprint</span><span class="badge b-blue">arXiv</span><span class="badge b-green">Optimisation</span></div>
+      <div class="pub-title">Curvature-Weighted Gradient Diversity: A Noise Measure for Geometry-Adaptive SGD Schedules</div>
+      <div class="pub-auth"><b>Muhammad Hamza</b> &amp; Ayush Goel</div>
+      <div class="pub-venue">arXiv · submitted to TMLR</div>
+      <div class="links">
+        <a href="https://arxiv.org/abs/2606.30455" class="link" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> arXiv</a>
+        <a href="https://github.com/Hamza-Faarooq/cwgd-optimizer" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> Code</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="pub">
+    <div class="pub-idx">[3]</div>
+    <div>
+      <div class="pub-badges"><span class="badge b-gold">Under Review</span><span class="badge b-blue">Neurocomputing</span><span class="badge b-green">SNNs</span></div>
+      <div class="pub-title">Criticality-Constrained Iterative Pruning for Energy-Efficient Spiking Neural Networks via Combined Importance Scoring</div>
+      <div class="pub-auth"><b>Muhammad Hamza</b></div>
+      <div class="pub-venue">Submitted to Neurocomputing, Elsevier (ISSN 0925-2312)</div>
+      <div class="links"><a href="https://github.com/Hamza-Faarooq/Pruning-with-SNNs" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> Code</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section reveal" id="projects">
+  <h2 class="st">Projects</h2>
+
+  <div class="proj">
+    <div class="proj-head"><h3>ApexSearch: Audio-Visual RAG &amp; Multimodal Video Retrieval Engine</h3><span class="year">2026</span></div>
+    <div class="tags"><span class="tag c-gold">PyTorch</span><span class="tag c-green">FAISS</span><span class="tag c-purple">Multimodal RAG</span><span class="tag c-blue">Streamlit</span><span class="tag c-green">CLIP · CLAP</span><span class="tag c-blue">Groq</span></div>
+    <p class="proj-short">An end-to-end multimodal RAG system for natural-language querying and live commentary over untrimmed Formula 1 broadcasts.</p>
+    <div class="proj-full" id="pf1"><ul>
+      <li>Localises events (crashes, pit stops) in untrimmed broadcasts from natural-language queries.</li>
+      <li>Extracts visual features at 1 FPS plus synchronised audio chunks, embedded with frozen CLIP and CLAP into separate FAISS indexes for sub-50ms retrieval.</li>
+      <li>Uses a dynamically weighted late-fusion score to resolve cross-modal ambiguity, for example trusting audio over visuals under heavy motion blur.</li>
+      <li>Deployed serverlessly on Streamlit Community Cloud, with Vision-Language Model inference delegated to Groq API calls for zero-cost hosting.</li>
+    </ul></div>
+    <div class="proj-foot">
+      <a href="https://github.com/Hamza-Faarooq/ApexSearch" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+      <a href="https://apexsearch.streamlit.app/" class="link" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Try it</a>
+      <button class="more" data-p="pf1">Read more ↓</button>
+    </div>
+  </div>
+
+  <div class="proj">
+    <div class="proj-head"><h3>Synthesia: Visuo-Lingual Affective Recommender System</h3><span class="year">2026</span></div>
+    <div class="tags"><span class="tag c-gold">Transformers</span><span class="tag c-green">FAISS</span><span class="tag c-purple">Multimodal ML</span><span class="tag c-blue">Late-Fusion</span><span class="tag c-green">ResNet · DistilRoBERTa</span></div>
+    <p class="proj-short">A multimodal pipeline fusing facial expression recognition and text sentiment to drive an emotion-aware movie recommender.</p>
+    <div class="proj-full" id="pf2"><ul>
+      <li>Late-fusion architecture: ResNet (via DeepFace) for visual emotion and DistilRoBERTa for text sentiment, blending the two distributions.</li>
+      <li>Dense vector search with FAISS and MiniLM embeddings for retrieval and ranking.</li>
+      <li>Ablation study showing late fusion beats unimodal baselines.</li>
+      <li>Deployed to a live cloud server, working through Linux graphics-driver and Python versioning issues.</li>
+    </ul></div>
+    <div class="proj-foot">
+      <a href="https://github.com/Hamza-Faarooq/Visuo-Lingual-Affective-Recommender-System-VLARS-" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+      <a href="https://tm-vettel-vlars-recommender.hf.space/" class="link" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Try it</a>
+      <button class="more" data-p="pf2">Read more ↓</button>
+    </div>
+  </div>
+
+  <div class="proj">
+    <div class="proj-head"><h3>VictorianGPT: Compound AI Conversational Agent</h3><span class="year">2026</span></div>
+    <div class="tags"><span class="tag c-gold">QLoRA</span><span class="tag c-green">RAG</span><span class="tag c-purple">ChromaDB</span><span class="tag c-blue">Gradio</span><span class="tag c-green">Qwen 2.5 3B</span></div>
+    <p class="proj-short">A QLoRA-fine-tuned model combined with retrieval over 19th-century literature, deployed as an atmospheric Victorian conversational agent.</p>
+    <div class="proj-full" id="pf3"><ul>
+      <li>Fine-tuned Qwen 2.5 3B Instruct with QLoRA (4-bit NF4) on ~10,000 synthetic conversational pairs for a Victorian gothic voice.</li>
+      <li>Semantic memory with ChromaDB and MiniLM embeddings, retrieving context from Dickens, Stoker, and Wilde.</li>
+      <li>Fixed "context domination" (lazy RAG) by restructuring the prompt hierarchy and tuning repetition penalties.</li>
+      <li>Deployed on Hugging Face Spaces with a custom Gradio interface.</li>
+    </ul></div>
+    <div class="proj-foot">
+      <a href="https://github.com/Hamza-Faarooq/VictorianGPT" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+      <a href="https://tm-vettel-victoriangpt.hf.space/" class="link" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Try it</a>
+      <button class="more" data-p="pf3">Read more ↓</button>
+    </div>
+  </div>
+
+  <div class="proj">
+    <div class="proj-head"><h3>ML-Driven Volatility Surface Modelling: NIFTY50 Options</h3><span class="year">2025</span></div>
+    <div class="tags"><span class="tag c-gold">Python</span><span class="tag c-green">Ensemble ML</span><span class="tag c-purple">Quant Finance</span><span class="tag c-green">MSE 0.00009</span><span class="tag c-blue">10× baseline</span></div>
+    <p class="proj-short">High-frequency implied-volatility forecasting across 50+ strikes and maturities, with a batch-wise ensemble and strike-aware feature selection. Placed 198 of 6000+ at the NK Securities Research Hackathon 2025.</p>
+    <div class="proj-full" id="pf4"><ul>
+      <li>Engineered 100+ features including Greeks, moneyness, term structure, and microstructure signals.</li>
+      <li>Batch-wise ensemble of gradient boosting and regularised regression, more than 10× more accurate than standard ML baselines.</li>
+    </ul></div>
+    <div class="proj-foot">
+      <a href="https://github.com/Hamza-Faarooq/NK_Securities_Hackathon" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+      <button class="more" data-p="pf4">Read more ↓</button>
+    </div>
+  </div>
+
+  <div class="comp-title">Competitions &amp; Hackathons</div>
+  <div class="comp"><div><div class="comp-name">Optiver Trade-athon 2026</div><div class="comp-desc">Real-time market-making and pricing under dynamic simulated conditions, against top IIT teams.</div></div><div class="comp-right"><span class="rank">Rank 23</span><span class="comp-date">Mar 2026 · Optiver</span></div></div>
+  <div class="comp"><div><div class="comp-name">Convolve 4.0: Pan-IIT AI/ML Hackathon</div><div class="comp-desc">Screening ML/AI assessment among 3,000+ students from IITs across India.</div></div><div class="comp-right"><span class="rank">AIR 102</span><span class="comp-date">Feb 2026 · IIT Madras</span></div></div>
+  <div class="comp"><div><div class="comp-name">Convolve 3.0: Pan-IIT AI/ML Hackathon</div><div class="comp-desc">XGBoost loan default prediction, 0.85 precision, 0.91 F1, with robust class-imbalance handling.</div></div><div class="comp-right"><span class="rank">Top 50 / 4000+</span><span class="comp-date">Jan 2025 · IIT Guwahati</span></div></div>
+</section>
+
+<!-- WRITING -->
+<section class="section reveal" id="writing">
+  <h2 class="st">Writing</h2>
+  <div class="book-grid">
+    <div class="book">
+      <div class="cover"><img src="hound_cover.jpg" alt="The Hound of the Pale Marsh cover" onerror="this.parentElement.innerHTML='<div class=ph><i class=&quot;fa-solid fa-book&quot;></i></div>'"></div>
       <div>
-        <div class="r-header">
-          <div class="r-title">Criticality-Constrained Pruning for Energy-Efficient Spiking Neural Networks</div>
-          <span class="venue-badge venue-intern">Research Intern</span>
-        </div>
-        <div class="r-meta">University of Oulu · Prof. Shuai Lee</div>
-        <div class="r-date">Mar 2025 – Jun 2025</div>
-        <div class="r-metrics">
-          <span class="metric-chip">90% sparsity</span>
-          <span class="metric-chip">95.6% MNIST accuracy</span>
-          <span class="metric-chip">73% energy reduction</span>
-          <span class="metric-chip">CQP · CVXPY · snnTorch</span>
-          <span class="metric-chip">MNIST · Fashion-MNIST</span>
-        </div>
-        <div class="r-desc" id="rd2">Designed Criticality-Constrained Quadratic Pruning (CQP), a native PyTorch pipeline fusing surrogate-gradient criticality with weight magnitude to prune SNNs without convex solvers. Formally characterised a continuous-relaxation trap in QP-based pruning causing 44 pp accuracy collapse, and identified a zombie-weight failure mode in Adam fine-tuning. Combined weight sparsification with KL-divergence temporal analysis yields a compound 73% energy reduction at 70% sparsity, retaining 95.6% MNIST accuracy at 90% sparsity. Submitted to Neurocomputing (Elsevier).</div>
-        <button class="r-expand" onclick="toggleRd('rd2',this)">Read more ↓</button>
-        <div class="r-links">
-          <a href="https://github.com/Hamza-Faarooq/Pruning-with-SNNs" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
-                          <a href="https://hamza-faarooq.github.io/snn-pruning.html" class="r-link"> <i class="fa-solid fa-blog"></i> Blog </a>
-          <a href="#" class="r-link"><i class="fa-solid fa-file-pdf"></i> Paper (under review)</a>
+        <span class="book-kind">Novel</span>
+        <h3>The Hound of the Pale Marsh</h3>
+        <div class="book-sub">A Sherlock Holmes mystery · Amazon KDP</div>
+        <p><!-- ADD ONE-LINE BLURB -->A new Sherlock Holmes mystery novel.</p>
+        <div class="links">
+          <a href="https://www.amazon.co.uk/dp/B0HGGLYZ5S" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-amazon"></i> Paperback</a>
+          <a href="https://www.amazon.co.uk/dp/B0HGM3Y34T" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-amazon"></i> Hardcover</a>
         </div>
       </div>
     </div>
-
-    <div class="research-entry">
-      <div class="r-thumb">
-        <img src="iim_teaser.png" alt="Multimodal Fusion"
-             onerror="this.parentElement.innerHTML='<div class=\'r-thumb-ph\'><i class=\'fa-solid fa-film\'></i></div>'">
-      </div>
+    <div class="book">
+      <div class="cover"><img src="unrecorded_cover.jpg" alt="Unrecorded Cases of Sherlock Holmes cover" onerror="this.parentElement.innerHTML='<div class=ph><i class=&quot;fa-solid fa-book-open&quot;></i></div>'"></div>
       <div>
-        <div class="r-header">
-          <div class="r-title">Multimodal Fusion for Movie Review Helpfulness Prediction</div>
-          <span class="venue-badge venue-intl">iSAI-NLP 2025</span>
-        </div>
-        <div class="r-meta">IIM Ranchi · Prof. Sobhan Sarkar</div>
-        <div class="r-date">April 2025 – Aug 2025</div>
-        <div class="r-metrics">
-          <span class="metric-chip">Acc 0.875</span>
-          <span class="metric-chip">AUC 0.884</span>
-          <span class="metric-chip">BERT · ViT · CLIP</span>
-          <span class="metric-chip">Dempster-Shafer</span>
-        </div>
-        <div class="r-desc" id="rd3">Developed a scalable multimodal pipeline processing 54,000+ IMDB reviews and 30,000+ frames using BERT, ViT, and CLIP. Pioneered Dempster-Shafer evidential fusion for uncertainty-aware helpfulness prediction, outperforming attention and concatenation baselines across all five industry-standard metrics.</div>
-        <button class="r-expand" onclick="toggleRd('rd3',this)">Read more ↓</button>
-        <div class="r-links">
-          <a href="https://github.com/Hamza-Faarooq/IIM_Research_Intern" class="r-link"><i class="fa-brands fa-github"></i> Code</a>
-          <a href="https://ieeexplore.ieee.org/abstract/document/11492803/" class="r-link"><i class="fa-solid fa-trophy"></i> Accepted · iSAI-NLP 2025</a>
-         <a href="https://hamza-faarooq.github.io/IIM_Research_Intern/" class="r-link"> <i class="fa-solid fa-blog"></i> Blog </a>
-
+        <span class="book-kind">Short story collection</span>
+        <h3>Unrecorded Cases of Sherlock Holmes</h3>
+        <div class="book-sub">Mysteries · Amazon KDP</div>
+        <p><!-- ADD ONE-LINE BLURB -->A collection of Sherlock Holmes mysteries.</p>
+        <div class="links">
+          <a href="https://www.amazon.com/dp/B0HGDQLGF2" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-amazon"></i> Paperback</a>
+          <a href="https://www.amazon.com/dp/B0HGLM79Q5" class="link" target="_blank" rel="noopener"><i class="fa-brands fa-amazon"></i> Hardcover</a>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- PUBLICATIONS -->
-  <section class="section reveal" id="publications">
-    <h2 class="section-title"><span class="tnum">05</span>Publications</h2>
-    <div class="pub-list">
-
-      <div class="pub-entry">
-        <div class="pub-idx">[1]</div>
-        <div class="pub-body">
-          <div class="pub-badges">
-            <span class="pub-badge badge-conf">iSAI-NLP 2025</span>
-            <span class="pub-badge badge-ieee">IEEE ICEEE 2026</span>
-            <span class="pub-badge badge-nlp">NLP · Vision</span>
-          </div>
-          <div class="pub-title">Movie Review Helpfulness Prediction using Semantic Alignment and Evidential Fusion-based Multimodal Approach</div>
-          <div class="pub-authors"><span class="me">Muhammad Hamza</span>, et al.</div>
-          <div class="pub-venue-line">iSAI-NLP 2025 &amp; also accepted at <strong style="color:var(--accent)">ICEEE–IEEE Conference 2026</strong></div>
-          <div class="pub-links">
-            <a href="https://ieeexplore.ieee.org/abstract/document/11492803/metrics#metrics" class="pub-link" target="_blank" rel="noopener">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> IEEE Xplore
-            </a>
-          </div>
-        </div>
-      </div>
-
-
-<div class="pub-entry">
-        <div class="pub-idx">[2]</div>
-        <div class="pub-body">
-          <div class="pub-badges">
-            <span class="pub-badge badge-preprint">Preprint</span>
-            <span class="pub-badge badge-neuro">ArXiv</span>
-            <span class="pub-badge badge-nlp">Optimization Algorithms in ML</span>
-          </div>
-          <div class="pub-title">Curvature-Weighted Gradient Diversity: A Noise Measure for Geometry-Adaptive SGD Schedules </div>
-          <div class="pub-authors"><span class="me">Muhammad Hamza & Ayush Goel</span></div>
-          <div class="pub-venue-line">Submitted to <strong style="color:var(--accent)">Arxiv and TMLR</strong> </div>
-          <div class="pub-links">
-             <a href="https://arxiv.org/abs/2606.30455" class="pub-link" target="_blank" rel="noopener">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> arXiv
-            <a href="https://github.com/Hamza-Faarooq/cwgd-optimizer" class="pub-link" target="_blank" rel="noopener">
-              <i class="fa-brands fa-github"></i> Code
-            </a>
-          </div>
-        </div>
-      </div>
-
-
-
-      
-      <div class="pub-entry">
-        <div class="pub-idx">[3]</div>
-        <div class="pub-body">
-          <div class="pub-badges">
-            <span class="pub-badge badge-preprint">Under Review</span>
-            <span class="pub-badge badge-neuro">Neurocomputing</span>
-            <span class="pub-badge badge-nlp">SNNs · Neuromorphic</span>
-          </div>
-          <div class="pub-title">Criticality-Constrained Iterative Pruning for Energy-Efficient Spiking Neural Networks via Combined Importance Scoring</div>
-          <div class="pub-authors"><span class="me">Muhammad Hamza</span></div>
-          <div class="pub-venue-line">Submitted to <strong style="color:var(--accent)">Neurocomputing — Elsevier</strong> (ISSN 0925-2312)</div>
-          <div class="pub-links">
-            <a href="https://github.com/Hamza-Faarooq/Pruning-with-SNNs" class="pub-link" target="_blank" rel="noopener">
-              <i class="fa-brands fa-github"></i> Code
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section class="section reveal" id="projects">
-    <h2 class="section-title"><span class="tnum">04</span>Projects</h2>
-    <div class="projects-grid">
-
-
-<div class="proj">
-        <div class="proj-header">
-          <div class="proj-title-wrap">
-            <h3>ApexSearch: Audio-Visual RAG & Multimodal Video Retrieval Engine</h3>
-          </div>
-          <span class="proj-year">2026</span>
-        </div>
-        <div class="proj-tags">
-          <span class="proj-tag tag-torch">PyTorch & Transformers</span>
-          <span class="proj-tag tag-green">FAISS</span>
-          <span class="proj-tag tag-purple">Multimodal RAG</span>
-          <span class="proj-tag tag-blue">Streamlit</span>
-        </div>
-        <div class="proj-metrics">
-          <span class="proj-metric">CLIP & CLAP</span>
-          <span class="proj-metric">Late-Fusion Heuristic</span>
-          <span class="proj-metric">Groq LPU Inference</span>
-        </div>
-        <p class="proj-short">Engineered an interactive, end-to-end multimodal retrieval-augmented generation (RAG) system allowing natural language querying and autonomous live commentary over untrimmed, high-speed Formula 1 broadcasts.</p>
-        <div class="proj-full" id="pf0">
-          <ul>
-            <li>Engineered an end-to-end multimodal retrieval-augmented generation (RAG) system for untrimmed sports broadcasts, localizing specific events (e.g., crashes, pit stops) from natural language queries[cite: 1829].</li>
-            <li>Extracted temporal visual features (1 FPS) and synchronized audio chunks, vectorizing them via frozen CLIP and CLAP transformers into independent FAISS vector databases for sub-50ms retrieval[cite: 1830].</li>
-            <li>Implemented a dynamically weighted late-fusion scoring heuristic to resolve cross-modal ambiguity (e.g., trusting audio over visual during heavy motion blur), significantly improving retrieval robustness[cite: 1831].</li>
-            <li>Architected a serverless deployment pipeline using GitHub and Streamlit Community Cloud, decoupling Vision-Language Model inference into external Groq API calls to bypass cloud GPU constraints and achieve zero-cost hosting[cite: 2108].</li>
-          </ul>
-        </div>
-        <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/ApexSearch" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
-          <a href="https://apexsearch.streamlit.app/" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Test out the system</a>
-
-          <button class="proj-expand-btn" onclick="toggleProj('pf0',this)">Read more ↓</button>
-        </div>
-      </div>
-      
-      <div class="proj">
-        <div class="proj-header">
-          <div class="proj-title-wrap">
-            <h3>Synthesia: Visuo-Lingual Affective Recommender System</h3>
-          </div>
-          <span class="proj-year">2026</span>
-        </div>
-        <div class="proj-tags">
-          <span class="proj-tag tag-torch">Transformers</span>
-          <span class="proj-tag tag-green">FAISS</span>
-          <span class="proj-tag tag-purple">Multimodal ML</span>
-          <span class="proj-tag tag-blue">Late-Fusion</span>
-        </div>
-        <div class="proj-metrics">
-          <span class="proj-metric">ResNet & DistilRoBERTa</span>
-          <span class="proj-metric">Dense Vector Search</span>
-          <span class="proj-metric">Ablation Study</span>
-        </div>
-        <p class="proj-short">Engineered a multimodal machine learning pipeline fusing facial expression recognition and textual sentiment analysis to power a dynamic, emotion-driven movie recommendation engine.</p>
-        <div class="proj-full" id="pf0">
-          <ul>
-            <li>Architected a Late-Fusion architecture leveraging ResNet (via DeepFace) for visual emotion extraction and DistilRoBERTa for textual sentiment analysis, mathematically blending the distributions.</li>
-            <li>Implemented a high-dimensional dense vector search engine using FAISS and MiniLM embeddings to efficiently retrieve and rank recommendations.</li>
-            <li>Conducted a quantitative ablation study to mathematically prove the superiority of the Late-Fusion architecture over unimodal baselines.</li>
-            <li>Deployed the system to a live cloud server, navigating real-world MLOps hurdles like Linux graphics driver dependencies and Python versioning conflicts.</li>
-          </ul>
-        </div>
-        <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/Visuo-Lingual-Affective-Recommender-System-VLARS-" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
-          <a href="https://tm-vettel-vlars-recommender.hf.space/" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Test out the system</a>
-
-          <button class="proj-expand-btn" onclick="toggleProj('pf0',this)">Read more ↓</button>
-        </div>
-      </div>
-
-
-      <div class="proj">
-        <div class="proj-header">
-          <div class="proj-title-wrap">
-            <h3>VictorianGPT: Compound AI Conversational Agent</h3>
-          </div>
-          <span class="proj-year">2026</span>
-        </div>
-        <div class="proj-tags">
-          <span class="proj-tag tag-torch">QLoRA</span>
-          <span class="proj-tag tag-green">RAG</span>
-          <span class="proj-tag tag-purple">ChromaDB</span>
-          <span class="proj-tag tag-blue">Gradio</span>
-        </div>
-        <div class="proj-metrics">
-          <span class="proj-metric">Qwen 2.5 (3B)</span>
-          <span class="proj-metric">4-bit NF4 Quantization</span>
-          <span class="proj-metric">Contextual Prompt Engineering</span>
-        </div>
-        <p class="proj-short">Engineered an end-to-end Machine Learning pipeline combining Parameter-Efficient Fine-Tuning with Retrieval-Augmented Generation to deploy a highly atmospheric, 19th-century conversational agent.</p>
-        <div class="proj-full" id="pf1">
-          <ul>
-            <li>Fine-tuned the Qwen 2.5 3B instruct model using QLoRA (4-bit quantization) on ~10,000 synthetic conversational pairs to align generation with a Dark Academia and Victorian gothic aesthetic.</li>
-            <li>Architected a semantic memory pipeline using ChromaDB and MiniLM embeddings to retrieve and inject historical context from authentic 19th-century literature (Dickens, Stoker, Wilde).</li>
-            <li>Resolved 'Context Domination' (Lazy RAG) hurdles by restructuring the prompt injection hierarchy and mathematically tuning generation constraints (repetition penalties) to force original prose.</li>
-            <li>Deployed the full compound architecture to Hugging Face Spaces via a custom Gradio web interface, managing background thread execution and memory caching.</li>
-          </ul>
-        </div>
-        <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/VictorianGPT" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
-                    <a href="https://tm-vettel-victoriangpt.hf.space/" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Test out the system</a>
-
-          <button class="proj-expand-btn" onclick="toggleProj('pf1',this)">Read more ↓</button>
-        </div>
-      </div>
-
-   
-
-      <!-- PROJECT: Volatility Surface -->
-      <div class="proj">
-        <div class="proj-header">
-          <div class="proj-title-wrap">
-            <h3>ML-Driven Volatility Surface Modeling — NIFTY50 Options</h3>
-          </div>
-          <span class="proj-year">2025</span>
-        </div>
-        <div class="proj-tags">
-          <span class="proj-tag tag-torch">Python</span>
-          <span class="proj-tag tag-green">Ensemble ML</span>
-          <span class="proj-tag tag-gold">Quantitative Finance</span>
-        </div>
-        <div class="proj-metrics">
-          <span class="proj-metric">578K+ records</span>
-          <span class="proj-metric">100+ features</span>
-          <span class="proj-metric">MSE 0.00009</span>
-          <span class="proj-metric">10× baseline</span>
-        </div>
-        <p class="proj-short">High-frequency options volatility forecasting pipeline on 578,000+ NIFTY50 index records across 50+ strikes &amp; maturities. Achieved ultra-low MSE of <strong>0.00009</strong> via batch-wise ensemble with strike-aware feature selection.</p>
-        <div class="proj-full" id="pf3">
-          <ul>
-            <li>Engineered 100+ features including Greeks, moneyness, term structure, and microstructure signals for implied volatility surface modelling.</li>
-            <li>Designed a batch-wise ensemble model integrating gradient boosting and regularised regression, outperforming standard ML baselines by over 10× in accuracy.</li>
-          </ul>
-        </div>
-        <div class="proj-footer">
-          <a href="https://github.com/Hamza-Faarooq/NK_Securities_Hackathon" class="proj-gh-btn" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
-          <button class="proj-expand-btn" onclick="toggleProj('pf3',this)">Read more ↓</button>
-        </div>
-      </div>
-
-
-
-    </div><!-- /projects-grid -->
-
-    <!-- COMPETITIONS -->
-    <div class="comp-title">Competitions &amp; Hackathons</div>
-    <div class="comp-list">
-
-      <div class="comp-card">
-        <div>
-          <div class="comp-name">Optiver Trade-athon 2026</div>
-          <div class="comp-desc">Real-time market-making &amp; pricing strategies under dynamic simulated market conditions — amongst top IIT competitors.</div>
-        </div>
-        <div class="comp-right">
-          <span class="comp-rank">Rank 23</span>
-          <span class="comp-date">Mar 2026 · Optiver</span>
-        </div>
-      </div>
-
-      <div class="comp-card">
-        <div>
-          <div class="comp-name">Convolve 4.0 — Pan-IIT AI/ML Hackathon</div>
-          <div class="comp-desc">Screening ML/AI assessment among 3,000+ students from IITs across India.</div>
-        </div>
-        <div class="comp-right">
-          <span class="comp-rank">All India Rank 102</span>
-          <span class="comp-date">Feb 2026 · IIT Madras</span>
-        </div>
-      </div>
-
-      <div class="comp-card">
-        <div>
-          <div class="comp-name">NK Securities: Research Hackathon 2025</div>
-          <div class="comp-desc">Per-second implied volatility modeling · MSE 0.000098 · 178K+ records · 90+ engineered features · 10× baseline accuracy.</div>
-        </div>
-        <div class="comp-right">
-          <span class="comp-rank">Rank 198 / 6000+</span>
-          <span class="comp-date">Jun 2025 · NK Securities Research</span>
-        </div>
-      </div>
-
-      <div class="comp-card">
-        <div>
-          <div class="comp-name">Convolve 3.0 — Pan-IIT AI/ML Hackathon</div>
-          <div class="comp-desc">XGBoost loan default prediction · 0.85 precision · 0.91 F1-score · robust class-imbalance handling.</div>
-        </div>
-        <div class="comp-right">
-          <span class="comp-rank">Top 50 / 4000+</span>
-          <span class="comp-date">Jan 2025 · IIT Guwahati</span>
-        </div>
-      </div>
-
-    </div><!-- /comp-list -->
-  </section>
-
-  <!-- SCHOLASTIC ACHIEVEMENTS -->
-  <section class="section reveal" id="achievements">
-    <h2 class="section-title"><span class="tnum">06</span>Scholastic Achievements</h2>
-    <div class="achiev-list">
-
-      <div class="achiev-item">
-        <div class="achiev-icon"><i class="fa-solid fa-trophy"></i></div>
-        <div class="achiev-text">
-          <div class="achiev-title">JEE Main 2023 - All India Rank 3071 — Top 0.26% nationally</div>
-          <div class="achiev-sub">Ranked among the top 0.26% of <strong>1.2M+ candidates</strong> in the Joint Entrance Examination Main, 2023.</div>
-        </div>
-        <span class="achiev-badge">Top 0.26%</span>
-      </div>
-
-      <div class="achiev-item">
-        <div class="achiev-icon"><i class="fa-solid fa-medal"></i></div>
-        <div class="achiev-text">
-          <div class="achiev-title">JEE Advanced 2023 - All India Rank 5072 — Top 3% nationally</div>
-          <div class="achiev-sub">Ranked among the top 3% of <strong>200K+ candidates</strong> in the Joint Entrance Examination Advanced, 2023.</div>
-        </div>
-        <span class="achiev-badge">Top 3%</span>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- POEMS -->
-  <section class="section reveal" id="poems">
-    <h2 class="section-title"><span class="tnum">07</span>Poems</h2>
-    <a href="poems.html" class="poems-tease">
-      <div class="poems-icon"><i class="fa-solid fa-feather-pointed"></i></div>
-      <div class="poems-text">
-        <h3>Occasional Verse</h3>
-        <p>6 poems — on memory, war, and the burden of consciousness.</p>
-      </div>
-      <div class="poems-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-    </a>
-  </section>
-
+  </div>
+  <a href="stories.html" class="tease"><div class="tease-icon"><i class="fa-solid fa-book-open"></i></div><div><h3>Short Stories</h3><p>Mystery, philosophy, and the uncanny.</p></div><i class="fa-solid fa-arrow-right"></i></a>
+  <a href="poems.html" class="tease pink"><div class="tease-icon"><i class="fa-solid fa-feather-pointed"></i></div><div><h3>Occasional Verse</h3><p>6 poems on memory, war, and the burden of consciousness.</p></div><i class="fa-solid fa-arrow-right"></i></a>
+</section>
 </main>
 
-<!-- SHORT STORIES -->
-<section class="section reveal" id="stories">
-  <h2 class="section-title"><span class="tnum">08</span>Short Stories</h2>
-  <a href="stories.html" class="stories-tease">
-    <div class="stories-icon"><i class="fa-solid fa-book-open"></i></div>
-    <div class="stories-text">
-      <h3>Fiction &amp; Prose</h3>
-      <p>Original short stories — mystery, philosophy, and the uncanny. Sherlock Holmes and beyond.</p>
-    </div>
-    <div class="stories-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-  </a>
-</section>
-
 <footer>
-  <div class="footer-left">© <span id="year"></span> <span>Muhammad Hamza</span> · IIT Kharagpur · Built with care</div>
-  <nav class="footer-right">
-    <a href="hamza.iitkgp@gmail.com" class="footer-link">Email</a>
-    <a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener" class="footer-link">GitHub</a>
-    <a href="resume.pdf" target="_blank" rel="noopener" class="footer-link">CV</a>
-  </nav>
+  <div>© <span id="year"></span> Muhammad Hamza · IIT Kharagpur</div>
+  <nav><a href="mailto:hamza.iitkgp@gmail.com">Email</a><a href="https://github.com/Hamza-Faarooq" target="_blank" rel="noopener">GitHub</a><a href="ResearchCV_Hamza.pdf" target="_blank" rel="noopener">CV</a></nav>
 </footer>
+</div>
 
-</div><!-- /wrap -->
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
-/* LOADER */
-window.addEventListener('load',()=>{
-  setTimeout(()=>{
-    document.getElementById('loader').classList.add('hidden');
-    startCountUps();
-    animateBars();
-  },1100);
-});
-
-/* THEME */
-const html=document.documentElement;
-if(localStorage.getItem('theme')==='light') html.classList.add('light');
-document.getElementById('theme-toggle').addEventListener('click',()=>{
-  html.classList.toggle('light');
-  localStorage.setItem('theme',html.classList.contains('light')?'light':'dark');
-});
-
-/* SCROLL PROGRESS */
-window.addEventListener('scroll',()=>{
-  const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
-  document.getElementById('scroll-progress').style.width=(pct*100)+'%';
-},{passive:true});
-
-/* CURSOR */
-const dot=document.getElementById('cursor-dot'),ring=document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
-  el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
-});
-(function animC(){rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13;dot.style.left=mx+'px';dot.style.top=my+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animC);})();
-if('ontouchstart' in window){dot.style.display='none';ring.style.display='none';}
-
-/* BG CANVAS */
-const cv=document.getElementById('bg-canvas'),cx=cv.getContext('2d');
-let W,H,nodes;
-/* Richer palette matching new accent colours */
-const PAL=['#6a9fff','#9370e0','#22d4a0'];
-function initCv(){
-  W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;
-  nodes=Array.from({length:Math.floor(W*H/18000)},()=>({
-    x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.4,
-    vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,
-    c:PAL[Math.floor(Math.random()*3)],o:Math.random()*.4+.12
-  }));
-}
-function drawCv(){
-  cx.clearRect(0,0,W,H);
-  for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
-    const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.hypot(dx,dy);
-    if(d<120){cx.beginPath();cx.moveTo(nodes[i].x,nodes[i].y);cx.lineTo(nodes[j].x,nodes[j].y);cx.strokeStyle='rgba(106,159,255,'+(1-d/120)*.08+')';cx.lineWidth=.6;cx.stroke();}
-  }
-  nodes.forEach(n=>{
-    cx.beginPath();cx.arc(n.x,n.y,n.r,0,Math.PI*2);
-    const r=parseInt(n.c.slice(1,3),16),g=parseInt(n.c.slice(3,5),16),b=parseInt(n.c.slice(5,7),16);
-    cx.fillStyle='rgba('+r+','+g+','+b+','+n.o+')';cx.fill();
-    n.x+=n.vx;n.y+=n.vy;
-    if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;
-  });
-  requestAnimationFrame(drawCv);
-}
-initCv();drawCv();
-window.addEventListener('resize',initCv);
-
-/* SCROLL REVEAL */
-const revObs=new IntersectionObserver(es=>{
-  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target);}});
-},{threshold:0.07});
-document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
-
-/* ACTIVE NAV */
-const navLinks=document.querySelectorAll('.nav-link[data-section]');
-const navObs=new IntersectionObserver(es=>{
-  es.forEach(e=>{
-    if(e.isIntersecting){
-      navLinks.forEach(l=>l.classList.remove('active'));
-      const a=document.querySelector('.nav-link[data-section="'+e.target.id+'"]');
-      if(a)a.classList.add('active');
-    }
-  });
-},{threshold:0.3});
-['about','updates','experience','projects','publications','achievements','stories'].forEach(id=>{
-  const el=document.getElementById(id);if(el)navObs.observe(el);
-});
-
-/* TYPED TEXT */
-const phrases=['Theoretical Machine Learning.','Large Language Models.','Neural Operator Learning.','NLP & Computer Vision.','Spiking Neural Networks.'];
-let pi=0,ci=0,del=false;
-const tp=document.getElementById('typed-phrase');
-function typeIt(){
-  const ph=phrases[pi];
-  if(!del){tp.textContent=ph.slice(0,++ci);if(ci===ph.length){del=true;setTimeout(typeIt,2400);return;}}
-  else{tp.textContent=ph.slice(0,--ci);if(ci===0){del=false;pi=(pi+1)%phrases.length;}}
-  setTimeout(typeIt,del?36:55);
-}
-setTimeout(typeIt,1600);
-
-/* COUNT-UP */
-function startCountUps(){
-  document.querySelectorAll('.stat-num[data-target]').forEach(el=>{
-    const tgt=parseInt(el.dataset.target),sfx=el.dataset.suffix||'';
-    let cur=0;const step=Math.max(1,Math.floor(tgt/40));
-    const iv=setInterval(()=>{cur=Math.min(cur+step,tgt);el.textContent=cur+sfx;if(cur>=tgt)clearInterval(iv);},26);
-  });
-}
-
-/* STACK BARS */
-function animateBars(){
-  document.querySelectorAll('.stack-bar-fill[data-w]').forEach(el=>{
-    el.style.width=el.dataset.w+'%';
-  });
-}
-
-/* TIMELINE TOGGLE */
-let tlEx=false;
-document.getElementById('tl-toggle').addEventListener('click',function(){
-  tlEx=!tlEx;
-  document.querySelectorAll('.tl-item.tl-hidden').forEach(el=>el.style.display=tlEx?'block':'none');
-  this.textContent=tlEx?'Collapse ↑':'Show all ↓';
-  this.setAttribute('aria-expanded',tlEx);
-});
-
-/* RESEARCH EXPAND */
-function toggleRd(id,btn){
-  const el=document.getElementById(id);
-  btn.textContent=el.classList.toggle('expanded')?'Show less ↑':'Read more ↓';
-}
-
-/* PROJECT EXPAND */
-function toggleProj(id,btn){
-  const el=document.getElementById(id);
-  const open=el.classList.toggle('open');
-  btn.textContent=open?'Show less ↑':'Read more ↓';
-}
-
-/* SMOOTH SCROLL */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
-  });
-});
-
-document.getElementById('year').textContent=new Date().getFullYear();
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s),root=document.documentElement;
+/* theme */
+try{if(localStorage.getItem('theme')==='light')root.classList.add('light')}catch(e){}
+$('#theme-toggle').onclick=()=>{root.classList.toggle('light');try{localStorage.setItem('theme',root.classList.contains('light')?'light':'dark')}catch(e){}};
+/* scroll progress */
+addEventListener('scroll',()=>{$('#progress').style.width=(scrollY/(root.scrollHeight-innerHeight)*100)+'%'},{passive:true});
+/* reveal */
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}}),{threshold:.05});
+$$('.reveal').forEach(el=>ro.observe(el));
+/* active nav */
+const no=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){$$('.nav-link').forEach(l=>l.classList.remove('active'));const a=$('.nav-link[data-s="'+e.target.id+'"]');a&&a.classList.add('active')}}),{threshold:.3});
+$$('section[id]').forEach(s=>no.observe(s));
+/* typed text */
+const ph=['Theoretical Machine Learning.','Large Language Models.','Neural Operator Learning.','NLP & Computer Vision.','Spiking Neural Networks.'],tp=$('#typed');
+if(matchMedia('(prefers-reduced-motion:reduce)').matches){tp.textContent=ph[0]}else{let pi=0,ci=0,del=false;(function t(){const p=ph[pi];if(!del){tp.textContent=p.slice(0,++ci);if(ci===p.length){del=true;return setTimeout(t,2400)}}else{tp.textContent=p.slice(0,--ci);if(!ci){del=false;pi=(pi+1)%ph.length}}setTimeout(t,del?36:55)})()}
+/* timeline toggle */
+let ex=false;$('#tl-toggle').onclick=function(){ex=!ex;$$('.tl[hidden],.tl.x').forEach(el=>{el.hidden=!ex;el.classList.add('x')});this.textContent=ex?'Collapse ↑':'Show all ↓';this.setAttribute('aria-expanded',ex)};
+/* expanders */
+$$('.more[data-t]').forEach(b=>b.onclick=()=>{b.textContent=$('#'+b.dataset.t).classList.toggle('open')?'Show less ↑':'Read more ↓'});
+$$('.more[data-p]').forEach(b=>b.onclick=()=>{b.textContent=$('#'+b.dataset.p).classList.toggle('open')?'Show less ↑':'Read more ↓'});
+/* smooth anchors */
+$$('a[href^="#"]').forEach(a=>a.onclick=e=>{const t=$(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}});
+$('#year').textContent=new Date().getFullYear();
 </script>
 </body>
 </html>
