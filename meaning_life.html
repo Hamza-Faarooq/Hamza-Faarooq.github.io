@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>There Is Meaning, Even When I Cannot See It — Muhammad Hamza</title>
+  <link rel="icon" type="image/jpg" href="bh.jpg">
+  <meta name="description" content="A personal essay on meaning, suffering, beauty, loneliness, mortality, and the purpose Allah has given human life. By Muhammad Hamza, IIT Kharagpur." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg:#05050a;
+      --surface:#0c0b12;
+      --surface2:#121019;
+      --border:rgba(120,110,170,0.1);
+      --border-hi:rgba(150,140,210,0.28);
+      --dim:#7a7090;
+      --dim2:#a099c0;
+      --cream:#ddd8ee;
+      --accent:#8878c8;
+      --accent2:#b0a4e0;
+      --serif:'IM Fell English',Georgia,serif;
+      --body:'Crimson Pro',Georgia,serif;
+      --mono:'DM Mono',monospace;
+    }
+
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background:var(--bg);
+      color:var(--cream);
+      font-family:var(--body);
+      font-size:18px;
+      line-height:2;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.80' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+      background-size:200px;
+    }
+    body::after {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 55% 45% at 10% 15%, rgba(60,40,120,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 55% at 90% 85%, rgba(40,30,90,0.1) 0%, transparent 65%);
+    }
+
+    #scroll-progress {
+      position:fixed; top:0; left:0; z-index:200; height:1px; width:0%;
+      background:linear-gradient(to right, transparent, var(--accent), transparent);
+      transition:width 0.08s linear;
+    }
+
+    .page-outer {
+      position:relative; z-index:2;
+      max-width:700px;
+      margin:0 auto;
+      padding:64px 28px 130px;
+    }
+
+    /* NAV */
+    .top-nav { display:flex; gap:6px; align-items:center; margin-bottom:56px; flex-wrap:wrap; }
+    .nav-link {
+      color:var(--dim); text-decoration:none;
+      border:1px solid var(--border); padding:6px 12px;
+      font-size:10px; letter-spacing:1.2px; text-transform:uppercase; font-family:var(--mono);
+      transition:all 0.2s ease;
+    }
+    .nav-link:hover { color:var(--accent2); border-color:var(--border-hi); }
+    .nav-sep { color:var(--dim); font-size:10px; opacity:0.35; font-family:var(--mono); }
+
+    /* MASTHEAD */
+    .masthead {
+      margin-bottom:72px;
+      opacity:0; transform:translateY(14px);
+      transition:opacity 0.7s ease, transform 0.7s ease;
+    }
+    .masthead.visible { opacity:1; transform:translateY(0); }
+    .masthead-label {
+      font-family:var(--mono); font-size:9px; letter-spacing:3px; text-transform:uppercase;
+      color:var(--dim); display:block; margin-bottom:16px;
+    }
+    .masthead h1 {
+      font-family:var(--serif);
+      font-size:clamp(28px,5.5vw,46px);
+      font-weight:400; font-style:italic;
+      color:var(--cream); line-height:1.2; margin-bottom:14px;
+    }
+    .masthead-sub {
+      font-family:var(--mono); font-size:9.5px; letter-spacing:2px; text-transform:uppercase;
+      color:var(--dim); margin-bottom:26px;
+    }
+    .masthead-rule {
+      width:60px; height:1px;
+      background:linear-gradient(to right, var(--accent), transparent);
+      margin-bottom:26px;
+    }
+    .masthead-note {
+      font-family:var(--serif); font-style:italic;
+      font-size:15px; color:var(--dim2);
+      max-width:48ch; line-height:1.85;
+    }
+
+    /* ESSAY BODY */
+    .essay {
+      opacity:0; transform:translateY(14px);
+      transition:opacity 0.65s ease, transform 0.65s ease;
+    }
+    .essay.visible { opacity:1; transform:translateY(0); }
+
+    .essay p {
+      font-size:18px; font-weight:300;
+      color:var(--cream); line-height:2;
+      margin-bottom:1.6em;
+    }
+
+    .essay p.drop::first-letter {
+      font-family:var(--serif);
+      font-size:4em;
+      float:left;
+      line-height:0.76;
+      margin:0.08em 0.1em 0 0;
+      color:var(--accent2);
+      font-style:italic;
+    }
+
+    /* pulled philosopher quote */
+    .philosopher-quote {
+      margin:44px 0 44px 0;
+      padding:24px 28px 24px 32px;
+      border-left:1px solid var(--accent);
+      background:var(--surface);
+      position:relative;
+      opacity:0; transform:translateY(10px);
+      transition:opacity 0.6s ease, transform 0.6s ease;
+    }
+    .philosopher-quote.visible { opacity:1; transform:translateY(0); }
+    .philosopher-quote::before {
+      content:'"';
+      position:absolute; top:-14px; left:20px;
+      font-family:var(--serif); font-size:60px;
+      color:rgba(136,120,200,0.15); line-height:1;
+      font-style:italic; pointer-events:none; user-select:none;
+    }
+    .philosopher-quote p {
+      font-family:var(--serif);
+      font-size:17px; font-style:italic;
+      color:var(--dim2); line-height:1.85;
+      margin:0;
+    }
+    .philosopher-quote cite {
+      display:block; margin-top:12px;
+      font-family:var(--mono); font-size:9px; letter-spacing:1.8px;
+      text-transform:uppercase; font-style:normal; color:var(--dim);
+    }
+
+    /* section break */
+    .section-break {
+      display:flex; align-items:center; gap:16px;
+      margin:52px 0;
+      opacity:0; transition:opacity 0.6s ease;
+    }
+    .section-break.visible { opacity:1; }
+    .section-break::before, .section-break::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(to right, transparent, rgba(120,110,180,0.2), transparent);
+    }
+    .section-break-glyph {
+      font-family:var(--serif); font-size:14px;
+      color:rgba(136,120,200,0.3); letter-spacing:6px; font-style:italic;
+      user-select:none;
+    }
+
+    /* COLOPHON */
+    .colophon {
+      margin-top:72px; padding:36px 32px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      text-align:center; position:relative;
+      opacity:0; transform:translateY(12px);
+      transition:opacity 0.6s ease, transform 0.6s ease;
+    }
+    .colophon.visible { opacity:1; transform:translateY(0); }
+    .colophon::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(to right, transparent, var(--accent), transparent);
+    }
+    .colophon-text {
+      font-family:var(--serif); font-style:italic;
+      font-size:14.5px; color:var(--dim2);
+      max-width:44ch; margin:0 auto; line-height:1.85;
+    }
+    .colophon-sig {
+      margin-top:18px;
+      font-family:var(--mono); font-size:9px; letter-spacing:2px;
+      text-transform:uppercase; color:var(--dim);
+    }
+    .colophon-sig span { color:var(--accent2); }
+
+    /* FOOTER */
+    .page-footer {
+      margin-top:52px; padding-top:20px;
+      border-top:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    }
+    .footer-left { font-size:11px; font-family:var(--mono); color:var(--dim); }
+    .footer-left span { color:var(--accent2); }
+    .footer-right { display:flex; gap:18px; }
+    .footer-link { font-size:10px; font-family:var(--mono); color:var(--dim); text-decoration:none; letter-spacing:1px; text-transform:uppercase; transition:color 0.2s; }
+    .footer-link:hover { color:var(--accent2); }
+
+    @media(max-width:600px){
+      .page-outer { padding:36px 18px 90px; }
+      .essay p { font-size:16.5px; }
+      .philosopher-quote p { font-size:15.5px; }
+    }
+  </style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+
+<div class="page-outer">
+
+  <nav class="top-nav">
+    <a href="index.html" class="nav-link"><i class="fa-solid fa-house" style="margin-right:4px"></i>Home</a>
+    <span class="nav-sep">›</span>
+    <a href="blogs.html" class="nav-link">Blogs</a>
+    <span class="nav-sep">›</span>
+    <a href="blogs-personal.html" class="nav-link">Personal</a>
+    <span class="nav-sep">›</span>
+    <a href="#" class="nav-link" style="color:var(--accent2);border-color:rgba(150,140,210,0.3);">Meaning</a>
+  </nav>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <span class="masthead-label">Essay · Personal · Faith</span>
+    <h1>There Is Meaning.<br>Even When I Cannot See It.</h1>
+    <div class="masthead-sub">On purpose, suffering, beauty, loneliness, and returning to Allah</div>
+    <div class="masthead-rule"></div>
+    <p class="masthead-note">There have been days when life has felt empty to me. I no longer take that feeling as evidence that life is empty. Sometimes the meaning is not absent; sometimes I am simply too close to the page to read the whole sentence.</p>
+  </header>
+
+  <!-- ESSAY -->
+  <div class="essay">
+<p class="drop">Let me be honest with you from the first sentence, which is a thing most essays are too cowardly to do: there have been times when I have felt as though life has no meaning. I have had the thought in its cleanest and most dangerous form — that perhaps all of this is simply motion without destination, consciousness without instruction, days arriving and leaving one another until eventually there are no more days. I have looked for an answer with the same urgency with which you look for your keys when you are already late, turning over systems of thought, philosophies, ambitions, disciplines, explanations, success stories, and the private theories people build to make their own existence feel less arbitrary. I searched as though meaning were a hidden object that could eventually be found, picked up, examined in the light, and finally declared real. Sometimes the searching left me with very little. I would arrive at the end of an argument and still be standing in the same room, still myself, still aware, still asking the same old question: <em>What is all this for?</em></p>
+
+<p>But there is a possibility I had been overlooking because it is both simpler and more demanding than the answer I wanted. Perhaps meaning was never something I was supposed to invent. Perhaps it was something already given. Perhaps the fact that I cannot always perceive a purpose says something about the limits of my perception rather than the absence of purpose itself. A man standing beneath an immense building can look at one wall and see only bricks, wires, concrete, and dust. The architect sees the whole structure. The builder knows what the wall is doing even when the wall itself knows nothing. I think human beings are often like that wall: positioned inside a reality much larger than the part we can see, mistaking our limited view for the limits of the design. Islam does not ask me to manufacture a meaning from the raw material of my feelings. It tells me that the raw material already came with a Creator, a purpose, a moral order, a beginning, and a return.</p>
+  </div>
+
+  <div class="philosopher-quote">
+    <p>And I did not create the jinn and mankind except to worship Me.</p>
+    <cite>— Qur'an 51:56</cite>
+  </div>
+
+  <div class="essay" style="transition-delay:0.05s">
+<p>And once you understand that, something strange happens to the ordinary. A cup of tea is no longer merely a cup of tea. A long conversation with someone you love is no longer merely a pleasant interruption in an otherwise serious life. A difficult exam, a failed plan, an hour spent working when nobody will praise you, the decision to forgive someone who hurt you, the discipline to keep a promise to yourself — these things do not have to be monumental to have weight. Their significance does not come from how impressive they look to another human being. It comes from the intention beneath them and the One who knows it. This is one of the things I find most quietly beautiful about Islam: it rescues the ordinary from insignificance. Nothing needs to be spectacular to matter to Allah.</p>
+
+<p>Allah tells us that He created death and life to test which of us is best in deed. I used to hear the word <em>test</em> and imagine an exam, a score, a pass or fail. But perhaps life is more intimate than that. A test reveals what a person does when circumstances stop obeying him. What happens when you get what you wanted? Do you become arrogant? What happens when you do not get it? Do you become bitter? What happens when someone praises you? Do you begin to worship their approval? What happens when someone humiliates you? Do you let them decide what kind of person you become? What happens when you are alone? What happens when nobody is watching? What do you choose when the choice costs you something?</p>
+
+<p>This changes the way I think about suffering. I do not want to romanticize pain. Pain is pain. A betrayal is still a betrayal. Grief is still grief. Poverty is still frightening. Illness is still frightening. Failure can still humiliate you. There are losses that do not become beautiful simply because you found a lesson inside them. Islam does not require me to call every hardship good in itself. It asks me to believe that Allah is wise even when I cannot see the wisdom, and to ask what faithfulness looks like inside the hardship. The distinction matters. I do not need to say, “I am glad this happened,” in order to say, “I trust Allah with what happened.” Those are not the same sentence. One is a statement about my feelings. The other is a statement about my faith.</p>
+
+<p>There is a peculiar humility in admitting that I do not know why something happened while refusing to conclude that therefore it happened without purpose. Human beings confuse these two claims constantly. <em>I cannot see the reason</em> becomes <em>there is no reason.</em> But that is not logic; it is ego wearing the clothes of logic. I know too little about the future, too little about the hidden consequences of a decision, too little about other people's hearts, too little about what a particular event prevented or produced. I do not even know what tomorrow will do to today's interpretation of yesterday. The Qur'an is explicit that there are things we dislike that may be good for us and things we love that may be bad for us; Allah knows and we do not know. That is not an invitation to stop thinking. It is an invitation to stop pretending that our thinking is complete.</p>
+  </div>
+
+  <div class="section-break"><span class="section-break-glyph">✦</span></div>
+
+  <div class="essay" style="transition-delay:0.08s">
+<p>I have also had evenings — specific, unrepeatable evenings — when the light came through a window at exactly the wrong angle and illuminated something ordinary: a cup, a page, the back of a hand. Nothing extraordinary happened. Nobody arrived. No revelation descended. No orchestra began playing in the background. And yet I stood there for a moment longer than necessary because something in me had become quiet enough to notice. The beauty was so specific that it felt almost like grief. Not because the object was sad, but because I suddenly became aware of how temporary my access to it was. The light would move. The room would darken. The cup would be put away. The hand would age. I would leave the room. One day, I would leave every room.</p>
+
+<p>I do not think moments like that prove that the universe is speaking in a language we can privately decode. I think something subtler happens. Beauty interrupts our arrogance. It reminds us that the world is not obligated to be ugly merely because we are tired. It forces attention. It makes us stop consuming reality and, for a few seconds, simply witness it. And for a believer, creation is full of signs. The Qur'an repeatedly directs human beings to look: at the heavens, the earth, the alternation of night and day, the rain, the human self, the order of creation. The point is not sentimental nature worship. The point is that the created thing can turn the mind toward the Creator. The window light is not Allah. The cup is not Allah. The sky is not Allah. But all of them can remind me of Allah.</p>
+  </div>
+
+  <div class="philosopher-quote" style="transition-delay:0.04s">
+    <p>And among His signs is the creation of the heavens and the earth and the diversity of your languages and your colors. Surely in that are signs for those who know.</p>
+    <cite>— Qur'an 30:22</cite>
+  </div>
+
+  <div class="essay" style="transition-delay:0.1s">
+<p>The more I think about it, the less I believe the real problem is that life has no meaning. The real problem is that I want meaning to feel obvious all the time. I want purpose to produce a constant emotional certainty. I want to wake up convinced. I want every sacrifice to make immediate sense. I want every closed door to look like redirection while I am still standing in front of it. But faith is not the same thing as perpetual emotional clarity. Sometimes belief is knowing what is true while your feelings are temporarily too tired to cooperate.</p>
+
+<p>This is where <em>sabr</em> becomes more profound to me than the version of patience we usually imagine. Patience is not lying to yourself and saying you are not hurting. It is not passive resignation. It is not becoming emotionally numb. Sabr can mean refusing to let pain decide your relationship with Allah. You can cry and still pray. You can be disappointed and still say Alhamdulillah. You can admit that something hurts and still refuse to accuse Allah of injustice. You can ask for change while accepting that the timing is not yours to command. There is a kind of strength in saying, “I do not understand this, but I know who my Lord is.”</p>
+
+    <p>And then there is <em>shukr</em>, gratitude. I used to think of gratitude as an exercise in optimism, a list of good things you force yourself to name when the day has gone badly. But Islamic gratitude is deeper: it is recognition of the Giver. When I am grateful for health, I am recognizing a gift. When I am grateful for a friend, I am recognizing that a person I could never have manufactured was placed in my life for a time. When I am grateful for beauty, I am not pretending that beauty will last forever. I am simply refusing to let its temporary nature prevent me from saying <em>Alhamdulillah</em>. The blessing can be temporary and the gratitude can still be eternal in significance.</p>
+
+<p>Death is where every philosophy eventually loses the luxury of abstraction. You can debate meaning comfortably until you remember that your own time is finite. I think this is why death has such power over us. It is the one fact that ambition cannot negotiate with. It does not care how intelligent you are, how admired you became, how many people knew your name, how carefully you curated your image, or how many plans you had for next year. At some point, the sentence ends. And Islam does not soften this by pretending otherwise. It makes the ending more serious: every soul will taste death, and then we return to Allah.</p>
+  </div>
+
+  <div class="section-break" style="transition-delay:0.04s"><span class="section-break-glyph">✦</span></div>
+
+  <div class="essay" style="transition-delay:0.12s">
+<p>And this is why I cannot finally accept the conclusion that nothing matters. In the absence of God, perhaps one can make a philosophical case for constructing private meanings and carrying them as long as one finds them emotionally useful. But I do not live inside that universe anymore. I believe that Allah exists, that He created me intentionally, that He has not left human beings without guidance, that this life is temporary, that my choices have moral weight, and that I will return to Him. From those premises, meaning is not an aesthetic preference. It is a fact about what I am. I am a servant of Allah before I am anything else.</p>
+
+<p>There are days, still, when I forget all of this. That is perhaps the most human sentence I can write. Knowledge is not the same as remembrance. I can know something in the morning and live as though I have forgotten it by evening. I can believe in the Hereafter and still become consumed by a trivial humiliation. I can know that Allah is sufficient and still spend an hour worrying about the opinion of someone who barely knows me. I can say that this world is temporary and then become devastated when it refuses to give me permanently what it was never designed to give permanently. The problem is not always disbelief. Sometimes it is forgetfulness.</p>
+  </div>
+
+  <div class="philosopher-quote" style="transition-delay:0.04s">
+    <p>Every soul will taste death, and you will only receive your full reward on the Day of Resurrection.</p>
+    <cite>— Qur'an 3:185</cite>
+  </div>
+
+  <div class="essay" style="transition-delay:0.14s">
+<p>And perhaps that is why the Islamic solution so often sounds less like discovering a new theory and more like remembering something you already know. Pray. Return. Make dhikr. Read the Qur'an. Ask forgiveness. Help someone. Give charity. Lower your gaze. Control your anger. Call your parents. Sit quietly. Put the phone away. Go outside. Look at the sky. Notice your own breathing. Say <em>Alhamdulillah</em> without demanding that your life be perfect before you mean it. The point is not to construct a spectacular spiritual identity. It is to keep turning back.</p>
+
+<p>So here is what I actually believe, stripped of the performance of certainty: I do not understand everything. I do not know why every prayer was answered in the way it was. I do not know why some people leave and others stay. I do not know why one person receives an opportunity another person desperately wanted. I do not know why some wounds heal quickly and others remain tender for years. I do not know the wisdom behind every closed door. I do not know what tomorrow will take from me or give to me. But I no longer confuse the limits of my understanding with the limits of Allah's wisdom.</p>
+
+<p>What I do know — and this is small, but it is mine, and I am not giving it back — is that the moments where something struck me as beautiful were real. The books that rearranged something structural inside me were real. The people who, for however long, made me feel possible were real. The work that asked something of me I was not sure I had was real. The prayers I whispered when nobody else knew I was struggling were real. The repentance after a mistake was real. The gratitude that arrived unexpectedly was real. None of these things needed to be eternal to matter. They needed only to be part of a life that Allah had given me and in which I was given the opportunity to respond.</p>
+
+<p>So I no longer want to write, “Life has no meaning.” I want to write something more difficult and more honest: <em>life has meaning whether or not I am emotionally capable of feeling it today.</em> There will be days when the purpose feels obvious and days when it feels buried beneath fatigue. There will be mornings when prayer feels like oxygen and nights when I have to drag myself toward it with whatever remains of my attention. There will be seasons of certainty and seasons of questioning. But Allah does not become less real because my emotions fluctuate. Truth does not become less true because I am tired.</p>
+  </div>
+
+  <div class="section-break" style="transition-delay:0.04s"><span class="section-break-glyph">✦</span></div>
+
+  <div class="essay" style="transition-delay:0.16s">
+<p>Perhaps that is the mature form of faith I am still learning: not the absence of doubt, but the refusal to let doubt become my master; not the absence of pain, but the refusal to let pain define Allah for me; not the claim that I understand everything, but the humility to say that Allah understands what I cannot. I am not asked to carry the entire architecture of existence inside my head. I am asked to live faithfully inside the small part of it that has been entrusted to me.</p>
+
+<p>Life has meaning. I did not invent it. I received it.</p>
+
+<p>I was created by Allah. I am living by His permission. I am moving toward death whether I feel ready or not. I will return to Him. Between now and then, there is work to do, people to love, sins to leave, prayers to pray, wounds to survive, blessings to notice, knowledge to seek, wrongs to repair, and a heart to keep bringing back when it wanders.</p>
+
+<p>Look at something ordinary for a little longer than you normally would. Watch the light move across a wall. Listen to the sound of rain. Look at the sky until you remember how small you are. Let the beauty stop you. Let the silence make you honest. Let gratitude arrive without forcing it. And then, quietly, say <em>Alhamdulillah</em>.</p>
+
+<p>But because the world is not abandoned, your life is not purposeless, your suffering is not unseen, your goodness is not wasted, and you are not moving toward nothing.</p>
+
+<p>You are moving toward Allah.</p>
+
+<p>And perhaps the deepest meaning of life is not found in finally possessing an answer, but in learning to live faithfully because you know the One who gave you the question.</p>
+  </div>
+
+  <!-- COLOPHON -->
+  <div class="colophon">
+    <p class="colophon-text">This essay was written in one sitting, then revised with the lights on. It remains personal rather than definitive: an attempt to put language around questions that are larger than any one page, while holding firmly to the belief that Allah did not create us without purpose.</p>
+    <div class="colophon-sig">Written by <span>Muhammad Hamza</span> · IIT Kharagpur · <span id="year"></span></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <div class="footer-left">© <span id="year2"></span> <span>Muhammad Hamza</span> · IIT Kharagpur</div>
+    <nav class="footer-right">
+      <a href="mailto:hamza.iitkgp@gmail.com" class="footer-link">Email</a>
+      <a href="https://medium.com/@_hamza" target="_blank" rel="noopener" class="footer-link">Medium</a>
+      <a href="index.html" class="footer-link">Portfolio</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script>
+  window.addEventListener('scroll',()=>{
+    const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight||1);
+    document.getElementById('scroll-progress').style.width=(pct*100)+'%';
+  },{passive:true});
+
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  },{threshold:0.04});
+  document.querySelectorAll('.masthead,.essay,.philosopher-quote,.section-break,.colophon').forEach(el=>obs.observe(el));
+
+  const y=new Date().getFullYear();
+  document.getElementById('year').textContent=y;
+  document.getElementById('year2').textContent=y;
+</script>
+</body>
+</html>
